@@ -1,0 +1,1 @@
+export { GitHubRepoCard as RepositoryCard } from "./GitHubRepoCard";

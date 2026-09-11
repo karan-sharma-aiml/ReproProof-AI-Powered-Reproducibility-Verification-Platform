@@ -1,0 +1,6 @@
+import Link from "next/link";
+import { ArrowLeft, ShieldAlert } from "lucide-react";
+
+export default function NotFound() {
+    return <main className="mx-auto flex min-h-[calc(100vh-9rem)] max-w-2xl flex-col items-center justify-center px-6 text-center"><div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-100 text-brand-600 dark:bg-brand-950 dark:text-brand-400"><ShieldAlert className="h-8 w-8" /></div><p className="mt-8 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 dark:text-brand-400">404 error</p><h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-950 dark:text-white">This proof does not exist.</h1><p className="mt-4 text-slate-500 dark:text-slate-400">The page you are looking for has moved or was never part of this workspace.</p><Link href="/" className="mt-8 inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700"><ArrowLeft className="h-4 w-4" /> Return home</Link></main>;
+}

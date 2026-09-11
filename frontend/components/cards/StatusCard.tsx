@@ -1,0 +1,1 @@
+export { VerificationStatusCard as StatusCard } from "./VerificationStatusCard";

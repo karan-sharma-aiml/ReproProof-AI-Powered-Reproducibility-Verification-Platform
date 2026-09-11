@@ -1,0 +1,5 @@
+{
+  "metric": "accuracy",
+  "expected": 94.2,
+  "tolerance": 0.5
+}

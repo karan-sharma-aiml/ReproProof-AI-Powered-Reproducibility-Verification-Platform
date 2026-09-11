@@ -1,0 +1,1 @@
+{"repository_path": "811c049c45d7/repository", "expected": {"expected_value": 94.2, "metric_name": "accuracy", "tolerance": 0.5}}

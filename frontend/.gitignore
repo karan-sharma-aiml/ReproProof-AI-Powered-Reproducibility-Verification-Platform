@@ -1,0 +1,61 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Next.js
+.next/
+out/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python build
+dist/
+build/
+*.egg-info/
+
+# Reports
+reports/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Next.js
+.next/
+
+# Runtime generated
+uploads/
+reports/
+temp/
+tmp/
+
+# Environment
+.env
+.env.*
