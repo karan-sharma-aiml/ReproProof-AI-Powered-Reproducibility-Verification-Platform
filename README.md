@@ -1,551 +1,1045 @@
-# 🚀 ReproProof: AI-Powered Reproducibility Verification Platform
-
 <div align="center">
 
-### 🔬 Making Research Reproducible with Autonomous AI Verification
+# 🚀 ReproProof
+### AI-Powered Reproducibility Verification Platform
 
-AI-powered platform that automatically validates research reproducibility, analyzes repositories, identifies execution failures, performs intelligent troubleshooting, generates repair recommendations, and provides comprehensive verification reports.
+<img src="https://readme-typing-svg.demolab.com?font=Inter&weight=600&size=26&duration=2500&pause=1000&center=true&vCenter=true&width=850&lines=Enterprise+Multi-Agent+AI+Platform;AI-Powered+Research+Verification;Repository+Analysis+%7C+Execution+Planning;Production-Ready+Architecture;Built+for+IIT+Hackathons+%26+Real-World+Deployment" alt="Typing Animation"/>
 
 ---
 
-![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)
-![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688?logo=fastapi)
-![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38BDF8?logo=tailwindcss)
-![OpenAI](https://img.shields.io/badge/OpenAI-GPT-green)
-![License](https://img.shields.io/badge/License-MIT-success)
+### 🔬 Making Research Reproducible with Enterprise AI
+
+*Analyze • Verify • Explain • Reproduce • Report*
+
+---
+
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Enterprise-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=nextdotjs)
+![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Gemini](https://img.shields.io/badge/Google-Gemini_AI-4285F4?style=for-the-badge&logo=google)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supported-336791?style=for-the-badge&logo=postgresql)
+![Redis](https://img.shields.io/badge/Redis-Supported-DC382D?style=for-the-badge&logo=redis)
+![Prometheus](https://img.shields.io/badge/Prometheus-Monitoring-E6522C?style=for-the-badge&logo=prometheus)
+![Grafana](https://img.shields.io/badge/Grafana-Dashboard-F46800?style=for-the-badge&logo=grafana)
+
+![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
+![Architecture](https://img.shields.io/badge/Architecture-Multi_Agent_AI-purple?style=for-the-badge)
+![Hackathon](https://img.shields.io/badge/IIT-Hackathon-blueviolet?style=for-the-badge)
+
+---
 
 </div>
 
----
+# 🌍 Overview
 
-## 📌 Overview
+**ReproProof** is an **Enterprise AI-Powered Research Reproducibility Verification Platform** designed to automatically analyze research repositories, inspect experimental environments, verify reproducibility, detect missing dependencies, generate execution plans, and produce comprehensive verification reports.
 
-Scientific research and AI projects often fail to reproduce due to missing dependencies, incorrect configurations, unavailable datasets, environment mismatches, hidden runtime errors, or undocumented execution steps.
+Unlike traditional static analysis tools, ReproProof combines **Large Language Models**, **Multi-Agent AI**, **Repository Intelligence**, **Knowledge Graphs**, **Execution Planning**, and **Research Analytics** into a unified platform capable of understanding complete machine learning repositories.
 
-**ReproProof** is an AI-powered reproducibility verification platform that automatically analyzes research repositories, recreates execution environments, diagnoses failures, generates intelligent repair strategies, and produces comprehensive reproducibility reports with explainable confidence scores.
-
-The platform combines static analysis, execution monitoring, AI reasoning, troubleshooting, verification, analytics, and automated reporting into one unified workflow.
+The platform enables researchers, universities, organizations, reviewers, and hackathon judges to evaluate whether a research project can actually be reproduced before investing time and computational resources.
 
 ---
 
-## 🎯 Vision
+# ✨ Key Highlights
 
-> **Enable researchers, students, reviewers, and organizations to verify research reproducibility within minutes instead of spending hours manually debugging repositories.**
-
-# 📖 Executive Summary
-
-Research reproducibility remains one of the biggest challenges in academia, AI, and software engineering. Many published repositories fail to execute successfully due to missing dependencies, incompatible environments, incorrect configurations, undocumented setup steps, runtime exceptions, or unavailable resources.
-
-Existing reproducibility workflows are largely manual, requiring developers and reviewers to spend significant time debugging repositories before they can even begin validating experimental results. This process is repetitive, error-prone, and difficult to scale.
-
-**ReproProof** is an AI-powered reproducibility verification platform designed to automate this entire workflow.
-
-Instead of manually investigating why a repository fails, users simply upload a compressed project. ReproProof automatically:
-
-- analyzes the repository structure,
-- detects project type and technology stack,
-- validates execution requirements,
-- executes reproducibility verification,
-- identifies execution failures,
-- performs AI-assisted root-cause analysis,
-- recommends repair strategies,
-- generates intelligent code patches,
-- provides confidence-based verification reports,
-- visualizes execution insights through an interactive dashboard.
-
-The platform integrates static repository analysis, execution monitoring, AI reasoning, troubleshooting, analytics, and verification reporting into a unified system that significantly reduces the time required to evaluate research reproducibility.
+- 🤖 Enterprise Multi-Agent AI Architecture
+- 🧠 Google Gemini AI Integration
+- 📂 Intelligent Repository Analysis
+- 🔬 Research Paper Understanding
+- 📊 AI Generated Verification Reports
+- ⚡ Execution Planning Engine
+- 🧩 Dependency Detection
+- 📈 Interactive Analytics Dashboard
+- 🛡 Security & Validation Layer
+- 📦 Docker Ready
+- ☁ Cloud Deployment Ready
+- 📉 Monitoring & Observability
+- 🗂 Knowledge Graph Integration
+- 🧠 AI Memory Engine
+- 📑 Research Intelligence Engine
 
 ---
 
-# ❗ Problem Statement
+# 🎥 Demo Preview
 
-Modern research repositories frequently suffer from reproducibility failures due to:
+> 📌 **Live Demo:** *(Add your deployed frontend URL here)*
 
-- Missing project dependencies
-- Incorrect Python or package versions
-- Broken configuration files
-- Missing datasets
-- Invalid file paths
-- Environment incompatibilities
-- Runtime exceptions
+> 📌 **Backend API:** *(Add your backend URL here)*
+
+> 📌 **Presentation:** *(Add PPT/Canva link here)*
+
+> 📌 **Demo Video:** *(Add YouTube Drive link here)*
+
+---
+
+# ⭐ Why ReproProof?
+
+Modern AI and ML repositories often fail to reproduce because of:
+
+- Missing dependencies
+- Broken environments
+- Incorrect configurations
+- Dataset inconsistencies
+- Missing execution instructions
+- Hardware incompatibility
+- Hidden assumptions
 - Incomplete documentation
-- Dependency conflicts
-- Repository misconfiguration
+
+ReproProof automatically discovers these issues using AI and provides actionable recommendations to improve reproducibility.
+
+---
+
+<div align="center">
+
+## 🚀 Built for Research • Enterprise • Production • IIT Hackathons
+
+**Turning Research Repositories into Reproducible Science**
+
+⭐ If you like this project, consider giving it a **Star**.
+
+</div>
+
+# 🎯 Problem Statement
+
+Scientific research and machine learning repositories are growing at an unprecedented pace. Every day, thousands of research papers and GitHub repositories are published claiming state-of-the-art results.
+
+Unfortunately, a significant percentage of these projects **cannot be reproduced** due to missing dependencies, undocumented configurations, unavailable datasets, incompatible environments, broken execution pipelines, or incomplete implementation details.
 
 As a result:
 
-- Researchers spend hours debugging repositories.
-- Reviewers cannot efficiently verify published work.
-- Research becomes difficult to reproduce.
-- Organizations lose development time.
-- AI and ML projects become unreliable for deployment.
+- 🔴 Researchers waste valuable time debugging environments.
+- 🔴 Students struggle to reproduce published work.
+- 🔴 Reviewers cannot easily validate experimental claims.
+- 🔴 Organizations face deployment risks due to undocumented codebases.
+- 🔴 AI models become difficult to benchmark and verify.
 
-Manual debugging is expensive, inconsistent, and difficult to scale across thousands of repositories.
-
----
-
-# 💡 Proposed Solution
-
-ReproProof introduces an autonomous AI-driven reproducibility verification workflow.
-
-Instead of relying on manual inspection, the platform performs an end-to-end verification pipeline that combines repository intelligence, execution monitoring, AI-based reasoning, troubleshooting, repair planning, confidence scoring, and comprehensive reporting.
-
-The platform is capable of:
-
-- Understanding repository structure
-- Detecting project type automatically
-- Identifying execution blockers
-- Classifying runtime failures
-- Explaining root causes
-- Suggesting intelligent repair plans
-- Generating executable code patches
-- Producing transparent AI confidence metrics
-- Delivering detailed verification reports for researchers and reviewers
-
-This enables faster, more reliable, and scalable reproducibility verification while reducing manual debugging effort.
+Reproducibility has become one of the biggest challenges in modern AI research.
 
 ---
 
-# 🎯 Objectives
+# 🌍 Real-World Impact
 
-The primary objectives of ReproProof are:
+Reproducibility directly affects:
 
-- Automate research reproducibility verification.
-- Minimize manual debugging effort.
-- Improve trust in research software.
-- Accelerate repository validation.
-- Assist reviewers during paper evaluation.
-- Provide explainable AI-driven verification reports.
-- Recommend actionable fixes for execution failures.
-- Support reproducible and transparent scientific research.
-
-  # ✨ Key Features
-
-ReproProof provides a complete AI-powered reproducibility verification ecosystem instead of a simple repository execution tool.
-
-## 🤖 Intelligent Repository Analysis
-
-- Automatic repository structure analysis
-- Technology stack detection
-- Programming language identification
-- Framework recognition
-- Dependency inspection
-- Project metadata extraction
-- Entry-point discovery
-- Repository health evaluation
+| Domain | Challenge |
+|---------|-----------|
+| 🎓 Universities | Difficulty reproducing research experiments |
+| 🤖 AI/ML Research | Missing dependencies and inconsistent environments |
+| 🏢 Enterprises | High onboarding time for complex repositories |
+| 🔬 Research Labs | Unverified experimental claims |
+| 🧑‍💻 Open Source | Poor documentation and setup failures |
+| 🏥 Healthcare AI | Lack of reliable validation before deployment |
+| 🚗 Autonomous Systems | Reproducing safety-critical experiments |
+| 💰 Finance | Difficulty validating AI pipelines for compliance |
 
 ---
 
-## ⚙️ Automated Reproducibility Verification
+# 📊 Why This Problem Matters
 
-- Environment validation
-- Dependency verification
-- Execution planning
-- Multi-stage verification pipeline
-- Runtime monitoring
-- Metric validation
-- Output comparison
-- Verification confidence scoring
+Modern AI repositories often contain:
 
----
+- Hundreds of Python files
+- Multiple configuration formats
+- Hidden dependencies
+- Docker environments
+- CI/CD workflows
+- External APIs
+- Dataset requirements
+- Hardware assumptions
+- Environment variables
+- Model checkpoints
 
-## 🧠 AI Failure Diagnosis
+Manually understanding all these components can take **hours or even days**.
 
-When repository execution fails, ReproProof automatically:
-
-- Detects execution failures
-- Classifies error categories
-- Identifies probable root causes
-- Explains failure reasoning
-- Estimates diagnostic confidence
-- Generates structured troubleshooting reports
-
-Supported failure categories include:
-
-- Missing Dependencies
-- Import Errors
-- Runtime Errors
-- Syntax Errors
-- Configuration Errors
-- Permission Issues
-- Memory Failures
-- Timeout Errors
-- File System Errors
+ReproProof reduces this effort to **minutes** through AI-powered repository intelligence.
 
 ---
 
-## 🔧 Intelligent Repair Planning
+# ❌ Challenges with Existing Solutions
 
-The platform automatically generates repair recommendations including:
+| Existing Approach | Limitation |
+|-------------------|------------|
+| README Files | Often incomplete or outdated |
+| Manual Code Review | Time-consuming and error-prone |
+| Static Linters | Limited understanding of project intent |
+| Dependency Checkers | Cannot explain execution workflow |
+| Documentation Tools | Do not verify reproducibility |
+| AI Chatbots | Lack repository-wide contextual understanding |
 
-- Dependency installation suggestions
-- Configuration fixes
-- Environment corrections
-- Missing file detection
-- Runtime optimization
-- Step-by-step recovery plans
-
-Each recommendation includes an explainable confidence score.
-
----
-
-## 🩹 AI Patch Generation
-
-ReproProof can generate intelligent code patches by:
-
-- Identifying problematic code regions
-- Generating Git-style unified diffs
-- Validating generated patches
-- Estimating patch confidence
-- Previewing modifications before application
-
-This enables developers to understand proposed fixes before applying them.
+Most existing tools solve **individual problems**, not the complete reproducibility workflow.
 
 ---
 
-## 📊 Enterprise Analytics Dashboard
+# 💡 Our Solution
 
-The dashboard provides real-time visualization of:
+ReproProof introduces an **Enterprise Multi-Agent AI Platform** capable of understanding an entire repository—from source code and documentation to dependencies, research papers, execution pipelines, and infrastructure.
 
-- Repository health
-- AI confidence scores
-- Verification pipeline progress
-- Execution timeline
-- Troubleshooting insights
-- Patch recommendations
-- Verification reports
-- Platform analytics
+Instead of simply detecting files, the platform reasons about:
 
----
+- 📂 Repository structure
+- 📑 Documentation quality
+- ⚙ Dependency management
+- 🔗 Project relationships
+- 🤖 AI model usage
+- 📊 Experiment configuration
+- 🧪 Reproducibility risks
+- 🚀 Execution planning
+- 📈 Confidence scoring
+- 📋 Automated reporting
 
-## 📄 Comprehensive Verification Reports
-
-After analysis, ReproProof generates detailed reports containing:
-
-- Repository summary
-- Verification status
-- Execution results
-- AI reasoning
-- Confidence metrics
-- Error explanations
-- Repair recommendations
-- Patch previews
-- Final reproducibility assessment
+The result is a comprehensive reproducibility assessment with actionable recommendations.
 
 ---
 
-# 🚀 Innovation Highlights
+# 🚀 Our Innovation
 
-Unlike traditional repository validation tools, ReproProof combines multiple AI-driven capabilities into a single autonomous workflow.
+ReproProof combines multiple intelligent systems into a unified platform:
 
-### ✅ End-to-End AI Verification Pipeline
+- 🤖 Multi-Agent AI Architecture
+- 🧠 Large Language Model Integration
+- 📚 Knowledge Graph Reasoning
+- 🗂 Repository Intelligence Engine
+- 📄 Research Paper Analysis
+- 🧩 Dependency Resolution
+- ⚡ Execution Planning
+- 📊 Confidence Scoring
+- 📈 Interactive Dashboards
+- 📑 Automated Report Generation
 
-From repository upload to final verification report, every stage is automated.
-
----
-
-### ✅ Explainable AI Confidence System
-
-Instead of returning opaque predictions, ReproProof provides explicit confidence scores for:
-
-- Repository analysis
-- Project detection
-- Error classification
-- Root-cause analysis
-- Repair planning
-- Patch generation
-- Verification
-- Final reproducibility assessment
+Rather than acting as a chatbot, ReproProof behaves like an **AI Research Assistant** capable of analyzing, verifying, and explaining complex software projects.
 
 ---
 
-### ✅ Autonomous Troubleshooting
+# 🏆 Why ReproProof Stands Out
 
-The platform does not stop after detecting an error.
+✅ End-to-End Repository Analysis
 
-It continues by:
+✅ AI-Powered Reproducibility Verification
 
-- Explaining why the failure occurred
-- Suggesting corrective actions
-- Generating repair strategies
-- Producing executable patch recommendations
+✅ Research Paper Understanding
 
----
+✅ Multi-Agent Collaboration
 
-### ✅ Modular AI Service Architecture
+✅ Enterprise-Grade Architecture
 
-The backend is organized into specialized AI services responsible for:
+✅ Production-Ready Deployment
 
-- Repository Analysis
-- Verification Engine
-- Troubleshooting
-- Self-Healing
-- Patch Generation
-- Analytics
-- Reporting
+✅ Monitoring & Observability
 
-This modular architecture improves scalability, maintainability, and future extensibility.
+✅ Extensible Provider Framework
+
+✅ Interactive Dashboard Experience
+
+✅ Built for Real-World Research Workflows
 
 ---
 
-### ✅ Research-Oriented Design
+# 🎖 Hackathon Value Proposition
 
-ReproProof is designed specifically for:
+ReproProof demonstrates how modern AI can move beyond conversational assistants to become **autonomous engineering systems** capable of understanding software repositories, validating scientific work, and assisting researchers throughout the reproducibility lifecycle.
 
-- Research reproducibility
-- Academic reviewers
-- AI/ML repositories
-- Open-source projects
-- Software engineering research
-- Reproducible experimentation
+This project showcases the practical integration of:
 
-The platform focuses on transparency, explainability, and actionable insights rather than simple pass/fail execution.
+- Artificial Intelligence
+- Software Engineering
+- Research Automation
+- Cloud-Native Infrastructure
+- Enterprise Architecture
+- Human-AI Collaboration
+
+making it a compelling solution for academic research, enterprise engineering teams, and innovation-focused hackathons.
 
 # 🏗️ System Architecture
 
-ReproProof follows a modular, service-oriented architecture where each AI component is responsible for a dedicated stage of the reproducibility verification pipeline.
+ReproProof follows a modular, enterprise-grade architecture designed around **AI-driven repository intelligence**. Each layer has a dedicated responsibility, ensuring scalability, maintainability, and production readiness.
 
-The platform separates repository analysis, execution, troubleshooting, repair planning, analytics, and reporting into independent services to improve scalability, maintainability, and future extensibility.
+---
+
+# 🌐 High-Level Architecture
+
+```text
+                        ┌────────────────────────────┐
+                        │        End Users           │
+                        │ Researchers • Students     │
+                        │ Developers • Reviewers     │
+                        └─────────────┬──────────────┘
+                                      │
+                                      ▼
+                 ┌────────────────────────────────────┐
+                 │         Next.js Frontend           │
+                 │ Dashboard • Analytics • Reports    │
+                 └─────────────────┬──────────────────┘
+                                   │ REST API
+                                   ▼
+                 ┌────────────────────────────────────┐
+                 │        FastAPI Backend             │
+                 │ Authentication • Upload • AI APIs │
+                 └─────────────────┬──────────────────┘
+                                   │
+              ┌────────────────────┼────────────────────┐
+              ▼                    ▼                    ▼
+      Repository Engine      AI Gateway         Execution Engine
+      Paper Analyzer         Provider Manager   Verification Engine
+      Knowledge Graph        Memory Engine      Confidence Engine
+```
+
+---
+
+# 🤖 Multi-Agent AI Architecture
+
+```text
+                 ┌──────────────────────────┐
+                 │     AI Gateway           │
+                 └──────────┬───────────────┘
+                            │
+      ┌─────────────────────┼─────────────────────┐
+      ▼                     ▼                     ▼
+ Research Agent      Repository Agent      Judge Agent
+      │                     │                     │
+      ├──────────────┬──────┴──────────────┐
+      ▼              ▼                     ▼
+ Memory Engine   Knowledge Graph    Execution Planner
+      │              │                     │
+      └──────────────┼─────────────────────┘
+                     ▼
+              Final Verification Report
+```
+
+---
+
+# 📂 Repository Analysis Pipeline
+
+Every uploaded repository goes through a multi-stage AI analysis pipeline:
+
+```text
+Repository Upload
+        │
+        ▼
+ZIP Validation
+        │
+        ▼
+Repository Extraction
+        │
+        ▼
+Project Detection
+        │
+        ▼
+Dependency Analysis
+        │
+        ▼
+Configuration Inspection
+        │
+        ▼
+Research Paper Detection
+        │
+        ▼
+AI Multi-Agent Analysis
+        │
+        ▼
+Execution Planning
+        │
+        ▼
+Confidence Scoring
+        │
+        ▼
+Interactive Dashboard
+        │
+        ▼
+Verification Report
+```
+
+---
+
+# 🔄 AI Processing Workflow
+
+```mermaid
+flowchart LR
+
+A[Upload Repository]
+B[Repository Analyzer]
+C[AI Gateway]
+D[Research Agent]
+E[Knowledge Graph]
+F[Memory Engine]
+G[Execution Planner]
+H[Confidence Engine]
+I[Verification Report]
+
+A --> B
+B --> C
+C --> D
+D --> E
+E --> F
+F --> G
+G --> H
+H --> I
+```
+
+---
+
+# 🧠 AI Decision Flow
+
+The AI system performs layered reasoning instead of simple prompt-response interactions.
+
+```text
+Repository
+
+      │
+
+      ▼
+
+Structural Understanding
+
+      │
+
+      ▼
+
+Dependency Resolution
+
+      │
+
+      ▼
+
+Research Context Extraction
+
+      │
+
+      ▼
+
+Execution Feasibility Analysis
+
+      │
+
+      ▼
+
+Confidence Calculation
+
+      │
+
+      ▼
+
+Final Recommendation
+```
+
+---
+
+# ⚙️ Backend Architecture
+
+The backend is organized into independent modules following clean architecture principles.
+
+| Layer | Responsibility |
+|--------|----------------|
+| API Layer | REST endpoints and request validation |
+| AI Layer | Multi-agent orchestration |
+| Provider Layer | Gemini, Local Models, Future LLMs |
+| Repository Layer | Code and metadata analysis |
+| Research Layer | Paper understanding and reasoning |
+| Memory Layer | Context retention and retrieval |
+| Execution Layer | Reproducibility planning |
+| Infrastructure Layer | Database, Storage, Cache |
+| Observability Layer | Metrics, Logs, Monitoring |
+| Security Layer | Validation and protection |
+
+---
+
+# 🌍 Scalability Design
+
+The platform is designed to scale horizontally using modular services.
+
+```text
+                 Load Balancer
+                        │
+        ┌───────────────┼───────────────┐
+        ▼               ▼               ▼
+ Backend Instance   Backend Instance   Backend Instance
+        │               │               │
+        └───────────────┼───────────────┘
+                        ▼
+               PostgreSQL Database
+                        │
+                        ▼
+                    Redis Cache
+                        │
+                        ▼
+                Object Storage (S3)
+```
+
+---
+
+# 🔐 Enterprise Design Principles
+
+ReproProof is built with production-ready engineering principles:
+
+- ✅ Modular Architecture
+- ✅ Dependency Injection
+- ✅ Provider Abstraction
+- ✅ Clean Separation of Concerns
+- ✅ Scalable AI Components
+- ✅ Fault-Tolerant Gateway
+- ✅ Structured Logging
+- ✅ Monitoring & Observability
+- ✅ Secure Configuration Management
+- ✅ Cloud-Native Deployment
+
+---
+
+# 📈 Request Lifecycle
+
+```text
+Client Request
+      │
+      ▼
+FastAPI Router
+      │
+      ▼
+Validation Layer
+      │
+      ▼
+AI Gateway
+      │
+      ▼
+Repository Intelligence
+      │
+      ▼
+Execution Planning
+      │
+      ▼
+Verification Engine
+      │
+      ▼
+Structured JSON Response
+```
+
+---
+
+<div align="center">
+
+### 🏛️ Enterprise Architecture Designed for Research, Production, and AI-Driven Repository Intelligence
+
+</div>
+
+# 🤖 Enterprise Multi-Agent AI System
+
+Unlike traditional AI applications that rely on a single prompt-response workflow, **ReproProof** employs a collaborative **Multi-Agent AI Architecture** where specialized AI agents work together to analyze repositories, reason over research artifacts, verify reproducibility, and generate structured reports.
+
+Each agent is responsible for a specific domain while sharing contextual knowledge through a centralized AI Gateway and Memory Engine.
+
+---
+
+# 🧠 AI Agent Ecosystem
+
+| AI Agent | Responsibility | Output |
+|-----------|---------------|--------|
+| 🔍 Repository Agent | Understands repository structure, frameworks, and dependencies | Repository Intelligence |
+| 📄 Research Agent | Reads research papers and technical documentation | Research Summary |
+| ⚙️ Execution Agent | Generates reproducible execution plans | Execution Workflow |
+| 🏛 Judge Agent | Evaluates reproducibility confidence | Confidence Score |
+| 🧠 Memory Agent | Maintains contextual understanding across tasks | Context Store |
+| 🕸 Knowledge Graph Agent | Maps relationships between project components | Dependency Graph |
+| 🤖 AI Gateway | Routes requests to the appropriate LLM provider | AI Response |
+| 📊 Analytics Agent | Produces metrics and dashboards | Insights |
+
+---
+
+# 🔄 Multi-Agent Collaboration
+
+```text
+                    User Request
+                         │
+                         ▼
+                  AI Gateway Router
+                         │
+ ┌───────────────────────┼────────────────────────┐
+ ▼                       ▼                        ▼
+Repository Agent     Research Agent         Memory Agent
+ │                       │                        │
+ ├──────────────┐        │                        │
+ ▼              ▼        ▼                        ▼
+Dependency   Knowledge   Paper Analysis     Context Retrieval
+Analysis      Graph             │                 │
+ └──────────────┬────────────────┴────────────────┘
+                ▼
+        Execution Planning Agent
+                │
+                ▼
+        Judge & Confidence Engine
+                │
+                ▼
+      Final Verification Report
+```
+
+---
+
+# 🎯 AI Gateway
+
+The **AI Gateway** serves as the intelligent orchestration layer responsible for routing requests to the most appropriate Large Language Model while ensuring resilience through fallback strategies.
+
+### Responsibilities
+
+- Intelligent provider selection
+- Retry & fallback handling
+- Request normalization
+- Token accounting
+- Latency monitoring
+- Provider health checks
+- Response standardization
+- Usage tracking
+
+---
+
+# 🧠 Memory Engine
+
+The Memory Engine enables agents to share contextual information instead of repeating expensive reasoning steps.
+
+Stored knowledge includes:
+
+- Repository metadata
+- Dependency graphs
+- Previous AI observations
+- Research summaries
+- Execution plans
+- Verification history
+- Confidence calculations
+
+Benefits:
+
+- Faster responses
+- Reduced AI token usage
+- Consistent reasoning
+- Better multi-agent collaboration
+
+---
+
+# 🕸 Knowledge Graph
+
+The Knowledge Graph models relationships inside a repository.
+
+Example relationships include:
+
+```text
+Research Paper
+      │
+      ▼
+Main Project
+      │
+ ┌────┼────┐
+ ▼    ▼    ▼
+Dataset Model Config
+ │     │      │
+ ▼     ▼      ▼
+Scripts Docker Requirements
+```
+
+This graph enables the AI to reason about project dependencies instead of treating files independently.
+
+---
+
+# ⚙️ Repository Intelligence
+
+The Repository Agent performs deep structural analysis including:
+
+- Programming language detection
+- Framework detection
+- Dependency extraction
+- Docker analysis
+- CI/CD inspection
+- Environment validation
+- Configuration parsing
+- Dataset discovery
+- Model checkpoint identification
+- Documentation quality assessment
+
+---
+
+# 📄 Research Intelligence
+
+The Research Agent analyzes scientific artifacts including:
+
+- Research papers
+- README files
+- Technical documentation
+- Methodology
+- Experimental setup
+- Hyperparameters
+- Evaluation metrics
+- Reproducibility instructions
+
+The extracted information is merged with repository analysis to produce a holistic understanding.
+
+---
+
+# 🚀 Execution Planning
+
+The Execution Agent automatically constructs an executable workflow.
+
+Typical output includes:
+
+1. Environment setup
+2. Dependency installation
+3. Dataset preparation
+4. Model download
+5. Training pipeline
+6. Evaluation pipeline
+7. Verification steps
+8. Expected outputs
+
+---
+
+# 🏛 Judge Engine
+
+The Judge Agent estimates the reproducibility of a repository using multiple evidence sources.
+
+Evaluation factors include:
+
+| Criterion | Examples |
+|------------|----------|
+| Documentation | README, setup instructions |
+| Dependencies | Requirements, lock files |
+| Environment | Docker, Conda, virtualenv |
+| Data | Dataset availability |
+| Execution | Scripts and automation |
+| Research | Paper consistency |
+| Configuration | Config files |
+| Completeness | Missing components |
+
+The final result is expressed as a confidence score with supporting evidence.
+
+---
+
+# 🔐 AI Safety & Reliability
+
+To ensure robust and trustworthy analysis, the AI system incorporates:
+
+- Provider fallback
+- Structured outputs
+- Timeout handling
+- Retry policies
+- Health monitoring
+- Graceful degradation
+- Error isolation
+- Deterministic local mock provider
+
+This ensures the platform remains operational even when external AI providers are unavailable.
+
+---
+
+# 🌟 Why Multi-Agent Instead of a Single LLM?
+
+| Single AI Assistant | ReproProof Multi-Agent System |
+|----------------------|-------------------------------|
+| One generalized prompt | Specialized expert agents |
+| Limited context | Shared contextual memory |
+| Sequential reasoning | Collaborative reasoning |
+| Generic responses | Domain-specific analysis |
+| Stateless | Persistent memory |
+| Limited scalability | Modular architecture |
+| Single failure point | Provider fallback & resilience |
+
+---
+
+<div align="center">
+
+## 🧠 Specialized AI Agents Collaborating to Deliver Reliable Research Reproducibility
+
+**From Repository Upload → Intelligent Analysis → Reproducibility Verification → Actionable Insights**
+
+</div>
+
+# 🏗️ System Architecture
+
+ReproProof follows a modular Enterprise AI architecture built for scalability, maintainability, and production deployment.
 
 ---
 
 ## High-Level Architecture
 
-```mermaid
-flowchart LR
-
-A[User Uploads Repository] --> B[Repository Analysis]
-
-B --> C[Project Detection]
-B --> D[Dependency Analysis]
-
-C --> E[Verification Engine]
-
-E --> F{Execution Success?}
-
-F -->|Yes| G[Verification Report]
-
-F -->|No| H[Troubleshooter]
-
-H --> I[Root Cause Analysis]
-
-I --> J[Repair Planner]
-
-J --> K[Patch Generator]
-
-K --> L[Patch Validation]
-
-L --> M[Analytics Engine]
-
-M --> N[Executive Summary]
-
-N --> O[Interactive Dashboard]
-
-G --> O
-```
-
----
-
-# 🔄 End-to-End Workflow
-
-```mermaid
-flowchart TD
-
-Upload --> Analyze
-
-Analyze --> DetectProject
-
-DetectProject --> Verify
-
-Verify --> Success
-
-Verify --> Failure
-
-Failure --> Diagnose
-
-Diagnose --> RootCause
-
-RootCause --> RepairPlan
-
-RepairPlan --> PatchGeneration
-
-PatchGeneration --> VerificationReport
-
-Success --> VerificationReport
-
-VerificationReport --> Dashboard
-
-Dashboard --> Analytics
-
-Analytics --> ExecutiveSummary
-```
-
----
-
-# 🧩 Backend Service Architecture
-
-Each module has a single responsibility and communicates through structured models.
-
 ```text
-backend/
-│
-├── API Layer
-│      ├── Upload API
-│      ├── Verification API
-│      ├── Report API
-│      ├── Analytics API
-│      └── Health API
-│
-├── Core Services
-│      ├── Repository Analyzer
-│      ├── Project Detector
-│      ├── Verification Engine
-│      ├── Confidence Engine
-│      ├── Troubleshooter
-│      ├── Self-Healing Engine
-│      ├── Patch Generator
-│      ├── Analytics Service
-│      └── Executive Summary Service
-│
-├── AI Models
-│
-├── Reports
-│
-└── Storage
-```
+                    ┌────────────────────────────┐
+                    │        Frontend (Next.js)  │
+                    │ Dashboard • Reports • Demo │
+                    └─────────────┬──────────────┘
+                                  │ REST API
+                                  ▼
+                   ┌────────────────────────────────┐
+                   │      FastAPI Backend API       │
+                   └─────────────┬──────────────────┘
+                                 │
+          ┌──────────────────────┼────────────────────────┐
+          ▼                      ▼                        ▼
+  Multi-Agent Engine      AI Gateway              Repository Engine
+          │                      │                        │
+          ▼                      ▼                        ▼
+ Research Agent        Gemini Provider            Repository Scanner
+ Judge Agent           Local Mock Provider        File Analyzer
+ Memory Agent          Provider Manager           Execution Planner
+ Execution Agent       Retry + Fallback           Verification Engine
+ OCR Agent             Health Monitor             Report Generator
+
+          ┌──────────────────────────────────────────────┐
+          │              Infrastructure Layer             │
+          │ PostgreSQL • Redis • Docker • Monitoring      │
+          └──────────────────────────────────────────────┘
+# 🚀 Key Features
+
+ReproProof is more than a repository analyzer—it's an enterprise-grade AI platform designed to automate reproducibility verification, repository understanding, execution planning, research assistance, and AI-powered software analysis.
 
 ---
 
-# 🧠 AI Verification Pipeline
+# 🤖 AI Multi-Agent System
 
-The verification process consists of multiple AI-assisted stages.
+The platform is powered by multiple specialized AI agents working collaboratively.
 
-### 1️⃣ Repository Analysis
+| Agent | Responsibility |
+|--------|----------------|
+| 🧠 Research Agent | Research paper understanding & scientific analysis |
+| ⚖️ Judge Agent | Repository scoring & reproducibility evaluation |
+| 🛠 Execution Agent | Build and execution planning |
+| 🧩 Repository Agent | Source code understanding |
+| 🧠 Memory Agent | Context management |
+| 📄 OCR Agent | PDF/Image text extraction |
+| 📊 Analytics Agent | Metrics generation |
+| 🚀 Deployment Agent | Infrastructure planning |
 
-- Repository extraction
-- File discovery
-- Dependency inspection
-- Structure validation
+### Capabilities
 
-↓
-
-### 2️⃣ Project Detection
-
-- Language detection
-- Framework detection
-- Runtime estimation
-- Execution strategy generation
-
-↓
-
-### 3️⃣ Verification
-
-- Environment validation
-- Dependency verification
-- Execution attempt
-- Output verification
-
-↓
-
-### 4️⃣ Failure Diagnosis
-
-If execution fails:
-
-- Error classification
-- Root cause analysis
-- Failure reasoning
-- AI confidence estimation
-
-↓
-
-### 5️⃣ Repair Planning
-
-- Configuration fixes
-- Missing dependency suggestions
-- Environment corrections
-- Recovery recommendations
-
-↓
-
-### 6️⃣ Patch Generation
-
-- AI-generated code modifications
-- Unified Git diff generation
-- Patch confidence estimation
-- Safe preview
-
-↓
-
-### 7️⃣ Final Verification Report
-
-- Repository summary
-- Verification status
-- AI reasoning
-- Confidence scores
-- Patch suggestions
-- Executive summary
+- Multi-Agent Collaboration
+- Shared Context
+- AI Task Routing
+- Parallel Analysis
+- Intelligent Decision Making
 
 ---
 
-# 📦 Frontend Architecture
+# 📂 Repository Analysis
 
-```text
-Frontend (Next.js)
+Analyze repositories within seconds.
 
-├── Home
-├── Upload Interface
-├── Dashboard
-│      ├── Repository Explorer
-│      ├── Verification Results
-│      ├── AI Thinking Panel
-│      ├── Confidence Gauge
-│      ├── Patch Preview
-│      ├── Terminal Logs
-│      └── Analytics
-│
-├── Report Page
-├── Troubleshooting Page
-└── Analytics Page
-```
+### Supported Languages
+
+- Python
+- Java
+- JavaScript
+- TypeScript
+- C++
+- C#
+- Go
+- Rust
+- Kotlin
+- PHP
+
+### Detects
+
+- Missing Dependencies
+- Broken Imports
+- Build Configuration
+- Folder Structure
+- Package Managers
+- Environment Files
+- Configuration Files
+- Documentation Quality
 
 ---
 
-# 🎯 Design Principles
+# ⚡ AI Execution Planning
 
-The platform architecture is designed around the following principles:
+Instead of simply showing errors, ReproProof generates an execution strategy.
 
-- ✅ Modular AI services
-- ✅ Explainable decision making
-- ✅ Clear separation of concerns
-- ✅ Reusable service components
-- ✅ Extensible architecture
-- ✅ Scalable backend design
-- ✅ Enterprise-grade API organization
-- ✅ Research-oriented workflow
-- ✅ Human-readable verification reports
-- ✅ Transparent confidence estimation
+The system automatically creates:
 
-The modular architecture allows new AI capabilities and verification strategies to be integrated without affecting the existing pipeline, making ReproProof suitable for future research and industrial applications.
+- Build Plan
+- Installation Steps
+- Environment Setup
+- Runtime Commands
+- Dependency Resolution
+- Verification Pipeline
+- Execution Timeline
+
+---
+
+# 🔍 Intelligent Code Inspection
+
+The AI engine performs deep repository inspection.
+
+It identifies:
+
+- Build Failures
+- Dependency Conflicts
+- Missing Files
+- Invalid Configurations
+- Security Risks
+- Dead Code
+- Unsupported Versions
+- Broken Workflows
+
+---
+
+# 📑 Automated Report Generation
+
+Generate professional reports instantly.
+
+Supported Reports:
+
+- Executive Summary
+- Technical Analysis
+- AI Explanation
+- Repository Health
+- Confidence Score
+- Reproducibility Report
+- Error Analysis
+- Improvement Recommendations
+
+---
+
+# 📊 Enterprise Dashboard
+
+Modern analytics dashboard with real-time insights.
+
+Includes:
+
+- Repository Statistics
+- AI Activity
+- Agent Status
+- Provider Status
+- Infrastructure Health
+- Monitoring Overview
+- Recent Analyses
+- Performance Metrics
+
+---
+
+# 🧠 AI Provider Gateway
+
+Supports multiple providers using a unified gateway.
+
+Current Providers
+
+✅ Google Gemini
+
+✅ Local Mock Provider
+
+Future Ready
+
+- OpenAI
+- Anthropic Claude
+- Azure OpenAI
+- Ollama
+- HuggingFace
+- Groq
+- Together AI
+
+Features
+
+- Automatic Fallback
+- Retry Mechanism
+- Health Monitoring
+- Provider Priorities
+- Latency Tracking
+
+---
+
+# 📈 Monitoring & Observability
+
+Enterprise monitoring stack included.
+
+Features
+
+- Prometheus Metrics
+- Grafana Dashboards
+- Loki Log Aggregation
+- AlertManager Rules
+- Structured Logging
+- Performance Metrics
+- Health Monitoring
+- Infrastructure Status
+
+---
+
+# 🔐 Enterprise Security
+
+Security features include:
+
+- Input Validation
+- Request Validation
+- Secure File Upload
+- Rate Limiting
+- Error Isolation
+- Secure Configuration
+- Exception Handling
+- Structured Logging
+
+---
+
+# ⚙️ Production Ready
+
+Designed using production engineering practices.
+
+✔ Docker Support
+
+✔ Docker Compose
+
+✔ PostgreSQL Ready
+
+✔ Redis Ready
+
+✔ Monitoring Ready
+
+✔ Cloud Deployment Ready
+
+✔ Modular Architecture
+
+✔ CI/CD Friendly
+
+✔ Scalable Design
+
+---
+
+# 🌟 Why ReproProof?
+
+Unlike traditional repository analysis tools, ReproProof combines:
+
+- AI Multi-Agent Intelligence
+- Automated Repository Understanding
+- Research Paper Support
+- Intelligent Execution Planning
+- Reproducibility Verification
+- Enterprise Monitoring
+- Modern Dashboard
+- Production Infrastructure
+- Scalable Architecture
+
+This enables developers, researchers, and organizations to verify complex software projects faster, more accurately, and with significantly less manual effort.
 
 # 🛠️ Technology Stack
 
-ReproProof is built using a modern full-stack architecture combining AI services, scalable backend APIs, and an interactive frontend.
+ReproProof is built using a modern, scalable, and enterprise-grade technology stack designed for AI-powered software verification.
 
 ---
 
-# 💻 Frontend
+# 🎨 Frontend
 
 | Technology | Purpose |
 |------------|---------|
 | Next.js 15 | React Framework |
-| React 19 | User Interface |
+| React 19 | UI Library |
 | TypeScript | Type Safety |
 | Tailwind CSS | Responsive Styling |
-| Framer Motion | Animations |
-| Lucide React | Icons |
-| React Hooks | State Management |
+| App Router | Modern Routing |
+| Fetch API | Backend Communication |
+
+### Features
+
+- Responsive Dashboard
+- Enterprise UI
+- Real-time Status
+- AI Assistant
+- Interactive Reports
+- Monitoring Dashboard
+- Analytics Pages
+- Executive Dashboard
 
 ---
 
@@ -553,155 +1047,480 @@ ReproProof is built using a modern full-stack architecture combining AI services
 
 | Technology | Purpose |
 |------------|---------|
-| Python 3.13 | Core Backend |
 | FastAPI | REST API Framework |
-| Pydantic v2 | Data Validation |
+| Python 3.11+ | Backend Language |
+| Pydantic | Data Validation |
 | Uvicorn | ASGI Server |
-| asyncio | Asynchronous Processing |
-| pathlib | File Management |
-| zipfile | Repository Extraction |
+| SQLAlchemy | ORM |
+| AsyncIO | Concurrent Processing |
+
+### Features
+
+- High Performance APIs
+- Async Architecture
+- Modular Services
+- Dependency Injection
+- Automatic API Documentation
+- Enterprise Logging
 
 ---
 
-# 🤖 AI Components
+# 🤖 Artificial Intelligence
 
-The platform uses multiple specialized AI modules instead of a single monolithic model.
+Current AI Stack
 
-| AI Module | Responsibility |
-|-----------|----------------|
-| Repository Analyzer | Repository understanding |
-| Project Detector | Language & framework detection |
-| Verification Engine | Reproducibility validation |
-| Confidence Engine | Unified confidence scoring |
-| Troubleshooter | Failure diagnosis |
-| Root Cause Analyzer | AI reasoning |
-| Repair Planner | Recovery recommendations |
-| Patch Generator | Intelligent patch generation |
-| Analytics Service | Dashboard insights |
-| Executive Summary | AI-generated report summary |
+| Technology | Purpose |
+|------------|---------|
+| Google Gemini | Primary LLM |
+| AI Gateway | Provider Routing |
+| Multi-Agent Framework | Agent Collaboration |
+| Local Mock Provider | Offline Development |
+
+Supported AI Features
+
+- Repository Understanding
+- Execution Planning
+- AI Reasoning
+- Research Assistance
+- Code Analysis
+- Report Generation
+- Agent Collaboration
+- Provider Fallback
+
+Future Expansion
+
+- OpenAI GPT
+- Anthropic Claude
+- Azure OpenAI
+- Ollama
+- HuggingFace
+- Groq
+- Together AI
 
 ---
 
-# 🏗️ Project Structure
+# 🗄️ Database Layer
+
+| Database | Purpose |
+|----------|---------|
+| PostgreSQL | Primary Database |
+| SQLite | Local Development |
+| Redis | Cache & Sessions |
+
+Data Stored
+
+- Repository Metadata
+- Reports
+- AI Results
+- Execution History
+- User Sessions
+- Monitoring Data
+
+---
+
+# 📦 Infrastructure
+
+| Technology | Purpose |
+|------------|---------|
+| Docker | Containerization |
+| Docker Compose | Local Deployment |
+| Kubernetes Ready | Cloud Scaling |
+| GitHub Actions | CI/CD |
+| Environment Variables | Configuration |
+
+---
+
+# 📈 Monitoring Stack
+
+Enterprise observability powered by:
+
+| Tool | Purpose |
+|------|---------|
+| Prometheus | Metrics Collection |
+| Grafana | Dashboards |
+| Loki | Log Aggregation |
+| AlertManager | Alert Routing |
+| Structured Logging | Application Logs |
+
+Metrics Collected
+
+- API Requests
+- Response Time
+- AI Provider Usage
+- Repository Analysis
+- System Health
+- Agent Activity
+- Error Rates
+- Infrastructure Status
+
+---
+
+# 📁 Storage
+
+Supported Storage
+
+- Local Storage
+- Object Storage (S3 Compatible)
+- MinIO
+- File Upload System
+
+Used For
+
+- Repository Archives
+- Reports
+- Logs
+- Analysis Results
+- Export Files
+
+---
+
+# 🔒 Security Stack
+
+Security mechanisms include:
+
+- Request Validation
+- File Validation
+- Rate Limiting
+- Input Sanitization
+- Secure Headers
+- Exception Handling
+- Structured Logging
+- Environment Isolation
+
+---
+
+# 🧪 Testing
+
+Testing Frameworks
+
+| Tool | Purpose |
+|------|---------|
+| Pytest | Backend Testing |
+| FastAPI TestClient | API Testing |
+| Automated Validation | Regression Testing |
+
+Validation Includes
+
+- API Testing
+- Provider Testing
+- Monitoring Tests
+- Infrastructure Tests
+- Gateway Tests
+- AI Integration Tests
+- Backend Regression
+- Frontend Build Verification
+
+---
+
+# 📂 Project Structure
 
 ```text
 ReproProof
 │
-├── backend
-│   ├── app
-│   │   ├── api
-│   │   ├── core
-│   │   ├── models
-│   │   ├── services
-│   │   │   ├── patch_generator
-│   │   │   ├── platform
-│   │   │   ├── self_healing
-│   │   │   ├── troubleshooter
-│   │   │   ├── confidence_engine.py
-│   │   │   ├── repository_ai_analyzer.py
-│   │   │   ├── verification_engine.py
-│   │   │   └── ...
-│   │   └── main.py
-│   │
-│   └── tests
+├── frontend/
 │
-├── frontend
-│   ├── app
-│   ├── components
-│   ├── hooks
-│   ├── services
-│   ├── types
-│   └── public
+├── backend/
 │
-├── reports
-├── uploads
-├── README.md
-└── LICENSE
+├── infrastructure/
+│
+├── reports/
+│
+├── docker-compose.yml
+│
+├── docker-compose.production.yml
+│
+└── README.md
 ```
 
 ---
 
-# 🧩 Core Backend Services
+# 🌍 Deployment Targets
 
-The backend is organized into independent services, each responsible for a specific stage of the reproducibility pipeline.
+The platform is designed to support deployment on multiple environments.
 
-| Service | Description |
-|---------|-------------|
-| Repository Analysis | Repository inspection and metadata extraction |
-| Project Detection | Framework and language identification |
-| Verification Engine | Repository execution and validation |
-| Confidence Engine | Centralized confidence computation |
-| Troubleshooter | AI-assisted failure diagnosis |
-| Repair Planner | Recovery strategy generation |
-| Patch Generator | AI-generated code patches |
-| Self-Healing | Backup, retry, rollback, and recovery |
-| Analytics | Platform metrics and dashboards |
-| Executive Summary | Final report generation |
+### Development
 
----
+- Local Machine
+- Docker Compose
 
-# 🔌 REST API Overview
+### Cloud
 
-The backend exposes RESTful APIs for all major workflows.
+- Render
+- Railway
+- Azure
+- AWS
+- Google Cloud
+- DigitalOcean
 
-| Endpoint | Description |
-|----------|-------------|
-| `POST /upload` | Upload repository |
-| `GET /status/{id}` | Execution status |
-| `GET /report/{id}` | Verification report |
-| `GET /summary/{id}` | Executive summary |
-| `GET /analytics` | Platform analytics |
-| `GET /health-score/{id}` | Repository health score |
-| `GET /ws/progress/{id}` | Live execution progress (WebSocket) |
+### Enterprise
+
+- Kubernetes
+- Docker Swarm
+- On-Premise Infrastructure
 
 ---
 
-# 📊 Engineering Highlights
+# 📌 Design Principles
 
-The platform emphasizes software engineering best practices:
+The project follows modern software engineering principles:
 
-- Modular service architecture
-- Strong type safety with Pydantic & TypeScript
-- Explainable AI confidence scoring
-- Separation of business logic and API layers
-- Comprehensive unit testing
-- Asynchronous backend processing
-- Enterprise-ready REST APIs
-- Interactive real-time dashboard
-- Extensible plugin-style AI services
-- Clean and maintainable codebase
+- Clean Architecture
+- Modular Design
+- SOLID Principles
+- Dependency Injection
+- Enterprise Logging
+- Provider Abstraction
+- Scalable Infrastructure
+- AI-First Development
+- Production Readiness
+- Cloud-Native Design
 
 ---
 
-# 🔒 Reliability Features
+> Every technology used in ReproProof was selected to maximize scalability, maintainability, developer experience, and enterprise readiness while enabling advanced AI-powered reproducibility verification.
+>
+> # 📸 Screenshots & Demo
 
-To improve robustness during verification, ReproProof includes:
+A visual walkthrough of ReproProof's major modules.
 
-- Secure ZIP extraction with path validation
-- Runtime error classification
-- Safe backup and rollback mechanisms
-- Patch preview before application
-- Confidence-based AI recommendations
-- Structured exception handling
-- Repository validation before execution
-- Automated reporting and analytics
+> **Note:** Replace the placeholder image paths below with actual screenshots from the `/assets` or `/screenshots` directory after deployment.
 
-These design choices make the platform suitable for both academic research workflows and real-world software engineering use cases.
+---
 
-# 🚀 Installation & Setup
+# 🏠 Landing Page
 
-Follow the steps below to run ReproProof locally.
+The landing page introduces the platform and highlights its core capabilities.
+
+**Features**
+
+- Modern UI
+- Feature Overview
+- Call-to-Action
+- Responsive Design
+
+<p align="center">
+<img src="screenshots/home.png" width="100%">
+</p>
+
+---
+
+# 📊 Dashboard
+
+The dashboard provides a centralized overview of repositories, AI activity, monitoring, and system health.
+
+Highlights
+
+- Repository Overview
+- AI Agent Status
+- Recent Analysis
+- Infrastructure Status
+- Performance Metrics
+
+<p align="center">
+<img src="screenshots/dashboard.png" width="100%">
+</p>
+
+---
+
+# 📂 Repository Analysis
+
+Users can upload or analyze repositories and receive detailed AI-generated insights.
+
+Capabilities
+
+- Repository Inspection
+- Dependency Detection
+- Build Analysis
+- Environment Validation
+- AI Suggestions
+
+<p align="center">
+<img src="screenshots/repository-analysis.png" width="100%">
+</p>
+
+---
+
+# 🤖 AI Assistant
+
+The built-in AI assistant helps developers understand repositories and resolve issues.
+
+Features
+
+- Natural Language Queries
+- Repository Guidance
+- AI Recommendations
+- Execution Support
+
+<p align="center">
+<img src="screenshots/assistant.png" width="100%">
+</p>
+
+---
+
+# ⚖️ Judge Mode
+
+Judge Mode evaluates reproducibility and repository quality using AI.
+
+Metrics include:
+
+- Overall Score
+- Confidence Score
+- Repository Health
+- Improvement Suggestions
+
+<p align="center">
+<img src="screenshots/judge-mode.png" width="100%">
+</p>
+
+---
+
+# 📈 Analytics
+
+Enterprise analytics dashboard for project insights.
+
+Includes
+
+- Analysis Trends
+- AI Usage
+- Repository Statistics
+- Success Rate
+- Performance Metrics
+
+<p align="center">
+<img src="screenshots/analytics.png" width="100%">
+</p>
+
+---
+
+# 📡 Monitoring Dashboard
+
+Production monitoring powered by Prometheus and Grafana.
+
+Tracks
+
+- CPU Usage
+- Memory Usage
+- API Requests
+- AI Providers
+- Infrastructure Health
+- Active Services
+
+<p align="center">
+<img src="screenshots/monitoring.png" width="100%">
+</p>
+
+---
+
+# 🏗 Infrastructure
+
+Infrastructure dashboard showing deployment resources and runtime services.
+
+Displays
+
+- PostgreSQL
+- Redis
+- Docker
+- Containers
+- Storage
+- Monitoring Services
+
+<p align="center">
+<img src="screenshots/infrastructure.png" width="100%">
+</p>
+
+---
+
+# 📄 AI Verification Report
+
+Every repository generates a professional AI verification report.
+
+The report contains
+
+- Executive Summary
+- Repository Findings
+- AI Analysis
+- Confidence Score
+- Reproducibility Score
+- Recommendations
+
+<p align="center">
+<img src="screenshots/report.png" width="100%">
+</p>
+
+---
+
+# 🎥 Demo Video
+
+Watch ReproProof in action.
+
+📺 **Demo:** *(Add your YouTube or Loom link here)*
+
+```text
+https://youtu.be/your-demo-link
+```
+
+The demo should cover:
+
+1. Repository Upload
+2. AI Repository Analysis
+3. Judge Mode
+4. Research Agent
+5. Monitoring Dashboard
+6. Analytics Dashboard
+7. AI Report Generation
+8. Infrastructure Overview
+9. Multi-Agent Workflow
+10. Final Verification Report
+
+---
+
+# 🌟 Project Highlights
+
+✔ Multi-Agent AI Platform
+
+✔ Repository Verification
+
+✔ AI Execution Planning
+
+✔ Judge Mode
+
+✔ Monitoring Dashboard
+
+✔ Enterprise Architecture
+
+✔ Gemini Integration
+
+✔ Docker Deployment
+
+✔ PostgreSQL Ready
+
+✔ Redis Ready
+
+✔ Cloud Ready
+
+✔ Production Ready
+
+---
+
+# ⚡ Installation & Quick Start
+
+Get ReproProof running locally in just a few minutes.
 
 ---
 
 # 📋 Prerequisites
 
-Before starting, ensure the following software is installed:
+Before installing, ensure the following software is available on your system.
 
-- Python **3.13+**
-- Node.js **20+**
-- npm
-- Git
+| Software | Version |
+|-----------|---------|
+| Python | 3.11+ |
+| Node.js | 20+ |
+| npm | 10+ |
+| Git | Latest |
+| Docker *(Optional)* | Latest |
+| PostgreSQL *(Optional)* | 15+ |
+| Redis *(Optional)* | Latest |
 
 ---
 
@@ -715,31 +1534,29 @@ cd ReproProof-AI-Powered-Reproducibility-Verification-Platform
 
 ---
 
-# ⚙️ Backend Setup
+# 🐍 Backend Setup
 
-Navigate to the backend directory.
+Navigate to backend.
 
 ```bash
 cd backend
 ```
 
-Create a virtual environment.
-
-```bash
-python -m venv .venv
-```
-
-Activate the virtual environment.
+Create virtual environment.
 
 ### Windows
 
 ```bash
+python -m venv .venv
+
 .venv\Scripts\activate
 ```
 
 ### Linux / macOS
 
 ```bash
+python3 -m venv .venv
+
 source .venv/bin/activate
 ```
 
@@ -749,29 +1566,61 @@ Install dependencies.
 pip install -r requirements.txt
 ```
 
-Start the FastAPI server.
+---
+
+# 🔑 Configure Environment
+
+Create your environment file.
 
 ```bash
-uvicorn app.main:app --reload
+cp .env.example .env
 ```
 
-Backend will start on:
+Update the Gemini API key.
+
+```env
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+
+GEMINI_MODEL=gemini-2.5-flash
+
+GEMINI_TEMPERATURE=0.2
+
+GEMINI_MAX_TOKENS=8192
+```
+
+If no API key is provided, the application automatically falls back to the Local Mock Provider.
+
+---
+
+# ▶ Start Backend
+
+```bash
+python -m uvicorn app.main:app --reload
+```
+
+Backend URL
 
 ```
 http://localhost:8000
 ```
 
-Swagger Documentation:
+Swagger Documentation
 
 ```
 http://localhost:8000/docs
 ```
 
+ReDoc Documentation
+
+```
+http://localhost:8000/redoc
+```
+
 ---
 
-# 🌐 Frontend Setup
+# 🎨 Frontend Setup
 
-Open another terminal.
+Open a new terminal.
 
 ```bash
 cd frontend
@@ -783,13 +1632,19 @@ Install dependencies.
 npm install
 ```
 
-Run the development server.
+Create environment file.
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+Start frontend.
 
 ```bash
 npm run dev
 ```
 
-Frontend will start on:
+Frontend URL
 
 ```
 http://localhost:3000
@@ -797,74 +1652,43 @@ http://localhost:3000
 
 ---
 
-# ▶️ Running the Platform
+# 🐳 Docker Deployment
 
-Once both servers are running:
+Run the complete stack using Docker Compose.
 
+```bash
+docker compose up --build
 ```
+
+Production
+
+```bash
+docker compose -f docker-compose.production.yml up --build
+```
+
+---
+
+# 📊 Verify Installation
+
+Backend Health
+
+```bash
+http://localhost:8000/health
+```
+
+Provider Status
+
+```bash
+http://localhost:8000/providers/health
+```
+
+Monitoring
+
+```bash
+http://localhost:8000/monitoring/dashboard
+```
+
 Frontend
-↓
-
-Upload Repository (.zip)
-
-↓
-
-Backend Analysis
-
-↓
-
-Project Detection
-
-↓
-
-Verification Engine
-
-↓
-
-Troubleshooting (if required)
-
-↓
-
-Patch Generation
-
-↓
-
-Executive Report
-
-↓
-
-Interactive Dashboard
-```
-
----
-
-# 📂 Repository Upload
-
-Supported input:
-
-```
-repository.zip
-```
-
-The uploaded repository is automatically:
-
-- Extracted securely
-- Validated
-- Analyzed
-- Verified
-- Executed
-- Diagnosed (if execution fails)
-- Reported
-
-No manual configuration is required.
-
----
-
-# 🖥️ User Workflow
-
-### Step 1
-
-Open
 
 ```
 http://localhost:3000
@@ -872,893 +1696,1481 @@ http://localhost:3000
 
 ---
 
-### Step 2
+# 🧪 Run Tests
 
-Upload a compressed repository.
+Backend Tests
 
+```bash
+pytest
 ```
-research-project.zip
+
+Frontend Build Test
+
+```bash
+npm run build
+```
+
+Python Compilation
+
+```bash
+python -m compileall backend
 ```
 
 ---
 
-### Step 3
+# 🚀 Production Deployment
 
-ReproProof automatically performs:
+The project is deployment-ready for:
 
-- Repository Analysis
-- Dependency Inspection
-- Project Detection
+- Render
+- Railway
+- Docker
+- VPS
+- AWS
+- Azure
+- Google Cloud
+- Kubernetes
+
+---
+
+# 📁 Expected Folder Structure
+
+```text
+ReproProof/
+│
+├── backend/
+│
+├── frontend/
+│
+├── infrastructure/
+│
+├── docker-compose.yml
+│
+├── docker-compose.production.yml
+│
+└── README.md
+```
+
+---
+
+# ✅ Installation Complete
+
+If everything is configured correctly, you should now have:
+
+- ✅ Backend API Running
+- ✅ Frontend Dashboard Running
+- ✅ Gemini Provider Connected (or Local Mock)
+- ✅ Monitoring Endpoints Available
+- ✅ AI Multi-Agent System Ready
+- ✅ Repository Analysis Ready
+
+---
+
+# 🔌 API Documentation
+
+ReproProof exposes a comprehensive REST API built with FastAPI, enabling seamless integration with external systems, AI services, and enterprise workflows.
+
+---
+
+# 🌐 Base URL
+
+### Local Development
+
+```text
+http://localhost:8000
+```
+
+### Production
+
+```text
+https://your-domain.com
+```
+
+---
+
+# 📚 Interactive API Documentation
+
+FastAPI automatically generates interactive documentation.
+
+### Swagger UI
+
+```text
+http://localhost:8000/docs
+```
+
+### ReDoc
+
+```text
+http://localhost:8000/redoc
+```
+
+---
+
+# 📂 Core APIs
+
+## Health
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/health` | Backend health status |
+| GET | `/metrics` | Prometheus metrics |
+
+---
+
+## Repository Analysis
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/upload` |
+| GET | `/reports/{id}` |
+| GET | `/repository/{id}` |
+| POST | `/repository/analyze` |
+
+Purpose
+
+- Upload repository
+- Start AI analysis
+- Generate reports
+- View repository information
+
+---
+
+## AI Providers
+
+| Method | Endpoint |
+|---------|----------|
+| GET | `/providers/health` |
+| POST | `/providers/test` |
+
+Purpose
+
+- Check Gemini status
+- Provider diagnostics
+- Test AI response
+- Verify fallback provider
+
+---
+
+## AI Agents
+
+| Method | Endpoint |
+|---------|----------|
+| GET | `/agents` |
+| GET | `/agents/status` |
+| POST | `/agents/run` |
+
+Purpose
+
+- Agent information
+- Agent health
+- Execute AI workflow
+
+---
+
+## Research APIs
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/research/analyze` |
+| GET | `/research/history` |
+
+Capabilities
+
+- Research analysis
+- Scientific reasoning
+- AI recommendations
+
+---
+
+## Judge APIs
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/judge/evaluate` |
+| GET | `/judge/history` |
+
+Returns
+
+- Repository Score
+- Confidence Score
+- AI Verdict
+- Recommendations
+
+---
+
+## Memory APIs
+
+| Method | Endpoint |
+|---------|----------|
+| GET | `/memory` |
+| POST | `/memory/store` |
+| DELETE | `/memory/{id}` |
+
+Purpose
+
+- Context management
+- AI memory
+- Session persistence
+
+---
+
+## Knowledge Graph
+
+| Method | Endpoint |
+|---------|----------|
+| GET | `/knowledge` |
+| POST | `/knowledge/build` |
+
+Used for
+
+- Repository relationships
+- AI reasoning
+- Knowledge mapping
+
+---
+
+## Execution APIs
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/execution/plan` |
+| POST | `/execution/run` |
+| GET | `/execution/status/{id}` |
+
+Capabilities
+
+- Build planning
+- Execution strategy
 - Verification
-- AI Reasoning
-- Troubleshooting
-- Patch Recommendation
 
 ---
 
-### Step 4
+## OCR APIs
 
-Review the generated dashboard.
+| Method | Endpoint |
+|---------|----------|
+| POST | `/ocr/extract` |
 
-The dashboard includes:
+Supports
 
-- Repository Health
-- AI Confidence
-- Verification Result
-- Root Cause Analysis
-- Repair Plan
-- Patch Preview
-- Execution Timeline
+- PDF
+- Images
+- Documentation
+
+---
+
+# 📊 Monitoring APIs
+
+| Method | Endpoint |
+|---------|----------|
+| GET | `/monitoring/dashboard` |
+| GET | `/monitoring/system` |
+| GET | `/monitoring/providers` |
+| GET | `/monitoring/prometheus` |
+| GET | `/monitoring/grafana` |
+| GET | `/monitoring/loki` |
+| GET | `/monitoring/alerts` |
+| GET | `/monitoring/export` |
+
+Provides
+
+- Live Metrics
+- Infrastructure Status
+- Provider Health
+- Dashboard Data
+
+---
+
+# 🚀 Infrastructure APIs
+
+| Method | Endpoint |
+|---------|----------|
+| GET | `/infrastructure` |
+| GET | `/deployment` |
+| GET | `/performance` |
+
+Used For
+
+- Deployment Status
+- Infrastructure Monitoring
+- Performance Analytics
+
+---
+
+# 📈 Analytics APIs
+
+Provides repository analytics, AI statistics, performance summaries, and system insights for dashboards and reports.
+
+---
+
+# 📦 Example Request
+
+Repository Analysis
+
+```http
+POST /upload HTTP/1.1
+Host: localhost:8000
+Content-Type: multipart/form-data
+```
+
+---
+
+# 📦 Example Response
+
+```json
+{
+  "success": true,
+  "repository_id": "repo_12345",
+  "status": "analysis_started",
+  "message": "Repository uploaded successfully."
+}
+```
+
+---
+
+# ❌ Error Response
+
+```json
+{
+  "success": false,
+  "error": "Invalid repository format",
+  "status": 400
+}
+```
+
+---
+
+# 🔒 API Security
+
+The API follows secure engineering practices.
+
+Features
+
+- Request Validation
+- Input Sanitization
+- File Validation
+- Error Isolation
+- Structured Responses
+- Secure Configuration
+- Rate Limiting (where enabled)
+
+---
+
+# ⚡ API Highlights
+
+- RESTful Design
+- JSON Responses
+- FastAPI Powered
+- Interactive Documentation
+- Modular Endpoints
+- AI Provider Gateway
+- Enterprise Monitoring
+- Production Ready
+
+---
+
+> The API is modular by design, making it straightforward to integrate ReproProof with web applications, developer tools, CI/CD pipelines, and future AI providers while keeping a consistent interface across services.
+>
+> # 🚀 Deployment Guide
+
+ReproProof is designed using cloud-native principles and can be deployed on local machines, Docker environments, VPS servers, or cloud platforms with minimal configuration.
+
+---
+
+# 🌍 Supported Deployment Platforms
+
+| Platform | Status |
+|----------|--------|
+| Docker | ✅ Supported |
+| Docker Compose | ✅ Supported |
+| Render | ✅ Supported |
+| Railway | ✅ Supported |
+| AWS EC2 | ✅ Supported |
+| Google Cloud | ✅ Supported |
+| Azure | ✅ Supported |
+| DigitalOcean | ✅ Supported |
+| Kubernetes | ✅ Ready |
+| On-Premise | ✅ Supported |
+
+---
+
+# 🐳 Docker Deployment
+
+Build the containers
+
+```bash
+docker compose build
+```
+
+Start all services
+
+```bash
+docker compose up -d
+```
+
+Production deployment
+
+```bash
+docker compose -f docker-compose.production.yml up -d
+```
+
+Stop services
+
+```bash
+docker compose down
+```
+
+---
+
+# ⚙ Environment Variables
+
+Backend requires a `.env` file.
+
+Example:
+
+```env
+APP_ENV=production
+
+HOST=0.0.0.0
+
+PORT=8000
+
+GEMINI_API_KEY=YOUR_API_KEY
+
+GEMINI_MODEL=gemini-2.5-flash
+
+DATABASE_URL=postgresql://username:password@localhost/reproproof
+
+REDIS_URL=redis://localhost:6379
+
+SECRET_KEY=your_secret_key
+```
+
+---
+
+# 📦 Production Services
+
+The production stack includes:
+
+- FastAPI Backend
+- Next.js Frontend
+- PostgreSQL
+- Redis
+- Prometheus
+- Grafana
+- Loki
+- AlertManager
+- Node Exporter
+- cAdvisor
+
+---
+
+# 🌐 Render Deployment
+
+Backend
+
+- Root Directory → `backend`
+- Build Command
+
+```bash
+pip install -r requirements.txt
+```
+
+Start Command
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port $PORT
+```
+
+Frontend
+
+- Root Directory → `frontend`
+
+Build
+
+```bash
+npm install
+
+npm run build
+```
+
+Start
+
+```bash
+npm start
+```
+
+---
+
+# 🚂 Railway Deployment
+
+Backend
+
+```bash
+pip install -r requirements.txt
+```
+
+Start
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port $PORT
+```
+
+Frontend
+
+```bash
+npm install
+
+npm run build
+
+npm start
+```
+
+---
+
+# ☁ AWS Deployment
+
+Recommended services
+
+- EC2
+- ECS
+- RDS PostgreSQL
+- ElastiCache Redis
+- S3 Storage
+- CloudWatch Monitoring
+
+Deployment Flow
+
+```text
+GitHub
+
+↓
+
+GitHub Actions
+
+↓
+
+Docker Image
+
+↓
+
+AWS
+
+↓
+
+Application
+```
+
+---
+
+# ☁ Google Cloud
+
+Recommended
+
+- Compute Engine
+- Cloud Run
+- Cloud SQL
+- Cloud Storage
+
+---
+
+# ☁ Microsoft Azure
+
+Recommended
+
+- Azure App Service
+- Azure PostgreSQL
+- Azure Redis Cache
+
+---
+
+# ☸ Kubernetes
+
+The application is designed to support Kubernetes deployments.
+
+Suggested resources
+
+Deployment
+
+Service
+
+Ingress
+
+Secrets
+
+ConfigMaps
+
+Persistent Volumes
+
+Horizontal Pod Autoscaler
+
+---
+
+# 🔐 Production Checklist
+
+Before deployment verify:
+
+✅ Environment variables configured
+
+✅ Gemini API key added
+
+✅ Database configured
+
+✅ Redis configured
+
+✅ Docker builds successfully
+
+✅ Frontend production build passes
+
+✅ Backend tests pass
+
+✅ HTTPS enabled
+
+✅ Monitoring configured
+
+✅ Logging enabled
+
+---
+
+# 📊 Monitoring
+
+Production monitoring stack includes
+
+- Prometheus Metrics
+
+- Grafana Dashboards
+
+- Loki Logging
+
+- AlertManager
+
+- Health Checks
+
+- Structured Logs
+
+---
+
+# 📈 Scaling
+
+Horizontal scaling supported through
+
+- Multiple FastAPI Instances
+
+- Load Balancer
+
+- Redis Cache
+
+- PostgreSQL
+
+- Kubernetes
+
+- Container Orchestration
+
+---
+
+# 🔄 CI/CD Pipeline
+
+Recommended workflow
+
+```text
+Developer
+
+↓
+
+GitHub Push
+
+↓
+
+GitHub Actions
+
+↓
+
+Run Tests
+
+↓
+
+Build Docker Images
+
+↓
+
+Deploy
+
+↓
+
+Health Check
+
+↓
+
+Production
+```
+
+---
+
+# 🔒 Security Recommendations
+
+For production deployments
+
+- Use HTTPS
+- Store secrets in a Secret Manager
+- Never commit API keys
+- Enable database backups
+- Restrict CORS origins
+- Configure rate limiting
+- Enable monitoring alerts
+- Rotate credentials periodically
+
+---
+
+# 🎯 Deployment Status
+
+| Component | Status |
+|-----------|--------|
+| Backend | ✅ Production Ready |
+| Frontend | ✅ Production Ready |
+| Docker | ✅ Ready |
+| Monitoring | ✅ Ready |
+| Gemini Integration | ✅ Ready |
+| PostgreSQL | ✅ Ready |
+| Redis | ✅ Ready |
+| Multi-Agent System | ✅ Ready |
+| Cloud Deployment | ✅ Ready |
+
+---
+
+> ReproProof has been designed with a modular, cloud-ready architecture, making it suitable for academic demonstrations, hackathons, and further production-oriented development.
+>
+> # 🤝 Contributing
+
+We welcome contributions from developers, researchers, and AI enthusiasts who want to improve reproducibility verification and AI-powered software engineering.
+
+Whether you're fixing bugs, improving documentation, adding AI capabilities, or enhancing the user experience, every contribution is appreciated.
+
+---
+
+# 🌟 Ways to Contribute
+
+You can contribute by:
+
+- 🐛 Fixing bugs
+- ✨ Adding new features
+- 🤖 Improving AI agents
+- 📄 Enhancing documentation
+- 🎨 Improving UI/UX
+- ⚡ Optimizing performance
+- 🔒 Strengthening security
+- 🧪 Writing tests
+- 📊 Building dashboards
+- ☁️ Improving deployment support
+
+---
+
+# 🚀 Getting Started
+
+### 1. Fork the Repository
+
+Click the **Fork** button on GitHub.
+
+---
+
+### 2. Clone Your Fork
+
+```bash
+git clone https://github.com/YOUR_USERNAME/ReproProof-AI-Powered-Reproducibility-Verification-Platform.git
+
+cd ReproProof-AI-Powered-Reproducibility-Verification-Platform
+```
+
+---
+
+### 3. Create a New Branch
+
+```bash
+git checkout -b feature/amazing-feature
+```
+
+---
+
+### 4. Make Your Changes
+
+Implement your feature or bug fix while following the project's coding style.
+
+---
+
+### 5. Test Your Changes
+
+Backend
+
+```bash
+pytest
+```
+
+Frontend
+
+```bash
+npm run build
+```
+
+---
+
+### 6. Commit
+
+```bash
+git add .
+
+git commit -m "feat: add amazing feature"
+```
+
+---
+
+### 7. Push
+
+```bash
+git push origin feature/amazing-feature
+```
+
+---
+
+### 8. Open a Pull Request
+
+Describe:
+
+- What changed
+- Why it changed
+- Screenshots (if applicable)
+- Testing performed
+
+---
+
+# 📋 Coding Standards
+
+Backend
+
+- Python Style Guide (PEP 8)
+- Type Hints
+- Modular Services
+- Async-first APIs
+- Clear Documentation
+
+Frontend
+
+- TypeScript
+- React Functional Components
+- Reusable Components
+- Responsive UI
+- Clean Folder Structure
+
+---
+
+# 🧪 Testing Requirements
+
+Before submitting a Pull Request, ensure:
+
+- Backend tests pass
+- Frontend builds successfully
+- No linting errors
+- No secrets committed
+- API documentation updated (if applicable)
+
+---
+
+# 🗺️ Project Roadmap
+
+## ✅ Completed
+
+- Multi-Agent AI Framework
+- Repository Analysis
+- AI Gateway
+- Gemini Integration
+- Judge Engine
+- Research Engine
+- Memory Engine
+- Monitoring Dashboard
+- Docker Support
+- PostgreSQL Integration
+- Redis Integration
+- Enterprise Dashboard
 - Analytics
+- Production Infrastructure
 
 ---
 
-# 📡 Example API Usage
+## 🚧 In Progress
 
-## Upload Repository
+- Enhanced Repository Verification
+- Improved AI Reasoning
+- Performance Optimization
+- Advanced Analytics
+- UI Enhancements
 
-```http
-POST /upload
+---
+
+## 🔮 Planned Features
+
+### AI
+
+- OpenAI Integration
+- Anthropic Claude
+- Ollama Support
+- Hugging Face Models
+- Groq Integration
+
+---
+
+### Research
+
+- Automatic Paper Retrieval
+- Citation Generation
+- Research Timeline
+- Literature Review
+
+---
+
+### Repository Intelligence
+
+- GitHub Actions Analysis
+- CI/CD Verification
+- Dockerfile Validation
+- Kubernetes Validation
+- Dependency Risk Analysis
+
+---
+
+### Enterprise Features
+
+- Team Workspaces
+- User Authentication
+- Role-Based Access Control
+- Audit Logs
+- Notifications
+- Project Management
+
+---
+
+### Cloud Features
+
+- AWS Deployment Templates
+- Azure Deployment
+- Google Cloud Deployment
+- Kubernetes Helm Charts
+- Auto Scaling
+
+---
+
+### AI Improvements
+
+- Autonomous Agent Collaboration
+- Long-Term Memory
+- Knowledge Graph Expansion
+- Multi-Step Planning
+- Tool Calling
+- Self-Reflection
+
+---
+
+# 🏆 Project Goals
+
+Our vision is to build an AI-powered reproducibility platform that can:
+
+- Analyze repositories intelligently
+- Verify reproducibility automatically
+- Assist researchers and developers
+- Reduce manual debugging effort
+- Improve software reliability
+- Accelerate research reproducibility
+
+---
+
+# 💙 Support the Project
+
+If you find ReproProof useful:
+
+⭐ Star the repository
+
+🍴 Fork the project
+
+📝 Open issues
+
+💡 Suggest improvements
+
+🤝 Contribute code
+
+📢 Share it with others
+
+---
+
+# 📜 License
+
+This project is released under the **MIT License**.
+
+See the `LICENSE` file for complete license information.
+
+---
+
+# 👨‍💻 Author
+
+**Karan Sharma**
+
+AI & Machine Learning Engineer
+
+GitHub:
+https://github.com/karan-sharma-aiml
+
+---
+
+# 🌟 Final Note
+
+ReproProof demonstrates how modern AI techniques, modular software architecture, and production-oriented engineering practices can be combined into a unified platform for repository analysis and reproducibility verification.
+
+The project is intended as both a practical developer tool and a foundation for future research and innovation in AI-assisted software engineering.
+
+---
+
+# 🤝 Contributing
+
+We welcome contributions from developers, researchers, AI engineers, and the open-source community.
+
+Our goal is to build one of the most advanced AI-powered reproducibility verification platforms.
+
+---
+
+## Contribution Workflow
+
+```text
+Fork Repository
+      │
+      ▼
+Create Feature Branch
+      │
+      ▼
+Implement Feature
+      │
+      ▼
+Run Tests
+      │
+      ▼
+Create Pull Request
+      │
+      ▼
+Code Review
+      │
+      ▼
+Merge
 ```
 
-Example using cURL:
+---
+
+## Development Setup
+
+### Clone Repository
 
 ```bash
-curl -X POST http://localhost:8000/upload \
--F "file=@repository.zip"
+git clone https://github.com/karan-sharma-aiml/ReproProof-AI-Powered-Reproducibility-Verification-Platform.git
+
+cd ReproProof-AI-Powered-Reproducibility-Verification-Platform
 ```
 
----
-
-## Check Status
-
-```http
-GET /status/{execution_id}
-```
-
-Example:
-
-```bash
-curl http://localhost:8000/status/abc123
-```
-
----
-
-## Fetch Verification Report
-
-```http
-GET /report/{execution_id}
-```
-
-Example:
-
-```bash
-curl http://localhost:8000/report/abc123
-```
-
----
-
-## Fetch Executive Summary
-
-```http
-GET /summary/{execution_id}
-```
-
----
-
-## Platform Analytics
-
-```http
-GET /analytics
-```
-
----
-
-# 🧪 Running Tests
-
-Execute the backend test suite.
+Backend
 
 ```bash
 cd backend
 
-python -m unittest discover -s tests -q
+python -m venv .venv
+
+source .venv/bin/activate
+# Windows
+.venv\Scripts\activate
+
+pip install -r requirements.txt
 ```
 
-Expected output:
+Frontend
 
-```
-Ran 60 tests
+```bash
+cd frontend
 
-OK
+npm install
 ```
 
 ---
 
-# 📈 Typical Execution Flow
+## Branch Naming
+
+Feature
+
+```
+feature/add-rag-memory
+```
+
+Bug
+
+```
+bug/fix-dashboard
+```
+
+Documentation
+
+```
+docs/readme-update
+```
+
+Performance
+
+```
+perf/cache-optimization
+```
+
+Research
+
+```
+research/new-paper-engine
+```
+
+---
+
+## Coding Standards
+
+### Python
+
+- PEP8
+- Type Hints
+- Docstrings
+- Black Formatting
+- Modular Architecture
+
+---
+
+### TypeScript
+
+- Strict Mode
+
+- Functional Components
+
+- Reusable Hooks
+
+- No Any Type
+
+- Component Isolation
+
+---
+
+## Pull Request Checklist
+
+Before submitting:
+
+- [ ] Code Compiles
+
+- [ ] Tests Pass
+
+- [ ] Documentation Updated
+
+- [ ] No Secrets Added
+
+- [ ] No API Keys Included
+
+- [ ] Lint Passed
+
+- [ ] Build Passed
+
+- [ ] Screenshots Added (UI Changes)
+
+---
+
+## Reporting Issues
+
+Please include:
+
+- Operating System
+
+- Browser
+
+- Python Version
+
+- Node Version
+
+- Error Logs
+
+- Screenshots
+
+- Steps to Reproduce
+
+- Expected Result
+
+---
+
+## Feature Request Template
 
 ```text
-Upload Repository
-        │
-        ▼
-Repository Analysis
-        │
-        ▼
-Project Detection
-        │
-        ▼
-Verification
-        │
- ┌──────┴──────┐
- │             │
-Success     Failure
- │             │
- ▼             ▼
-Report   Troubleshooting
-              │
-              ▼
-       Repair Planning
-              │
-              ▼
-      Patch Generation
-              │
-              ▼
-      Final Verification Report
-              │
-              ▼
-      Interactive Dashboard
+Title:
+
+Problem:
+
+Current Behavior:
+
+Proposed Solution:
+
+Expected Impact:
+
+Additional Notes:
 ```
 
 ---
 
-# ✅ Verification Checklist
+## Security Policy
 
-Before using the platform, verify:
+Please DO NOT create public issues for:
 
-- Backend server is running
-- Frontend server is running
-- Python environment is activated
-- Required dependencies are installed
-- Repository is uploaded as a ZIP archive
+- API Keys
 
-Once completed, ReproProof performs the entire reproducibility verification workflow automatically with minimal user intervention.
+- Authentication Bugs
 
-## 8. Future Roadmap
+- Security Vulnerabilities
 
-ReproProof is designed as a foundation for autonomous software verification. Future versions will extend the platform beyond repository validation into continuous software quality assurance throughout the software development lifecycle.
+- Secret Exposure
 
-### Short-Term Goals
-
-* AI-generated code patches with automatic pull request creation.
-* Multi-language support (Java, C++, Go, Rust, JavaScript, TypeScript).
-* Docker-based isolated execution environments.
-* Advanced dependency vulnerability detection.
-* Interactive repository visualization.
-
-### Medium-Term Goals
-
-* GitHub App integration for automatic verification on every Pull Request.
-* CI/CD integration (GitHub Actions, Jenkins, GitLab CI, Azure DevOps).
-* Kubernetes-based scalable execution workers.
-* Distributed execution for very large repositories.
-* AI-powered regression prediction.
-
-### Long-Term Vision
-
-* Fully autonomous repository quality assurance.
-* Multi-agent AI collaboration for debugging and repair.
-* Continuous repository health monitoring.
-* Predictive software reliability scoring.
-* Enterprise SaaS deployment.
-* Support for scientific reproducibility verification across research institutions.
+Instead, contact the maintainers privately.
 
 ---
 
-### Planned Architecture
+## Community Guidelines
 
-```text
-                Future Vision
+We value:
 
-        GitHub / GitLab / Bitbucket
-                  │
-                  ▼
-      Continuous Verification Pipeline
-                  │
-      ┌───────────┼────────────┐
-      ▼           ▼            ▼
- Repository    AI Repair    Security Scan
- Analysis        Agent
-      │           │
-      └───────────┼────────────┘
-                  ▼
-        Autonomous Code Quality Platform
-```
+✅ Respect
+
+✅ Collaboration
+
+✅ Learning
+
+✅ Constructive Feedback
+
+✅ Innovation
 
 ---
 
-### Research Opportunities
+## Thank You ❤️
 
-* Retrieval-Augmented Repository Analysis
-* Large Language Model based Software Repair
-* AI-Assisted Root Cause Analysis
-* Autonomous Program Verification
-* Explainable AI for Software Engineering
-* Self-Healing Development Platforms
-* Intelligent DevOps Automation
+Every contribution—whether documentation, testing, bug fixes, or new features—helps improve the future of reproducible AI research.
+
+Together, we can make scientific software more transparent, reliable, and reproducible.
 
 ---
 
-## 8. 📊 Evaluation & Experimental Results
+---
 
-ReproProof was evaluated on multiple real-world reproducibility scenarios involving Python repositories with dependency conflicts, missing files, runtime failures, and configuration errors.
+# 📜 License
 
-### Evaluation Goals
+This project is released under the **MIT License**.
 
-* Measure AI detection accuracy
-* Evaluate automated troubleshooting quality
-* Verify generated patches before application
-* Measure end-to-end execution success
-* Ensure repository safety through sandbox execution
+You are free to:
 
-### Experimental Results
+- ✅ Use
+- ✅ Modify
+- ✅ Distribute
+- ✅ Fork
+- ✅ Build upon
 
-| Metric                        | Result |
-| ----------------------------- | ------ |
-| Repository Upload Success     | 100%   |
-| Project Detection Accuracy    | 98%    |
-| Error Classification Accuracy | 97%    |
-| AI Root Cause Detection       | 96%    |
-| Verification Accuracy         | 95%    |
-| Patch Validation Success      | 94%    |
-| Overall Platform Reliability  | 96%    |
+as long as the original license is included.
+
+See the **LICENSE** file for complete details.
 
 ---
 
-### Performance
+# 🙏 Acknowledgements
 
-| Component              | Average Time |
-| ---------------------- | ------------ |
-| Repository Extraction  | <2 sec       |
-| AI Repository Analysis | 3–6 sec      |
-| Environment Detection  | 2 sec        |
-| Dependency Analysis    | 2 sec        |
-| Patch Generation       | 4–8 sec      |
-| Verification Report    | 2 sec        |
-| Complete Pipeline      | ~15–30 sec   |
+This project was inspired by the need for reproducible AI-assisted software engineering.
 
----
+Special thanks to:
 
-### Key Outcomes
-
-✅ Detects reproducibility failures automatically
-
-✅ Generates structured AI explanations
-
-✅ Produces safe verification reports
-
-✅ Creates intelligent repair suggestions
-
-✅ Supports enterprise-scale repository analysis
+- Google Gemini API
+- FastAPI Community
+- Next.js Team
+- React Team
+- PostgreSQL
+- Redis
+- Docker
+- Prometheus
+- Grafana
+- Loki
+- Open Source Community
 
 ---
 
-### Demonstrated Capabilities
+# 🏆 Built For
 
-* AI Repository Understanding
-* Intelligent Error Classification
-* Automated Root Cause Analysis
-* Patch Recommendation
-* Verification Confidence Scoring
-* Real-time Dashboard
-* Enterprise Analytics
-* Troubleshooting Assistant
+- IIT Hackathons
+- SIH (Smart India Hackathon)
+- Research Demonstrations
+- AI Innovation Challenges
+- Enterprise AI Showcase
+- Production AI Systems
 
 ---
 
-**➡️ Next Section:** **9. System Architecture (Detailed)**
-# 🏗️ 9. System Architecture (Detailed)
-
-> **Enterprise-Grade Multi-Agent AI Architecture for Automated Reproducibility Verification**
-
----
-
-# 🌟 Architecture Overview
-
-ReproProof follows a **modular multi-agent architecture**, where every AI component has a dedicated responsibility. This separation improves:
-
-✨ Scalability
-
-✨ Maintainability
-
-✨ Fault Isolation
-
-✨ Future Extensibility
-
-✨ Enterprise Deployment
-
----
-
-# 🧠 Complete AI Pipeline
-
-```text
-                  📦 Repository Upload
-                           │
-                           ▼
-                🔍 Repository Analysis Agent
-                           │
-                           ▼
-               🧠 AI Project Detection Agent
-                           │
-                           ▼
-              ⚙️ Environment Detection Agent
-                           │
-                           ▼
-              ❌ Error Analysis Agent
-                           │
-                           ▼
-            🧩 Root Cause AI Troubleshooter
-                           │
-                           ▼
-             🛠️ Repair Planning Engine
-                           │
-                           ▼
-            ✨ AI Patch Generation Engine
-                           │
-                           ▼
-            🔒 Verification Confidence Engine
-                           │
-                           ▼
-             📊 Final Verification Report
-                           │
-                           ▼
-               💻 Interactive Dashboard
-```
-
----
-
-# 🤖 Core AI Modules
-
-### 🔍 Repository Analysis Engine
-
-Responsible for understanding the uploaded repository.
-
-**Tasks**
-
-* 📂 Repository parsing
-* 📑 File discovery
-* 🧠 Code understanding
-* 📊 Project statistics
-* 📦 Dependency extraction
-
----
-
-### 🧠 Project Detection Engine
-
-Automatically detects:
-
-✅ Framework
-
-✅ Programming Language
-
-✅ Build System
-
-✅ Package Manager
-
-✅ Repository Type
-
-Examples:
-
-* Django
-* Flask
-* FastAPI
-* React
-* Next.js
-* Node.js
-* Python
-* Java
-
----
-
-### ⚙️ Environment Detection Engine
-
-Builds an execution environment by identifying:
-
-🐍 Python Version
-
-📦 Required Packages
-
-⚡ Runtime Requirements
-
-🧩 Missing Dependencies
-
-🔧 Configuration Files
-
----
-
-### ❌ AI Error Analysis Engine
-
-Analyzes execution failures using AI-assisted reasoning.
-
-Detects:
-
-🚨 Import Errors
-
-⚠️ Dependency Issues
-
-💥 Runtime Exceptions
-
-📝 Syntax Errors
-
-🔒 Permission Errors
-
-🧠 Logic Errors
-
----
-
-### 🛠️ Repair Planning Engine
-
-Generates structured recovery strategies.
-
-Includes:
-
-✅ Suggested Fixes
-
-✅ Missing Packages
-
-✅ Configuration Updates
-
-✅ Dependency Resolution
-
-✅ Repair Priority
-
----
-
-### ✨ AI Patch Generation Engine
-
-Creates safe patches without modifying unrelated code.
-
-Features:
-
-🧩 Unified Diff Generation
-
-🔒 Patch Validation
-
-📋 Patch Preview
-
-↩️ Rollback Support
-
-⚡ Automatic Patch Suggestions
-
----
-
-### 🔒 Confidence Engine
-
-Centralized confidence scoring system.
-
-Computes:
-
-🎯 Classification Confidence
-
-🎯 Detection Confidence
-
-🎯 Patch Confidence
-
-🎯 Verification Confidence
-
-🎯 Final AI Confidence
-
-All confidence scores are generated from one unified scoring engine.
-
----
-
-### 📊 Verification Report Engine
-
-Generates enterprise-level reports containing:
-
-📈 Repository Health
-
-🧠 AI Findings
-
-⚠️ Risk Assessment
-
-📋 Repair Recommendations
-
-🎯 Confidence Scores
-
-📄 Executive Summary
-
----
-
-### 💻 Dashboard Layer
-
-Provides a real-time interactive interface.
-
-Features include:
-
-📡 Live Progress Tracking
-
-📊 Analytics Dashboard
-
-📈 Confidence Visualization
-
-🖥️ Repository Explorer
-
-📋 Verification Reports
-
-🛠️ Troubleshooting Center
-
----
-
-# 🧩 Architectural Principles
-
-⭐ Modular Design
-
-⭐ Separation of Concerns
-
-⭐ AI-Agent Collaboration
-
-⭐ Safe Patch Generation
-
-⭐ Verification Before Repair
-
-⭐ Enterprise Scalability
-
-⭐ Fault-Tolerant Processing
-
-⭐ Extensible Service-Oriented Architecture
-
----
-
-# 🚀 Why This Architecture?
-
-Compared to traditional reproducibility tools, ReproProof combines **AI reasoning, automated verification, repair planning, and confidence scoring** into a unified workflow. Its modular design allows each component to evolve independently while maintaining a reliable end-to-end pipeline for repository analysis.
-
----
-
-# 🚀 10. Future Scope & Roadmap
-
-> **ReproProof is designed as a foundation for the next generation of AI-powered software verification platforms.**
-> Our roadmap focuses on making reproducibility verification fully autonomous, scalable, and enterprise-ready.
-
----
-
-# 🎯 Vision
-
-> **"One Click → AI Verifies → AI Fixes → AI Confirms → Developer Ships with Confidence."**
-
-ReproProof aims to evolve from a reproducibility verification tool into a complete **Autonomous Software Reliability Platform**.
-
----
-
-# 🛣️ Product Roadmap
-
-## ✅ Phase 1 — Intelligent Repository Verification *(Current)*
-
-✔️ AI Repository Analysis
-
-✔️ Project Detection
-
-✔️ Dependency Analysis
-
-✔️ Error Classification
-
-✔️ Root Cause Analysis
-
-✔️ Verification Report
-
-✔️ Confidence Engine
-
-✔️ Interactive Dashboard
-
----
-
-## 🚀 Phase 2 — Autonomous Self-Healing
-
-✨ Automatic Patch Generation
-
-✨ Smart Retry Engine
-
-✨ Rollback Protection
-
-✨ Patch Validation
-
-✨ AI Repair Suggestions
-
-✨ Multi-step Recovery Planning
-
----
-
-## ☁️ Phase 3 — Enterprise Platform
-
-🏢 Multi-user Workspaces
-
-👥 Team Collaboration
-
-📊 Organization Analytics
-
-📁 Project Portfolio Dashboard
-
-🔐 Role-Based Access Control (RBAC)
-
-📈 Executive Reporting
-
----
-
-## 🤖 Phase 4 — Advanced AI Agents
-
-🧠 Autonomous Debugging Agent
-
-🔍 AI Code Review Agent
-
-🛠️ AI Refactoring Assistant
-
-📦 Dependency Optimization Agent
-
-⚡ Performance Optimization Agent
-
-🛡️ Security Analysis Agent
-
----
-
-## 🌍 Phase 5 — Cloud & DevOps Integration
-
-🔄 GitHub Actions Integration
-
-🦊 GitLab CI/CD Support
-
-🚀 Jenkins Integration
-
-🐳 Docker Environment Verification
-
-☸️ Kubernetes Deployment Checks
-
-☁️ AWS / Azure / GCP Support
-
----
-
-## 📡 Phase 6 — Research & Innovation
-
-🧪 Large-scale Reproducibility Benchmarking
-
-📚 AI Knowledge Graph for Debugging
-
-🤝 Multi-Agent Collaboration Framework
-
-📈 Predictive Failure Analysis
-
-🧠 Self-Learning Confidence Models
-
-🔬 LLM-powered Software Verification Research
-
----
-
-# 🌟 Planned Features
-
-### 💻 Developer Experience
-
-* ⚡ One-Click Repository Verification
-* 📝 AI-generated Technical Documentation
-* 📋 Automated Release Notes
-* 🎯 Intelligent Fix Recommendations
-
----
-
-### 📊 Analytics & Monitoring
-
-* 📈 Historical Verification Trends
-* 📉 Failure Prediction Dashboard
-* 📊 Team Performance Analytics
-* 🎯 Confidence Score Evolution
-
----
-
-### 🔒 Security Enhancements
-
-* 🛡️ Vulnerability Detection
-* 🔍 Secret Scanning
-* 📦 Supply Chain Analysis
-* 🔐 License Compliance Checking
-
----
-
-### 🌐 Multi-Language Support
-
-Future support for:
-
-🐍 Python
-
-☕ Java
-
-🟨 JavaScript
-
-🔷 TypeScript
-
-🦀 Rust
-
-🐹 Go
-
-💎 Ruby
-
-⚙️ C++
-
----
-
-# 🏆 Long-Term Impact
-
-ReproProof has the potential to become a **standard AI-assisted verification platform** for:
-
-🎓 Academic Research
-
-🏢 Enterprise Software Teams
-
-☁️ Cloud Platforms
-
-🚀 Open Source Communities
-
-🧪 Research Laboratories
-
-🏛️ Government & Public Sector Projects
-
----
-
-# 💡 Key Takeaway
-
-> **ReproProof is more than a debugging tool—it is a scalable AI platform that bridges repository analysis, intelligent troubleshooting, automated repair planning, and reproducibility verification into one unified ecosystem.**
-
----
-
-## 🎉 Thank You
-
-**ReproProof – AI-Powered Reproducibility Verification Platform**
-
-*"Making software reproducible, reliable, and ready for deployment through intelligent automation."* 🚀
-# 👨‍💻 11. Developer & Team
-
-> **Built with passion for solving one of software engineering's most challenging problems — reproducibility.**
-
----
-
-# 🚀 Project Information
-
-### 🏆 Project Name
-
-**ReproProof – AI-Powered Reproducibility Verification Platform**
-
----
-
-### 🎯 Problem Statement
-
-**AI-driven platform for automated repository verification, intelligent troubleshooting, reproducibility analysis, and safe repair planning.**
-
----
-
-### 🧑‍💻 Developer
+# 👨‍💻 Developer
 
 **Karan Sharma**
 
-🎓 B.Tech – Artificial Intelligence & Machine Learning
+AI / ML Engineer
 
-💡 AI • Machine Learning • Full-Stack Development • Software Engineering
+Specialization:
 
----
-
-### 👥 Team
-
-| Name             | Role                                                     |
-| ---------------- | -------------------------------------------------------- |
-| **Karan Sharma** | AI/ML Engineer • Full Stack Developer • System Architect |
-
-> *(Add other team members here if applicable.)*
+- Artificial Intelligence
+- Machine Learning
+- Multi-Agent Systems
+- Full Stack Development
+- Research Automation
+- DevOps
+- LLM Engineering
 
 ---
 
-# 🛠️ Technology Expertise Demonstrated
+# 📫 Connect
 
-### 🤖 Artificial Intelligence
+GitHub
 
-* 🧠 LLM Integration
-* 🔍 AI Repository Analysis
-* 🛠️ AI Troubleshooting
-* 📊 Confidence Scoring Engine
+https://github.com/karan-sharma-aiml
 
----
+LinkedIn
 
-### 💻 Software Engineering
+(Add your LinkedIn URL)
 
-* Enterprise Backend Architecture
-* REST API Development
-* Modular Service Design
-* Clean Code Principles
-* Design Patterns
+Portfolio
 
----
+(Add your Portfolio URL)
 
-### ☁️ Platform Engineering
+Email
 
-* Secure File Processing
-* Sandbox Execution
-* Automated Verification Pipeline
-* Patch Generation Workflow
+(Add your Professional Email)
 
 ---
 
-### 🎨 Frontend Engineering
+# ⭐ Support the Project
 
-* Next.js
-* TypeScript
-* Responsive Dashboard
-* Interactive Data Visualization
-* Modern Enterprise UI
+If you found this project useful,
 
----
+please consider
 
-# 🏅 Key Achievements
+⭐ **Star this repository**
 
-✅ End-to-End AI Verification Pipeline
-
-✅ Multi-Agent AI Architecture
-
-✅ Enterprise Dashboard
-
-✅ Intelligent Root Cause Analysis
-
-✅ Automated Patch Generation
-
-✅ Centralized Confidence Engine
-
-✅ Real-Time Progress Monitoring
-
-✅ Modular & Scalable Design
+It helps the project reach more developers.
 
 ---
 
-# 🌍 Open Source Vision
+# 🚀 Future Roadmap
 
-ReproProof is designed to evolve as an **open, extensible platform** where researchers, developers, and organizations can collaborate to improve software reproducibility through AI-powered automation.
+Upcoming versions include:
 
----
-
-# 📬 Contact
-
-**👨‍💻 Karan Sharma**
-
-📧 Email:*[mailto:karanku1882@gmail.com]*
-
-🔗 GitHub: **[https://github.com/karan-sharma-aiml](https://github.com/karan-sharma-aiml)**
-
-💼 LinkedIn: *
-
----
-
-# 🙏 Thank You
-
-## **Questions & Discussion**
-
-> **"Reproducibility is not just about rerunning code—it's about building trust in software. ReproProof uses AI to make that trust scalable, intelligent, and accessible."**
+- Autonomous Self-Healing Agents
+- Voice Controlled Repository Analysis
+- Multi Repository Knowledge Graph
+- Enterprise Team Collaboration
+- Cloud Native Distributed Execution
+- Kubernetes Auto Scaling
+- AI Code Generation Assistant
+- Security Vulnerability Scanner
+- Research Paper Auto Submission
+- Mobile Dashboard
 
 ---
 
-## 🎉 Thank You! 🚀
+# 💙 Final Note
 
-**ReproProof – AI-Powered Reproducibility Verification Platform**
+> **ReproProof is more than a repository analyzer.**
 
+It is an **Enterprise AI Engineering Platform**
+designed to demonstrate how autonomous AI agents,
+modern software engineering,
+research intelligence,
+and production infrastructure
+can work together inside one unified system.
 
+Built with ❤️ using
+
+**FastAPI · Next.js · Gemini AI · PostgreSQL · Redis · Docker · Prometheus · Grafana**
+
+---
+
+<div align="center">
+
+# ⭐ Star the Repository if you like it ⭐
+
+**Made with ❤️ by Karan Sharma**
+
+</div>
+
+---
+
+<div align="center">
+
+# 🚀 ReproProof
+### AI-Powered Reproducibility Verification Platform
+
+**Enterprise Multi-Agent AI Platform for Repository Analysis, Research Intelligence & Production Verification**
+
+---
+
+### ⚡ Built With
+
+<p>
+
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs"/>
+
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black"/>
+
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Google-Gemini-blue?style=for-the-badge&logo=google"/>
+
+<img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql"/>
+
+<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis"/>
+
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker"/>
+
+<img src="https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes"/>
+
+<img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus"/>
+
+<img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana"/>
+
+</p>
+
+---
+
+## ⭐ If you like this project
+
+### Give it a Star ⭐
+
+It motivates further development and helps more developers discover the project.
+
+---
+
+## 🤝 Contributions are Welcome
+
+Bug Reports • Ideas • Discussions • Pull Requests
+
+All contributions are appreciated.
+
+---
+
+## 💡 Vision
+
+> Building the future of AI-assisted software engineering through autonomous multi-agent systems.
+
+---
+
+### Made with ❤️ by
+
+# **Karan Sharma**
+
+AI Engineer • ML Developer • Full Stack Developer • Research Enthusiast
+
+---
+
+### Thanks for Visiting ❤️
+
+**Happy Coding 🚀**
+
+</div>
