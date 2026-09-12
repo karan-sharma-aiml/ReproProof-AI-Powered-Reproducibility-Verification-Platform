@@ -20,7 +20,7 @@ export function VerificationResultPanel({ report, error }: { report: FinalVerifi
                 <p className="mt-1 text-lg font-bold text-slate-900 dark:text-white">{report.verdict}</p>
             </div>
             <div className="text-right">
-                <p className="text-2xl font-bold text-brand-600 dark:text-brand-400">{report.confidence}</p>
+                <p className="text-2xl font-bold text-brand-600 dark:text-brand-400">{report.confidence ?? 0}</p>
                 <p className="text-xs text-slate-500">confidence</p>
             </div>
         </div>

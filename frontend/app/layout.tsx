@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { LayoutEnhancements } from "@/components/layout/LayoutEnhancements";
 import { ThemeProvider } from "@/hooks/useTheme";
 import { ToastProvider } from "@/hooks/useToast";
 import { ToastContainer } from "@/components/ui/ToastContainer";
@@ -17,12 +18,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <body>
                 <ThemeProvider>
                     <ToastProvider>
-                        <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.1),_transparent_32rem)] dark:bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.15),_transparent_32rem)]">
+                        <div className="min-h-screen bg-[#070B17]">
                             <Header />
                             {children}
                             <Footer />
                         </div>
                         <ToastContainer />
+                        <LayoutEnhancements />
                     </ToastProvider>
                 </ThemeProvider>
             </body>

@@ -8,6 +8,7 @@ from pathlib import Path
 
 from app.core.logging import get_logger
 from app.models.project_detection import ProjectDetection
+from app.services.confidence_engine import ConfidenceEngine
 
 logger = get_logger("project_detector")
 
@@ -200,7 +201,7 @@ class ProjectDetector:
             result = ProjectDetection(
                 project_type="Unknown",
                 framework="",
-                confidence=0,
+                detection_confidence=ConfidenceEngine.detection_confidence(0),
                 reason="No recognizable Python project signals were found",
             )
         else:
@@ -208,16 +209,16 @@ class ProjectDetector:
             result = ProjectDetection(
                 project_type=best.project_type,
                 framework=best.framework,
-                confidence=best.weight,
+                detection_confidence=ConfidenceEngine.detection_confidence(best.weight),
                 reason=best.reason,
             )
 
         logger.info(
-            "Detected project %s: type=%s framework=%s confidence=%d",
+            "Detected project %s: type=%s framework=%s detection_confidence=%d",
             repository_path,
             result.project_type,
             result.framework or "none",
-            result.confidence,
+            result.detection_confidence,
         )
         return result
 

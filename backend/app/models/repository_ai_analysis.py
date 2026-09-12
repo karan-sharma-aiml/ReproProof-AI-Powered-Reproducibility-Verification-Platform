@@ -16,7 +16,7 @@ class RepositoryIssue(BaseModel):
     title: str
     description: str
     severity: Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]
-    confidence: int = Field(ge=0, le=100)
+    issue_confidence: int = Field(ge=0, le=100)
     reason: str
     recommended_fix: str
     evidence: list[str] = Field(default_factory=list)

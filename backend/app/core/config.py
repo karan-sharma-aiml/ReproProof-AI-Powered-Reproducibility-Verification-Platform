@@ -50,9 +50,14 @@ class Settings(BaseSettings):
     def cors_origins_list(self) -> List[str]:
         """Parse the JSON-encoded CORS_ORIGINS string into a Python list."""
         try:
-            return json.loads(self.CORS_ORIGINS)
+            origins = json.loads(self.CORS_ORIGINS)
+            if isinstance(origins, list) and all(
+                isinstance(origin, str) and origin for origin in origins
+            ):
+                return origins
         except (json.JSONDecodeError, TypeError):
-            return ["*"]
+            pass
+        return []
 
     @property
     def max_upload_bytes(self) -> int:

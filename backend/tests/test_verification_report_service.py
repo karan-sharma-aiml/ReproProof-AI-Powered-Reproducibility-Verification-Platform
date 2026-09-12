@@ -51,7 +51,7 @@ class VerificationReportServiceTest(unittest.TestCase):
             relative_difference=0,
             tolerance=0.5,
             reproduced=True,
-            confidence=100,
+            verification_confidence=100,
             verdict="REPRODUCED",
             explanation="matched",
             matched_metrics={"accuracy": 94.2},
@@ -61,7 +61,7 @@ class VerificationReportServiceTest(unittest.TestCase):
         repair = RepairPlan(
             repair_type="NO_ACTION_REQUIRED",
             description="none",
-            confidence=100,
+            repair_plan_confidence=100,
             safe_to_apply=True,
             requires_human_review=False,
         )
@@ -71,7 +71,7 @@ class VerificationReportServiceTest(unittest.TestCase):
         pdf = VerificationReportService().pdf_bytes(report.markdown_report)
 
         self.assertEqual(report.verdict, "REPRODUCED")
-        self.assertGreater(report.confidence, 0)
+        self.assertGreater(report.final_ai_confidence, 0)
         self.assertTrue(pdf.startswith(b"%PDF-1.4"))
         self.assertIn("ReproProof Verification Report", report.markdown_report)
 

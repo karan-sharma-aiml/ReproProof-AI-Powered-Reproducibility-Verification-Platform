@@ -11,15 +11,84 @@ html.dark {
 }
 
 body {
-    @apply bg-slate-50 text-slate-950 antialiased dark:bg-slate-950 dark:text-white;
+    @apply bg-slate-50 text-slate-950 antialiased;
+    background-image: linear-gradient(rgba(15, 23, 42, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, 0.025) 1px, transparent 1px), radial-gradient(circle at 14% -10%, rgba(37, 99, 235, 0.12), transparent 32rem);
+    background-size: 28px 28px, 28px 28px, auto;
+    font-family: "DM Sans", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+html.dark body {
+    background-color: #070B17;
+    color: #F8FAFC;
+    background-image: linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px), radial-gradient(circle at 14% -10%, rgba(37, 99, 235, 0.2), transparent 32rem), radial-gradient(circle at 92% 10%, rgba(34, 211, 238, 0.09), transparent 28rem);
+    background-size: 28px 28px, 28px 28px, auto, auto;
 }
 
 ::selection {
-    @apply bg-brand-200 text-brand-950 dark:bg-brand-800 dark:text-white;
+    @apply bg-violet-500/40 text-white;
+}
+
+button,
+a {
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid rgb(96 165 250 / 0.9);
+    outline-offset: 3px;
+}
+
+@keyframes rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-rise-in {
+    animation: rise-in 500ms ease-out both;
+}
+
+@layer components {
+    .action-button {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-xs font-semibold text-slate-200 transition hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/10;
+        background-color: rgb(255 255 255 / 0.04);
+    }
+
+    .surface-grid {
+        @apply relative overflow-hidden rounded-3xl bg-slate-950/70 backdrop-blur-xl;
+        border: 1px solid rgb(255 255 255 / 0.08);
+        box-shadow: 0 24px 80px rgb(2 6 23 / 0.28);
+    }
 }
 
 @layer utilities {
     .text-balance {
         text-wrap: balance;
+    }
+
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(100 116 139 / 0.45) transparent;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

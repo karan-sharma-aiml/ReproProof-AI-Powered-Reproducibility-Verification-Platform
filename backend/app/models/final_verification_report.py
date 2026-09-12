@@ -10,6 +10,10 @@ from app.models.execution_result import ExecutionResult
 from app.models.repository import RepositoryMetadata
 from app.models.repository_ai_analysis import RepositoryAIAnalysis
 from app.models.verification_report import VerificationReport
+from app.services.patch_generator.models import PatchResult
+from app.services.platform.models import ExecutiveSummary, HealthScoreResult
+from app.services.self_healing.models import ExecutionHistoryEntry
+from app.services.troubleshooter.models import TroubleshootingReport
 
 
 class FinalVerificationReport(BaseModel):
@@ -27,10 +31,21 @@ class FinalVerificationReport(BaseModel):
         "EXECUTION_FAILED",
         "INVALID_PROJECT",
     ]
-    confidence: int = Field(ge=0, le=100)
+    final_ai_confidence: int = Field(ge=0, le=100)
     overall_score: float = Field(ge=0, le=100)
     explanation: str
     repair_suggestions: list[str] = Field(default_factory=list)
     timestamp: str
     system_information: str
     markdown_report: str = ""
+    troubleshooting: TroubleshootingReport | None = None
+    generated_patch: PatchResult | None = None
+    retry_count: int = Field(default=0, ge=0, le=3)
+    applied_patch: PatchResult | None = None
+    execution_history: list[ExecutionHistoryEntry] = Field(default_factory=list)
+    backup_path: str = ""
+    rollback_available: bool = False
+    final_status: str = ""
+    health_score: int = Field(default=0, ge=0, le=100)
+    health_score_details: HealthScoreResult | None = None
+    executive_summary: ExecutiveSummary | None = None

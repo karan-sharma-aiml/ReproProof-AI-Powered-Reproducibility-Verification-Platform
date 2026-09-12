@@ -6,6 +6,14 @@ import type {
   FinalVerificationReport,
   StatusResponse,
   UploadResponse,
+  TroubleshootingReport,
+  PatchResult,
+  ApplyResult,
+  RollbackResult,
+  RerunResult,
+  AnalyticsResult,
+  ExecutiveSummary,
+  HealthScoreResult,
 } from "@/types";
 
 const api = axios.create({
@@ -66,7 +74,62 @@ export async function fetchVerification(
   repositoryId: string,
 ): Promise<FinalVerificationReport> {
   const { data } = await api.get<{ report: FinalVerificationReport; markdown: string }>(`/report/${repositoryId}`);
-  return data.report;
+  const report = data.report as FinalVerificationReport & {
+    final_ai_confidence?: number;
+  };
+  return {
+    ...report,
+    confidence: report.final_ai_confidence ?? report.confidence ?? 0,
+  };
+}
+
+export async function troubleshootExecution(
+  executionId: string,
+): Promise<TroubleshootingReport> {
+  const { data } = await api.post<TroubleshootingReport>("/troubleshoot", {
+    execution_id: executionId,
+  });
+  return data;
+}
+
+export async function generatePatch(executionId: string): Promise<PatchResult> {
+  const { data } = await api.post<PatchResult>("/generate-patch", {
+    execution_id: executionId,
+  });
+  return data;
+}
+
+export async function applyFix(executionId: string, patchId: string): Promise<ApplyResult> {
+  const { data } = await api.post<ApplyResult>("/apply-fix", {
+    execution_id: executionId,
+    patch_id: patchId,
+  });
+  return data;
+}
+
+export async function rerunExecution(executionId: string): Promise<RerunResult> {
+  const { data } = await api.post<RerunResult>("/rerun", { execution_id: executionId });
+  return data;
+}
+
+export async function rollbackExecution(executionId: string): Promise<RollbackResult> {
+  const { data } = await api.post<RollbackResult>("/rollback", { execution_id: executionId });
+  return data;
+}
+
+export async function fetchAnalytics(): Promise<AnalyticsResult> {
+  const { data } = await api.get<AnalyticsResult>("/analytics");
+  return data;
+}
+
+export async function fetchHealthScore(repositoryId: string): Promise<HealthScoreResult> {
+  const { data } = await api.get<HealthScoreResult>(`/health-score/${repositoryId}`);
+  return data;
+}
+
+export async function fetchExecutiveSummary(repositoryId: string): Promise<ExecutiveSummary> {
+  const { data } = await api.get<ExecutiveSummary>(`/summary/${repositoryId}`);
+  return data;
 }
 
 export default api;

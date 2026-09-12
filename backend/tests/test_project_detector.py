@@ -24,7 +24,7 @@ class ProjectDetectorSmokeTest(unittest.TestCase):
 
         self.assertEqual(result.project_type, "Web API")
         self.assertEqual(result.framework, "fastapi")
-        self.assertGreaterEqual(result.confidence, 70)
+        self.assertGreaterEqual(result.detection_confidence, 70)
         self.assertIn("declared", result.reason)
 
     def test_detects_notebook_project_from_notebook_file(self) -> None:

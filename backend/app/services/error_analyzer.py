@@ -9,6 +9,7 @@ from typing import Pattern
 from app.core.logging import get_logger
 from app.models.error_analysis import ErrorAnalysis
 from app.models.execution_result import ExecutionResult
+from app.services.confidence_engine import ConfidenceEngine
 
 logger = get_logger("error_analyzer")
 
@@ -22,7 +23,7 @@ class _FailureRule:
     root_cause: str
     severity: str
     repairable: bool
-    confidence: int
+    evidence_strength: int
     suggested_repair_type: str
 
 
@@ -124,7 +125,9 @@ class ErrorAnalyzer:
                 root_cause="Execution completed successfully.",
                 severity="none",
                 repairable=False,
-                confidence=100,
+                classification_confidence=ConfidenceEngine.classification_confidence(
+                    100
+                ),
                 evidence=[
                     "ExecutionResult.success=True",
                     f"exit_code={result.exit_code}",
@@ -148,14 +151,16 @@ class ErrorAnalyzer:
                     root_cause=rule.root_cause,
                     severity=rule.severity,  # type: ignore[arg-type]
                     repairable=rule.repairable,
-                    confidence=rule.confidence,
+                    classification_confidence=ConfidenceEngine.classification_confidence(
+                        rule.evidence_strength
+                    ),
                     evidence=evidence,
                     suggested_repair_type=rule.suggested_repair_type,
                 )
                 logger.warning(
-                    "Classified execution failure: category=%s confidence=%d",
+                    "Classified execution failure: category=%s classification_confidence=%d",
                     analysis.category,
-                    analysis.confidence,
+                    analysis.classification_confidence,
                 )
                 return analysis
 
@@ -164,7 +169,7 @@ class ErrorAnalyzer:
             root_cause="Execution failed without a recognized error signature.",
             severity="high",
             repairable=False,
-            confidence=25,
+            classification_confidence=ConfidenceEngine.classification_confidence(25),
             evidence=self._evidence(output, "") or [f"exit_code={result.exit_code}"],
             suggested_repair_type="Manual investigation",
         )
@@ -195,7 +200,9 @@ class ErrorAnalyzer:
             root_cause="Execution exceeded the configured time limit.",
             severity="high",
             repairable=True,
-            confidence=100 if result.timed_out else 92,
+            classification_confidence=ConfidenceEngine.classification_confidence(
+                100 if result.timed_out else 92
+            ),
             evidence=list(dict.fromkeys(evidence))[:3],
             suggested_repair_type="Timeout or workload adjustment",
         )

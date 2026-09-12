@@ -10,6 +10,7 @@ from pathlib import Path
 from app.core.logging import get_logger
 from app.models.repository import RepositoryMetadata
 from app.models.repository_ai_analysis import RepositoryAIAnalysis, RepositoryIssue
+from app.services.confidence_engine import ConfidenceEngine
 
 logger = get_logger("repository_ai_analyzer")
 
@@ -593,7 +594,7 @@ class RepositoryAIAnalyzer:
         title,
         description,
         severity,
-        confidence,
+        evidence_strength,
         reason,
         fix,
         affected_file="",
@@ -604,7 +605,7 @@ class RepositoryAIAnalyzer:
                 title,
                 description,
                 severity,
-                confidence,
+                evidence_strength,
                 reason,
                 fix,
                 affected_file,
@@ -617,7 +618,7 @@ class RepositoryAIAnalyzer:
         title,
         description,
         severity,
-        confidence,
+        evidence_strength,
         reason,
         fix,
         affected_file="",
@@ -627,7 +628,7 @@ class RepositoryAIAnalyzer:
             title=title,
             description=description,
             severity=severity,
-            confidence=confidence,
+            issue_confidence=ConfidenceEngine.issue_confidence(evidence_strength),
             reason=reason,
             recommended_fix=fix,
             evidence=[reason],

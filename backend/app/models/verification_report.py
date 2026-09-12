@@ -19,7 +19,7 @@ class VerificationReport(BaseModel):
     relative_difference: float | None
     tolerance: float = Field(ge=0)
     reproduced: bool
-    confidence: int = Field(ge=0, le=100)
+    verification_confidence: int = Field(ge=0, le=100)
     verdict: Literal[
         "REPRODUCED", "PARTIALLY_REPRODUCED", "NOT_REPRODUCED", "UNAVAILABLE"
     ]

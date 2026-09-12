@@ -14,11 +14,45 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import APIRouter, Body, File, HTTPException, UploadFile, status
+from fastapi import (
+    APIRouter,
+    Body,
+    File,
+    HTTPException,
+    Query,
+    UploadFile,
+    WebSocket,
+    WebSocketDisconnect,
+    status,
+)
+from app.services.self_healing.apply_service import ApplyService
+from app.services.self_healing.backup_service import BackupService
+from app.services.self_healing.history_service import HistoryService
+from app.services.self_healing.models import (
+    ApplyFixRequest,
+    ApplyResult,
+    ExecutionHistoryEntry,
+    RerunRequest,
+    RerunResult,
+    RollbackRequest,
+    RollbackResult,
+)
+from app.services.self_healing.retry_engine import RetryEngine
+from app.services.self_healing.rollback_service import RollbackService
+from app.services.platform.analytics_service import AnalyticsService
+from app.services.platform.executive_summary_service import ExecutiveSummaryService
+from app.services.platform.health_score_service import HealthScoreService
+from app.services.platform.models import (
+    AnalyticsResult,
+    ExecutiveSummary,
+    HealthScoreResult,
+)
+from app.services.platform.progress_service import ProgressBroker
 from fastapi.responses import Response, StreamingResponse
 
 from app.core.config import get_settings
 from app.core.logging import get_logger
+from app.models.agent_result import AgentResult
 from app.models.error_analysis import ErrorAnalysis
 from app.models.execution_result import ExecutionResult
 from app.models.execution_event import ExecutionEvent
@@ -26,6 +60,20 @@ from app.models.expected_result import ExpectedResult
 from app.models.final_verification_report import FinalVerificationReport
 from app.models.repository import RepositoryMetadata
 from app.models.repository_ai_analysis import RepositoryAIAnalysis
+from app.services.troubleshooter.models import (
+    TroubleshootRequest,
+    TroubleshootingReport,
+)
+from app.services.troubleshooter.service import TroubleshootingService
+from app.services.patch_generator.models import (
+    GeneratePatchRequest,
+    PatchGenerationInput,
+    PatchResult,
+)
+from app.services.patch_generator.patch_service import (
+    PatchGenerationService,
+    runtime_environment,
+)
 from app.services.error_analyzer import ErrorAnalyzer
 from app.services.repair_planner import RepairPlanner
 from app.services.reproproof_agent import ReproProofAgent
@@ -49,6 +97,26 @@ from app.services.upload_service import handle_upload
 logger = get_logger("api")
 router = APIRouter()
 _FINAL_REPORTS: dict[str, FinalVerificationReport] = {}
+_BACKUP_SERVICE = BackupService()
+_HISTORY_SERVICE = HistoryService()
+_RETRY_ENGINE = RetryEngine(
+    history_service=_HISTORY_SERVICE,
+    apply_service=ApplyService(_BACKUP_SERVICE),
+)
+_PROGRESS_BROKER = ProgressBroker()
+
+
+def _report_path(repository_id: str) -> Path:
+    """Return the durable JSON location for a repository report."""
+    return get_settings().reports_path / f"report-{repository_id}.json"
+
+
+def _store_report(repository_id: str, report: FinalVerificationReport) -> None:
+    """Cache and persist a report under the same ID used by report routes."""
+    _FINAL_REPORTS[repository_id] = report
+    reports_path = get_settings().reports_path
+    reports_path.mkdir(parents=True, exist_ok=True)
+    _report_path(repository_id).write_text(report.model_dump_json(), encoding="utf-8")
 
 
 def _build_expected_from_repository(repository_path: Path) -> ExpectedResult:
@@ -120,6 +188,8 @@ def run_verification_workflow(
     error_analyzer: ErrorAnalyzer | None = None,
     repair_planner: RepairPlanner | None = None,
     verification_engine: VerificationEngine | None = None,
+    agent_result: AgentResult | None = None,
+    execution_result: ExecutionResult | None = None,
 ) -> dict[str, object]:
     """Run the existing services in order and return one JSON-ready report."""
     workflow_agent = agent or ReproProofAgent()
@@ -130,15 +200,17 @@ def run_verification_workflow(
     metric_extractor = MetricExtractionService()
     report_service = VerificationReportService()
 
-    agent_result = workflow_agent.run(repository_path)
-    if agent_result.observation.execution_ready:
-        execution_result = execution_engine.execute(repository_path, agent_result.plan)
-    else:
+    resolved_agent_result = agent_result or workflow_agent.run(repository_path)
+    if execution_result is None and resolved_agent_result.observation.execution_ready:
+        execution_result = execution_engine.execute(
+            repository_path, resolved_agent_result.plan
+        )
+    elif execution_result is None:
         execution_result = ExecutionResult(
             success=False,
             exit_code=-1,
             stdout="",
-            stderr=agent_result.explanation,
+            stderr=resolved_agent_result.explanation,
             execution_time=0.0,
             timed_out=False,
         )
@@ -156,32 +228,40 @@ def run_verification_workflow(
         percentage_tolerance=expected.percentage_tolerance,
     )
     static_analysis = RepositoryAIAnalyzer().analyze(
-        repository_path, agent_result.observation.repository
+        repository_path, resolved_agent_result.observation.repository
+    )
+    report_key = repository_path.parent.name
+    troubleshooting = TroubleshootingService().troubleshoot(
+        report_key,
+        execution_result,
+        repository_path,
+        resolved_agent_result.observation.repository.tree,
     )
     final_report = report_service.build(
-        agent_result.observation.repository,
+        resolved_agent_result.observation.repository,
         static_analysis,
         execution_result,
         metrics,
         verification_report,
         repair_plan,
+        troubleshooting,
     )
     # Use the uploaded repository directory identity that the route can
     # recover from the incoming repository_path payload. The repository
     # inspection metadata for an observation-only pass does not carry the
     # upload id through the run_verification_workflow() call chain.
-    report_key = repository_path.parent.name
-    _FINAL_REPORTS[report_key] = final_report
+    _store_report(report_key, final_report)
 
     return {
-        "goal": agent_result.goal,
-        "observation": agent_result.observation.model_dump(mode="json"),
-        "plan": agent_result.plan.model_dump(mode="json"),
+        "goal": resolved_agent_result.goal,
+        "observation": resolved_agent_result.observation.model_dump(mode="json"),
+        "plan": resolved_agent_result.plan.model_dump(mode="json"),
         "execution": execution_result.model_dump(mode="json"),
         "error_analysis": error_analysis.model_dump(mode="json"),
         "repair_plan": repair_plan.model_dump(mode="json"),
         "verification": verification_report.model_dump(mode="json"),
         "metrics": metrics,
+        "report_id": report_key,
         "final_report": final_report.model_dump(mode="json"),
     }
 
@@ -394,6 +474,12 @@ async def stream_execution(repository_id: str) -> StreamingResponse:
                 "EXECUTION_PLAN_GENERATED", "SUCCESS", "Execution plan generated.", 25
             )
             if not agent_result.observation.execution_ready:
+                expected = _build_expected_from_repository(repository_path)
+                run_verification_workflow(
+                    repository_path,
+                    expected,
+                    agent_result=agent_result,
+                )
                 publish("EXECUTION_FAILED", "FAILED", agent_result.explanation, 25)
                 publish("CLEANUP_COMPLETED", "SUCCESS", "No sandbox was created.", 100)
                 publish(
@@ -409,7 +495,12 @@ async def stream_execution(repository_id: str) -> StreamingResponse:
             )
             result = engine.execute(repository_path, agent_result.plan)
             expected = _build_expected_from_repository(repository_path)
-            run_verification_workflow(repository_path, expected)
+            run_verification_workflow(
+                repository_path,
+                expected,
+                agent_result=agent_result,
+                execution_result=result,
+            )
             publish(
                 "VERIFICATION_READY",
                 "SUCCESS" if result.success else "FAILED",
@@ -468,7 +559,9 @@ async def verify(payload: dict[str, object] = Body(...)) -> dict[str, object]:
             )
         expected = ExpectedResult.model_validate(expected_value)
         repository_path = _repository_path_from_request(repository_value)
-        return run_verification_workflow(repository_path, expected)
+        return await asyncio.to_thread(
+            run_verification_workflow, repository_path, expected
+        )
     except HTTPException:
         raise
     except ValueError as exc:
@@ -478,11 +571,318 @@ async def verify(payload: dict[str, object] = Body(...)) -> dict[str, object]:
         ) from exc
 
 
+@router.post("/troubleshoot", response_model=TroubleshootingReport)
+async def troubleshoot(payload: TroubleshootRequest) -> TroubleshootingReport:
+    """Diagnose a stored execution without changing repository files."""
+    report = _final_report(payload.execution_id)
+    repository_path = _repository_path_from_request(
+        report.repository.repository_path or f"{payload.execution_id}/repository"
+    )
+    troubleshooting_report = await asyncio.to_thread(
+        TroubleshootingService().troubleshoot,
+        payload.execution_id,
+        report.execution,
+        repository_path,
+        report.repository.tree,
+    )
+    _store_report(
+        payload.execution_id,
+        report.model_copy(update={"troubleshooting": troubleshooting_report}),
+    )
+    return troubleshooting_report
+
+
+@router.post("/generate-patch", response_model=PatchResult)
+async def generate_patch(payload: GeneratePatchRequest) -> PatchResult:
+    """Generate and validate a patch preview without applying it."""
+    report = _final_report(payload.execution_id)
+    repository_path = _repository_path_from_request(
+        report.repository.repository_path or f"{payload.execution_id}/repository"
+    )
+    troubleshooting = report.troubleshooting
+    if troubleshooting is None:
+        troubleshooting = TroubleshootingService().troubleshoot(
+            payload.execution_id,
+            report.execution,
+            repository_path,
+            report.repository.tree,
+        )
+    requirements_path = repository_path / "requirements.txt"
+    try:
+        requirements = requirements_path.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        requirements = ""
+    try:
+        patch = await asyncio.to_thread(
+            PatchGenerationService().generate,
+            PatchGenerationInput(
+                execution_id=payload.execution_id,
+                repository_path=str(repository_path),
+                repository_tree=report.repository.tree,
+                execution_logs=troubleshooting.execution_log,
+                stacktrace=report.execution.stderr,
+                error_message=troubleshooting.detected_error or report.execution.stderr,
+                root_cause=troubleshooting.root_cause,
+                human_explanation=troubleshooting.explanation,
+                suggested_fix=" ".join(troubleshooting.possible_fixes),
+                requirements=requirements,
+                environment=runtime_environment(),
+            ),
+        )
+    except (OSError, UnicodeError, ValueError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
+    _store_report(
+        payload.execution_id,
+        report.model_copy(
+            update={"troubleshooting": troubleshooting, "generated_patch": patch}
+        ),
+    )
+    return patch
+
+
+@router.post("/apply-fix", response_model=ApplyResult)
+async def apply_fix(payload: ApplyFixRequest) -> ApplyResult:
+    """Back up and apply a stored validated patch preview."""
+    report = _final_report(payload.execution_id)
+    patch = report.generated_patch
+    if patch is None or patch.patch_id != payload.patch_id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Patch not found"
+        )
+    repository_path = _repository_path_from_request(
+        report.repository.repository_path or f"{payload.execution_id}/repository"
+    )
+    _PROGRESS_BROKER.publish(
+        payload.execution_id,
+        "PATCH_APPLY",
+        "RUNNING",
+        65,
+        "Applying validated patch",
+    )
+    try:
+        result = await asyncio.to_thread(
+            ApplyService(_BACKUP_SERVICE).apply,
+            payload.execution_id,
+            repository_path,
+            patch,
+        )
+    except (OSError, UnicodeError, ValueError) as exc:
+        _PROGRESS_BROKER.publish(
+            payload.execution_id, "PATCH_APPLY", "FAILED", 65, str(exc)
+        )
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
+    _store_report(
+        payload.execution_id,
+        report.model_copy(
+            update={
+                "applied_patch": patch,
+                "backup_path": result.backup_location,
+                "rollback_available": True,
+                "final_status": "PATCH_APPLIED",
+            }
+        ),
+    )
+    _PROGRESS_BROKER.publish(
+        payload.execution_id,
+        "PATCH_APPLY",
+        "SUCCESS",
+        70,
+        "Patch applied and verified",
+    )
+    return result
+
+
+@router.post("/rerun", response_model=RerunResult)
+async def rerun(payload: RerunRequest) -> RerunResult:
+    """Rerun an applied patch and perform bounded intelligent retries."""
+    report = _final_report(payload.execution_id)
+    if report.applied_patch is None or not report.backup_path:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Apply a generated patch before rerunning",
+        )
+    repository_path = _repository_path_from_request(
+        report.repository.repository_path or f"{payload.execution_id}/repository"
+    )
+    _PROGRESS_BROKER.publish(
+        payload.execution_id, "RERUN", "RUNNING", 75, "Re-running repository"
+    )
+    try:
+        result = await asyncio.to_thread(
+            _RETRY_ENGINE.run,
+            payload.execution_id,
+            repository_path,
+            report.applied_patch,
+            report.backup_path,
+        )
+    except (OSError, UnicodeError, ValueError) as exc:
+        _PROGRESS_BROKER.publish(payload.execution_id, "RERUN", "FAILED", 75, str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
+    _store_report(
+        payload.execution_id,
+        report.model_copy(
+            update={
+                "execution": result.execution,
+                "retry_count": result.retry_count,
+                "applied_patch": result.applied_patch,
+                "execution_history": result.history,
+                "backup_path": result.backup_path,
+                "rollback_available": result.rollback_available,
+                "final_status": result.final_status,
+            }
+        ),
+    )
+    _PROGRESS_BROKER.publish(
+        payload.execution_id,
+        "FINISHED",
+        "SUCCESS" if result.execution.success else "FAILED",
+        100,
+        result.final_status,
+    )
+    return result
+
+
+@router.post("/rollback", response_model=RollbackResult)
+async def rollback(payload: RollbackRequest) -> RollbackResult:
+    """Restore all backups recorded for an execution in reverse order."""
+    report = _final_report(payload.execution_id)
+    repository_path = _repository_path_from_request(
+        report.repository.repository_path or f"{payload.execution_id}/repository"
+    )
+    locations = [
+        entry.backup_path for entry in report.execution_history if entry.backup_path
+    ]
+    if report.backup_path:
+        locations.append(report.backup_path)
+    _PROGRESS_BROKER.publish(
+        payload.execution_id, "ROLLBACK", "RUNNING", 80, "Restoring backup files"
+    )
+    try:
+        result = await asyncio.to_thread(
+            RollbackService(_BACKUP_SERVICE).rollback,
+            payload.execution_id,
+            repository_path,
+            locations,
+        )
+    except (OSError, UnicodeError, ValueError) as exc:
+        _PROGRESS_BROKER.publish(
+            payload.execution_id, "ROLLBACK", "FAILED", 80, str(exc)
+        )
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
+    _store_report(
+        payload.execution_id,
+        report.model_copy(
+            update={
+                "rollback_available": False,
+                "final_status": "ROLLED_BACK",
+            }
+        ),
+    )
+    _PROGRESS_BROKER.publish(
+        payload.execution_id,
+        "ROLLBACK",
+        "SUCCESS",
+        100,
+        "Original files restored",
+    )
+    return result
+
+
+@router.get("/execution-history", response_model=list[ExecutionHistoryEntry])
+async def execution_history(
+    execution_id: str | None = Query(default=None),
+) -> list[ExecutionHistoryEntry]:
+    """Return self-healing attempts, optionally filtered by execution ID."""
+    return _HISTORY_SERVICE.list(execution_id)
+
+
+@router.websocket("/ws/progress/{execution_id}")
+async def websocket_progress(websocket: WebSocket, execution_id: str) -> None:
+    """Stream additive self-healing progress events over WebSocket."""
+    await websocket.accept()
+    subscriber = _PROGRESS_BROKER.subscribe(execution_id)
+    try:
+        while True:
+            event = await asyncio.to_thread(subscriber.get)
+            await websocket.send_json(event.model_dump(mode="json"))
+            if (
+                event.status in {"SUCCESS", "FAILED", "CANCELLED"}
+                and event.progress >= 100
+            ):
+                break
+    except WebSocketDisconnect:
+        return
+    finally:
+        _PROGRESS_BROKER.unsubscribe(execution_id, subscriber)
+
+
+@router.get("/analytics", response_model=AnalyticsResult)
+async def analytics() -> AnalyticsResult:
+    """Return aggregate analytics for reports held by this process."""
+    return AnalyticsService().summarize(
+        _FINAL_REPORTS.values(), _HISTORY_SERVICE.list()
+    )
+
+
+@router.get("/health-score/{repository_id}", response_model=HealthScoreResult)
+async def health_score(repository_id: str) -> HealthScoreResult:
+    report = _final_report(repository_id)
+    result = HealthScoreService().calculate(
+        report.repository,
+        report.static_analysis,
+        report.execution,
+        patch_success=report.final_status in {"SUCCEEDED", "REPRODUCED"},
+        retry_success=report.retry_count > 0 and report.execution.success,
+    )
+    _store_report(
+        repository_id,
+        report.model_copy(
+            update={"health_score": result.score, "health_score_details": result}
+        ),
+    )
+    return result
+
+
+@router.get("/summary/{repository_id}", response_model=ExecutiveSummary)
+async def executive_summary(repository_id: str) -> ExecutiveSummary:
+    report = _final_report(repository_id)
+    summary = ExecutiveSummaryService().build(repository_id, report)
+    _store_report(
+        repository_id,
+        report.model_copy(
+            update={
+                "executive_summary": summary,
+                "health_score": summary.health_score,
+            }
+        ),
+    )
+    return summary
+
+
 # ── GET /metrics/{id}, /verification/{id}, /report/{id} ─────────────────────
 
 
 def _final_report(repository_id: str) -> FinalVerificationReport:
     report = _FINAL_REPORTS.get(repository_id)
+    if report is None:
+        report_file = _report_path(repository_id)
+        try:
+            report = FinalVerificationReport.model_validate_json(
+                report_file.read_text(encoding="utf-8")
+            )
+        except (OSError, ValueError):
+            report = None
+        if report is not None:
+            _FINAL_REPORTS[repository_id] = report
     if report is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

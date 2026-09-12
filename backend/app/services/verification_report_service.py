@@ -12,6 +12,8 @@ from app.models.repository import RepositoryMetadata
 from app.models.repository_ai_analysis import RepositoryAIAnalysis
 from app.models.repair_plan import RepairPlan
 from app.models.verification_report import VerificationReport
+from app.services.troubleshooter.models import TroubleshootingReport
+from app.services.confidence_engine import ConfidenceEngine
 
 
 class VerificationReportService:
@@ -25,6 +27,7 @@ class VerificationReportService:
         metrics: dict[str, float],
         verification: VerificationReport,
         repair_plan: RepairPlan,
+        troubleshooting: TroubleshootingReport | None = None,
     ) -> FinalVerificationReport:
         if not execution.success:
             verdict = "EXECUTION_FAILED"
@@ -48,16 +51,10 @@ class VerificationReportService:
                 + (100 - static_analysis.risk_score) * 0.15,
             ),
         )
-        confidence = round(
-            max(
-                0,
-                min(
-                    100,
-                    verification.confidence * 0.5
-                    + static_analysis.execution_probability * 0.3
-                    + (100 - static_analysis.risk_score) * 0.2,
-                ),
-            )
+        final_ai_confidence = ConfidenceEngine.final_ai_confidence(
+            verification_confidence=verification.verification_confidence,
+            execution_probability=static_analysis.execution_probability,
+            risk_score=static_analysis.risk_score,
         )
         explanation = self._explanation(verdict, verification, execution)
         return FinalVerificationReport(
@@ -67,7 +64,7 @@ class VerificationReportService:
             metrics=metrics,
             verification=verification,
             verdict=verdict,
-            confidence=confidence,
+            final_ai_confidence=final_ai_confidence,
             overall_score=overall_score,
             explanation=explanation,
             repair_suggestions=repair_plan.manual_actions
@@ -80,9 +77,10 @@ class VerificationReportService:
                 metrics,
                 verification,
                 verdict,
-                confidence,
+                final_ai_confidence,
                 repair_plan,
             ),
+            troubleshooting=troubleshooting,
         )
 
     @staticmethod
@@ -99,7 +97,13 @@ class VerificationReportService:
 
     @staticmethod
     def _markdown(
-        repository, execution, metrics, verification, verdict, confidence, repair_plan
+        repository,
+        execution,
+        metrics,
+        verification,
+        verdict,
+        final_ai_confidence,
+        repair_plan,
     ) -> str:
         metric_lines = (
             "\n".join(f"| {name} | {value} |" for name, value in metrics.items())
@@ -131,7 +135,7 @@ class VerificationReportService:
 
 ## AI Verdict
 - Verdict: **{verdict}**
-- Confidence: {confidence}/100
+- Final AI Confidence: {final_ai_confidence}/100
 - Explanation: {verification.explanation}
 
 ## Repair Suggestions

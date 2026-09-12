@@ -12,5 +12,5 @@ class ProjectDetection(BaseModel):
 
     project_type: str
     framework: str
-    confidence: int = Field(ge=0, le=100)
+    detection_confidence: int = Field(ge=0, le=100)
     reason: str

@@ -10,6 +10,7 @@ from app.core.logging import get_logger
 from app.models.expected_result import ExpectedResult
 from app.models.execution_result import ExecutionResult
 from app.models.verification_report import VerificationReport
+from app.services.confidence_engine import ConfidenceEngine
 
 logger = get_logger("verification_engine")
 
@@ -44,7 +45,7 @@ class VerificationEngine:
                 relative_difference=None,
                 tolerance=comparison_tolerance,
                 reproduced=False,
-                confidence=0,
+                verification_confidence=0,
                 verdict="UNAVAILABLE",
                 explanation=(
                     "The execution result does not contain a verifiable numeric "
@@ -61,7 +62,7 @@ class VerificationEngine:
         )
         reproduced = absolute_difference <= comparison_tolerance
         verdict = "REPRODUCED" if reproduced else "NOT_REPRODUCED"
-        confidence = self._confidence(
+        verification_confidence = ConfidenceEngine.verification_confidence(
             absolute_difference, comparison_tolerance, execution_result
         )
         report = VerificationReport(
@@ -72,7 +73,7 @@ class VerificationEngine:
             relative_difference=relative_difference,
             tolerance=comparison_tolerance,
             reproduced=reproduced,
-            confidence=confidence,
+            verification_confidence=verification_confidence,
             verdict=verdict,
             explanation=self._explanation(
                 expected, actual_value, absolute_difference, comparison_tolerance
@@ -82,7 +83,7 @@ class VerificationEngine:
             overall_similarity=(
                 100.0 if reproduced else max(0.0, 100.0 - relative_difference * 100.0)
             ),
-            overall_score=float(confidence),
+            overall_score=float(verification_confidence),
         )
         logger.info(
             "Verification complete: metric=%s expected=%s actual=%s verdict=%s",
@@ -143,7 +144,9 @@ class VerificationEngine:
             relative_difference=None,
             tolerance=absolute_tolerance,
             reproduced=verdict == "REPRODUCED",
-            confidence=round(similarity),
+            verification_confidence=ConfidenceEngine.verification_confidence_from_similarity(
+                similarity
+            ),
             verdict=verdict,
             explanation=f"Matched {len(matched)} of {total} expected metrics; missing {len(missing)}.",
             matched_metrics=matched,
@@ -179,24 +182,6 @@ class VerificationEngine:
         if expected == 0:
             return 0.0 if absolute_difference == 0 else math.inf
         return absolute_difference / abs(expected)
-
-    @staticmethod
-    def _confidence(
-        absolute_difference: float,
-        tolerance: float,
-        execution_result: ExecutionResult,
-    ) -> int:
-        if not execution_result.success or execution_result.timed_out:
-            return 0
-        if absolute_difference <= tolerance:
-            return (
-                100
-                if tolerance == 0
-                else max(80, round(100 - (absolute_difference / tolerance) * 20))
-            )
-        return max(
-            1, round(100 - min(99, (absolute_difference / max(tolerance, 1e-12)) * 10))
-        )
 
     @staticmethod
     def _explanation(

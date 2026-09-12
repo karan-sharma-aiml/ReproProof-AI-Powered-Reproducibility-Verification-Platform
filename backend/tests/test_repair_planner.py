@@ -14,7 +14,7 @@ def analysis(category: str, evidence: list[str] | None = None) -> ErrorAnalysis:
         root_cause=f"Observed {category}",
         severity="high" if category != "None" else "none",
         repairable=category != "None",
-        confidence=96,
+        classification_confidence=96,
         evidence=evidence or [category],
         suggested_repair_type="deterministic test input",
     )
@@ -41,8 +41,8 @@ class RepairPlannerSmokeTest(unittest.TestCase):
             with self.subTest(category=category):
                 plan = planner.create_plan(analysis(category))
                 self.assertEqual(plan.repair_type, repair_type)
-                self.assertGreaterEqual(plan.confidence, 0)
-                self.assertLessEqual(plan.confidence, 100)
+                self.assertGreaterEqual(plan.repair_plan_confidence, 0)
+                self.assertLessEqual(plan.repair_plan_confidence, 100)
 
     def test_extracts_missing_module_without_executing_install(self) -> None:
         plan = RepairPlanner().create_plan(

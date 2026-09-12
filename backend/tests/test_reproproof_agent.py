@@ -28,7 +28,7 @@ def make_report(execution_ready: bool) -> ObservationReport:
         project=ProjectDetection(
             project_type="Web API",
             framework="fastapi",
-            confidence=70,
+            detection_confidence=70,
             reason="fastapi is declared in a project dependency file",
         ),
         health_score=100 if execution_ready else 60,

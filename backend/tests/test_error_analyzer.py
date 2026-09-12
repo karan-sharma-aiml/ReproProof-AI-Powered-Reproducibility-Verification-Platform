@@ -38,7 +38,7 @@ class ErrorAnalyzerSmokeTest(unittest.TestCase):
             with self.subTest(expected_category=expected_category):
                 analysis = analyzer.analyze(failed_result(stderr))
                 self.assertEqual(analysis.category, expected_category)
-                self.assertGreaterEqual(analysis.confidence, 90)
+                self.assertGreaterEqual(analysis.classification_confidence, 90)
                 self.assertTrue(analysis.evidence)
 
     def test_classifies_timeout_from_result_state(self) -> None:

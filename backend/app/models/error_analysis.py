@@ -16,6 +16,6 @@ class ErrorAnalysis(BaseModel):
     root_cause: str
     severity: Literal["none", "low", "medium", "high", "critical"]
     repairable: bool
-    confidence: int = Field(ge=0, le=100)
+    classification_confidence: int = Field(ge=0, le=100)
     evidence: list[str] = Field(default_factory=list)
     suggested_repair_type: str

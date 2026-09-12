@@ -9,6 +9,7 @@ from typing import Literal
 from app.core.logging import get_logger
 from app.models.error_analysis import ErrorAnalysis
 from app.models.repair_plan import RepairPlan
+from app.services.confidence_engine import ConfidenceEngine
 
 logger = get_logger("repair_planner")
 
@@ -158,15 +159,17 @@ class RepairPlanner:
             description=rule.description,
             suggested_commands=suggested_commands,
             manual_actions=manual_actions,
-            confidence=analysis.confidence,
+            repair_plan_confidence=ConfidenceEngine.repair_plan_confidence(
+                analysis.classification_confidence
+            ),
             safe_to_apply=rule.safe_to_apply,
             requires_human_review=rule.requires_human_review,
         )
         logger.info(
-            "Created repair plan: category=%s repair_type=%s confidence=%d",
+            "Created repair plan: category=%s repair_type=%s repair_plan_confidence=%d",
             analysis.category,
             plan.repair_type,
-            plan.confidence,
+            plan.repair_plan_confidence,
         )
         return plan
 

@@ -26,6 +26,6 @@ class RepairPlan(BaseModel):
     description: str
     suggested_commands: list[str] = Field(default_factory=list)
     manual_actions: list[str] = Field(default_factory=list)
-    confidence: int = Field(ge=0, le=100)
+    repair_plan_confidence: int = Field(ge=0, le=100)
     safe_to_apply: bool
     requires_human_review: bool
