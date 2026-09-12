@@ -1741,7 +1741,7 @@ ReproProof is designed to evolve as an **open, extensible platform** where resea
 
 **👨‍💻 Karan Sharma**
 
-📧 Email: *[your-email@example.com](mailto:karanku1882@gmail.com)*
+📧 Email:*[mailto:karanku1882@gmail.com]*
 
 🔗 GitHub: **[https://github.com/karan-sharma-aiml](https://github.com/karan-sharma-aiml)**
 
