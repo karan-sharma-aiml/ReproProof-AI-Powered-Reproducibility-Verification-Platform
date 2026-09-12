@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: reproproof-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.13"
+      - key: APP_ENV
+        value: "production"
+      - key: DEBUG
+        value: "false"
+      - key: CORS_ORIGINS
+        value: '["https://reproproof-frontend.vercel.app"]'
+        sync: false
