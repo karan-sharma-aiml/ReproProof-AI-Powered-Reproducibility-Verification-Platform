@@ -72,6 +72,8 @@ export function NotificationCenter({
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setShowCenter(!showCenter)}
+                aria-label="Open notifications"
+                aria-expanded={showCenter}
                 className="relative flex items-center justify-center w-12 h-12 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] transition"
             >
                 <Bell className="h-5 w-5 text-slate-300" />
@@ -133,6 +135,7 @@ export function NotificationCenter({
                                                     whileHover={{ scale: 1.1 }}
                                                     whileTap={{ scale: 0.9 }}
                                                     onClick={() => onRemove(notification.id)}
+                                                    aria-label={`Dismiss ${notification.title}`}
                                                     className="mt-0.5 text-slate-600 hover:text-slate-300 opacity-0 group-hover:opacity-100 transition"
                                                 >
                                                     <X className="h-4 w-4" />

@@ -23,7 +23,7 @@ export default function ReportPage() {
                 const result = await fetchVerification(reportId);
                 if (active) setReport(result);
             } catch {
-                if (active) setError("This verification report is not available yet.");
+                if (active) setError("This verification report is still being prepared.");
             } finally {
                 if (active) setLoading(false);
             }

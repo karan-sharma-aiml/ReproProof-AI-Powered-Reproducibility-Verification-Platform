@@ -35,3 +35,49 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+.venv/
+venv/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+reports/
+logs/
+
+# Temporary
+tmp/
+tmp_validation_cases/
+tmp_validation_exports/
+
+# Cache
+.pytest_cache/
+.mypy_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backups
+backend/backups/
+
+# Node
+frontend/node_modules/

@@ -3,7 +3,7 @@ import type { FinalVerificationReport, RepositoryMetadata, RepositoryAIAnalysis 
 import { StatusChip } from "@/components/ui/StatusChip";
 
 export function GlobalStatusBar({ repository, analysis, report, executionStatus = "Idle" }: { repository: RepositoryMetadata | null; analysis: RepositoryAIAnalysis | null; report: FinalVerificationReport | null; executionStatus?: string }) {
-    const framework = repository?.detected_frameworks[0] ?? "Framework pending";
+    const framework = repository?.detected_frameworks[0] ?? "Python project";
     const language = repository?.detected_languages[0] ?? "Language pending";
     const statusTone = executionStatus === "Completed" || executionStatus === "SUCCESS" ? "success" : executionStatus === "FAILED" ? "error" : executionStatus === "Running" ? "warning" : "neutral";
     return (

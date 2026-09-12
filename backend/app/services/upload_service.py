@@ -84,7 +84,7 @@ async def handle_upload(file: UploadFile) -> UploadData:
         RepositoryAnalysisService().extract_and_analyze(dest, upload_id)
     except ValueError as exc:
         logger.exception("Failed to analyze uploaded repository: %s", upload_id)
-        raise UploadError(str(exc)) from exc
+        raise InvalidFileTypeError(str(exc)) from exc
 
     logger.info(
         "Upload saved: id=%s file=%s size=%d bytes",

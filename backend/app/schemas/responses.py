@@ -32,6 +32,10 @@ class HealthResponse(BaseResponse):
     status: str
     environment: str
     timestamp: str
+    database: dict[str, Any] = Field(default_factory=dict)
+    redis: dict[str, Any] = Field(default_factory=dict)
+    object_storage: dict[str, Any] = Field(default_factory=dict)
+    migration_status: dict[str, str] = Field(default_factory=dict)
 
 
 # ── Upload ───────────────────────────────────────────────────────────────────

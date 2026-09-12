@@ -1,0 +1,95 @@
+groups:
+  - name: reproproof-enterprise
+    rules:
+      - alert: ReproProofCPUHigh
+        expr: reproproof_node_cpu_percent > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: ReproProof CPU usage is high
+      - alert: ReproProofMemoryHigh
+        expr: reproproof_node_memory_bytes > 2000000000
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: ReproProof memory usage is high}
+      - alert: ReproProofRepositoryFailure
+        expr: rate(reproproof_repository_analysis_total{status="failed"}[5m]) > 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: Repository analysis failures detected}
+      - alert: ReproProofAIProviderFailure
+        expr: rate(reproproof_provider_failures_total[5m]) > 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: AI provider failures detected}
+      - alert: ReproProofExecutionTimeout
+        expr: rate(reproproof_execution_timeouts_total[5m]) > 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: Execution timeouts detected}
+      - alert: ReproProofResearchFailure
+        expr: rate(reproproof_research_failures_total[5m]) > 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: Research failures detected}
+      - alert: ReproProofJudgeFailure
+        expr: rate(reproproof_judge_failures_total[5m]) > 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: Judge failures detected}
+      - alert: ReproProofOCRFailure
+        expr: rate(reproproof_ocr_failures_total[5m]) > 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: OCR failures detected}
+      - alert: ReproProofDeploymentFailure
+        expr: rate(reproproof_deployment_failures_total[5m]) > 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: Deployment failures detected}
+      - alert: ReproProofRedisDown
+        expr: up{job="redis"} == 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: Redis exporter is down}
+      - alert: ReproProofPostgresDown
+        expr: up{job="postgres"} == 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: PostgreSQL exporter is down}
+      - alert: ReproProofStorageFailure
+        expr: rate(reproproof_storage_failures_total[5m]) > 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: Object storage failures detected}
+      - alert: ReproProofDiskFull
+        expr: reproproof_node_filesystem_free_bytes < 1000000000
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: Filesystem space is low}
+      - alert: ReproProofQueueOverflow
+        expr: reproproof_queue_size > 100
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: Execution queue backlog is high}
+      - alert: ReproProofSecurityAttack
+        expr: rate(reproproof_security_events_total[5m]) > 10
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: Security event rate is high}
+      - alert: ReproProofTooManyErrors
+        expr: rate(reproproof_http_errors_total[5m]) > 0.05
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: API error rate is elevated}
+      - alert: ReproProofHighLatency
+        expr: histogram_quantile(0.95, rate(reproproof_http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: API latency is elevated}
+      - alert: ReproProofAPIDown
+        expr: up{job="reproproof"} == 0
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: ReproProof API is down}

@@ -314,12 +314,19 @@ async def root() -> RootResponse:
 )
 async def health() -> HealthResponse:
     settings = get_settings()
+    from app.infrastructure.service import infrastructure_service
+
+    infrastructure = await infrastructure_service.overview_async()
     return HealthResponse(
         success=True,
         message="Service is healthy.",
         status="ok",
         environment=settings.APP_ENV,
         timestamp=datetime.now(timezone.utc).isoformat(),
+        database=infrastructure.database.model_dump(mode="json"),
+        redis=infrastructure.cache.model_dump(mode="json"),
+        object_storage=infrastructure.storage.model_dump(mode="json"),
+        migration_status=infrastructure.migration_status,
     )
 
 

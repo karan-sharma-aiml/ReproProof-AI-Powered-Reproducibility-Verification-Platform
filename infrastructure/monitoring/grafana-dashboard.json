@@ -1,0 +1,38 @@
+{
+    "title": "ReproProof Infrastructure",
+    "schemaVersion": 39,
+    "panels": [
+        {
+            "title": "HTTP requests",
+            "type": "timeseries",
+            "targets": [
+                {
+                    "expr": "reproproof_http_requests_total"
+                }
+            ]
+        },
+        {
+            "title": "HTTP errors",
+            "type": "timeseries",
+            "targets": [
+                {
+                    "expr": "reproproof_http_errors_total"
+                }
+            ]
+        }
+    ],
+    "generated_dashboards": [
+        "Platform Overview",
+        "Repository Analytics",
+        "AI Provider Usage",
+        "Research Analytics",
+        "Agent Activity",
+        "Judge Activity",
+        "Execution Queue",
+        "Memory Usage",
+        "Security Dashboard",
+        "Deployment Dashboard",
+        "System Dashboard",
+        "Infrastructure Dashboard"
+    ]
+}

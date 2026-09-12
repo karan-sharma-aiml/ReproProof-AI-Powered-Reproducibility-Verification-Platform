@@ -19,6 +19,13 @@ export interface HealthResponse extends BaseResponse {
   timestamp: string;
 }
 
+export interface MonitoringSnapshot {
+  dashboard: { dashboards: { uid: string; title: string; panels: unknown[] }[]; health: { status: string; components: { name: string; status: string; reason: string }[] } };
+  system: { metrics: { counters: Record<string, number>; histograms: Record<string, number[]>; system: Record<string, number> } };
+  alerts: { groups: { name: string; rules: { alert: string; expr: string; labels: Record<string, string> }[] }[] };
+  providers: { provider?: string; healthy?: boolean; configured?: boolean; reason?: string }[];
+}
+
 /* POST /upload */
 export interface UploadData {
   upload_id: string;
@@ -57,6 +64,14 @@ export interface RepositoryMetadata {
   detected_frameworks: string[];
   health_score: number;
   warnings: string[];
+  package_managers?: string[];
+  ci_cd?: string[];
+  environment_files?: string[];
+  licenses?: string[];
+  test_frameworks?: string[];
+  dependency_packages?: string[];
+  docker_configured?: boolean;
+  readme_quality?: number;
 }
 
 export type IssueSeverity = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
@@ -245,6 +260,18 @@ export interface ExecutiveSummary {
   status: string;
   confidence: number;
   health_score: number;
+}
+
+export interface PlatformOverview {
+  repository_id: string;
+  verdict: string;
+  overall_score: number;
+  confidence: number;
+  scores: Record<string, number>;
+  workflow: { id: string; label: string; status: "complete" | "active" | "pending"; confidence: number }[];
+  decision_tree: { label: string; value: string; children: { label: string; value: string }[] };
+  recommendations: { title: string; reason: string; priority: "high" | "medium" | "low"; source: string }[];
+  knowledge_graph: { nodes: unknown[]; edges: unknown[] };
 }
 
 export interface PlatformProgressEvent {

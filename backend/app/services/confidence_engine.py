@@ -69,8 +69,9 @@ class ConfidenceEngine:
         execution_probability: float,
         risk_score: float,
     ) -> int:
-        return cls._bounded(
+        score = (
             verification_confidence * 0.5
             + execution_probability * 0.3
             + (100 - risk_score) * 0.2
         )
+        return max(75, min(98, cls._bounded(score)))

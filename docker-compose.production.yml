@@ -1,0 +1,182 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      APP_ENV: production
+      POSTGRES_ENABLED: "true"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: ${POSTGRES_DB:-reproproof}
+      POSTGRES_USER: ${POSTGRES_USER:-reproproof}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      REDIS_ENABLED: "true"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      STORAGE_PROVIDER: ${STORAGE_PROVIDER:-minio}
+      STORAGE_ROOT: /app/uploads
+      S3_ENDPOINT: ${S3_ENDPOINT:-http://minio:9000}
+      S3_BUCKET: ${S3_BUCKET:-reproproof}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-minioadmin}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-minioadmin}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/live')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: frontend
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-reproproof}
+      POSTGRES_USER: ${POSTGRES_USER:-reproproof}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_KEY:-minioadmin}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./infrastructure/monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./infrastructure/monitoring/grafana-datasource.yml:/etc/grafana/provisioning/datasources/reproproof.yml:ro
+      - ./infrastructure/monitoring/grafana-dashboard.json:/var/lib/grafana/dashboards/reproproof.json:ro
+    depends_on:
+      - prometheus
+
+  loki:
+    image: grafana/loki:3.2.1
+    command: -config.file=/etc/loki/config.yml
+    ports:
+      - "3100:3100"
+    volumes:
+      - loki-data:/loki
+      - ./infrastructure/monitoring/loki-config.yml:/etc/loki/config.yml:ro
+    restart: unless-stopped
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    ports:
+      - "9093:9093"
+    volumes:
+      - alertmanager-data:/alertmanager
+      - ./infrastructure/monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    command: --config.file=/etc/alertmanager/alertmanager.yml --storage.path=/alertmanager
+    restart: unless-stopped
+
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    ports:
+      - "9100:9100"
+    pid: host
+    restart: unless-stopped
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+    restart: unless-stopped
+
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.66.0
+    environment:
+      REDIS_ADDR: redis://redis:6379
+    ports:
+      - "9121:9121"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.15.0
+    environment:
+      DATA_SOURCE_NAME: postgresql://${POSTGRES_USER:-reproproof}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-reproproof}?sslmode=disable
+    ports:
+      - "9187:9187"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:
+  grafana-data:
+  loki-data:
+  alertmanager-data:

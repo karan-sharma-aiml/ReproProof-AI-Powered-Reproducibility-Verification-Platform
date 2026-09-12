@@ -14,6 +14,8 @@ import type {
   AnalyticsResult,
   ExecutiveSummary,
   HealthScoreResult,
+  PlatformOverview,
+  MonitoringSnapshot,
 } from "@/types";
 
 const api = axios.create({
@@ -130,6 +132,21 @@ export async function fetchHealthScore(repositoryId: string): Promise<HealthScor
 export async function fetchExecutiveSummary(repositoryId: string): Promise<ExecutiveSummary> {
   const { data } = await api.get<ExecutiveSummary>(`/summary/${repositoryId}`);
   return data;
+}
+
+export async function fetchPlatformOverview(repositoryId: string): Promise<PlatformOverview> {
+  const { data } = await api.get<PlatformOverview>(`/platform/overview/${repositoryId}`);
+  return data;
+}
+
+export async function fetchMonitoringSnapshot(): Promise<MonitoringSnapshot> {
+  const [dashboard, system, alerts, providers] = await Promise.all([
+    api.get<MonitoringSnapshot["dashboard"]>("/monitoring/dashboard"),
+    api.get<MonitoringSnapshot["system"]>("/monitoring/system"),
+    api.get<MonitoringSnapshot["alerts"]>("/monitoring/alerts"),
+    api.get<MonitoringSnapshot["providers"]>("/monitoring/providers"),
+  ]);
+  return { dashboard: dashboard.data, system: system.data, alerts: alerts.data, providers: providers.data };
 }
 
 export default api;

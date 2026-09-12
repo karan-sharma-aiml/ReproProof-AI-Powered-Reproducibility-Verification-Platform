@@ -25,3 +25,11 @@ class RepositoryMetadata(BaseModel):
     detected_frameworks: list[str] = Field(default_factory=list)
     health_score: int = Field(default=0, ge=0, le=100)
     warnings: list[str] = Field(default_factory=list)
+    package_managers: list[str] = Field(default_factory=list)
+    ci_cd: list[str] = Field(default_factory=list)
+    environment_files: list[str] = Field(default_factory=list)
+    licenses: list[str] = Field(default_factory=list)
+    test_frameworks: list[str] = Field(default_factory=list)
+    dependency_packages: list[str] = Field(default_factory=list)
+    docker_configured: bool = False
+    readme_quality: int = Field(default=0, ge=0, le=100)

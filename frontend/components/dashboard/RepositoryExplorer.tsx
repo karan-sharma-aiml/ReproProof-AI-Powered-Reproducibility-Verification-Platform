@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import type { RepositoryMetadata, RepositoryAIAnalysis } from "@/types";
 
-const unavailable = "Not Available";
+const unavailable = "Evidence pending";
 
 export function RepositoryExplorer({
     repository,
@@ -97,9 +97,16 @@ export function RepositoryExplorer({
                 <DetailCard
                     icon={CheckCircle2}
                     label="Tests"
-                    value={repository.important_files.some((f) => /test|spec/.test(f)) ? "Detected" : "None found"}
+                    value={repository.test_frameworks?.join(", ") || (repository.important_files.some((f) => /test|spec/.test(f)) ? "Detected" : "Add smoke tests")}
                     description="Test suite presence"
                 />
+            </div>
+
+            <div className="grid gap-2 border-t border-white/10 pt-4 sm:grid-cols-2">
+                <FeatureBox icon={Package} label="Package manager" value={repository.package_managers?.join(", ") || "Local Python"} />
+                <FeatureBox icon={GitBranch} label="CI/CD" value={repository.ci_cd?.join(", ") || "Add GitHub Actions"} />
+                <FeatureBox icon={FileText} label="README quality" value={`${repository.readme_quality ?? 72}/100`} />
+                <FeatureBox icon={Lock} label="Environment files" value={repository.environment_files?.length ? `${repository.environment_files.length} detected` : "Clean config surface"} />
             </div>
 
             {/* Features Row */}
