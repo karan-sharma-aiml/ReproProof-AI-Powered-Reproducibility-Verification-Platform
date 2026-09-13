@@ -29,7 +29,7 @@ export function VerificationResultPanel({ report, error }: { report: FinalVerifi
         <div className="mt-4 grid grid-cols-3 gap-2">
             <Score label="Similarity" value={report.verification.overall_similarity} />
             <Score label="Score" value={report.overall_score} />
-            <Score label="Risk" value={report.static_analysis.risk_score} />
+            <Score label="Risk exposure" value={report.static_analysis.risk_score} />
         </div>
 
         <div className="mt-5 grid gap-3 md:grid-cols-2">

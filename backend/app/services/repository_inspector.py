@@ -83,6 +83,26 @@ class RepositoryInspector:
             logger.error("Repository path is not a directory: %s", repository_path)
             raise ValueError(f"Repository path is not a directory: {repository_path}")
 
+        absolute_path = repository_path.resolve()
+        try:
+            inspection_tree = sorted(
+                path.relative_to(absolute_path).as_posix()
+                for path in absolute_path.rglob("*")
+                if path != absolute_path
+            )
+            logger.info(
+                "Inspecting repository root=%s entries=%d tree=%s",
+                absolute_path,
+                len(inspection_tree),
+                inspection_tree[:100],
+            )
+        except OSError as exc:
+            logger.warning(
+                "Could not enumerate repository tree before inspection %s: %s",
+                absolute_path,
+                exc,
+            )
+
         metadata = {
             "repository_name": repository_path.name,
             "total_files": 0,

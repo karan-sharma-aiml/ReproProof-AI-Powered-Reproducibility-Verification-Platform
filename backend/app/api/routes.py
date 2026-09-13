@@ -201,9 +201,25 @@ def run_verification_workflow(
     report_service = VerificationReportService()
 
     resolved_agent_result = agent_result or workflow_agent.run(repository_path)
-    if execution_result is None and resolved_agent_result.observation.execution_ready:
+    is_python_project = resolved_agent_result.observation.project.is_python_project
+    if (
+        execution_result is None
+        and is_python_project
+        and resolved_agent_result.observation.execution_ready
+    ):
         execution_result = execution_engine.execute(
             repository_path, resolved_agent_result.plan
+        )
+    elif execution_result is None and not is_python_project:
+        execution_result = ExecutionResult(
+            success=True,
+            exit_code=0,
+            stdout="Execution skipped (non-Python project)",
+            stderr="",
+            execution_time=0.0,
+            timed_out=False,
+            status="SKIPPED",
+            logs=["Execution skipped (non-Python project)"],
         )
     elif execution_result is None:
         execution_result = ExecutionResult(
@@ -480,6 +496,27 @@ async def stream_execution(repository_id: str) -> StreamingResponse:
             publish(
                 "EXECUTION_PLAN_GENERATED", "SUCCESS", "Execution plan generated.", 25
             )
+            if not agent_result.observation.project.is_python_project:
+                expected = _build_expected_from_repository(repository_path)
+                run_verification_workflow(
+                    repository_path,
+                    expected,
+                    agent_result=agent_result,
+                )
+                publish(
+                    "EXECUTION_SKIPPED",
+                    "SUCCESS",
+                    "Execution skipped (non-Python project)",
+                    25,
+                )
+                publish("CLEANUP_COMPLETED", "SUCCESS", "No sandbox was created.", 100)
+                publish(
+                    "VERIFICATION_READY",
+                    "SUCCESS",
+                    "Verification report generated.",
+                    100,
+                )
+                return
             if not agent_result.observation.execution_ready:
                 expected = _build_expected_from_repository(repository_path)
                 run_verification_workflow(
@@ -508,6 +545,19 @@ async def stream_execution(repository_id: str) -> StreamingResponse:
                 agent_result=agent_result,
                 execution_result=result,
             )
+            if result.success:
+                publish(
+                    "EXECUTION_COMPLETE",
+                    "SUCCESS",
+                    "Execution completed successfully.",
+                    92,
+                )
+                publish(
+                    "REPORT_GENERATED",
+                    "SUCCESS",
+                    "Verification report generated.",
+                    98,
+                )
             publish(
                 "VERIFICATION_READY",
                 "SUCCESS" if result.success else "FAILED",

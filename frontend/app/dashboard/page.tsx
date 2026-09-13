@@ -42,6 +42,7 @@ export default function DashboardPage() {
             report={verification.report}
             events={execution.events}
             executionStatus={execution.status}
+            workflowState={execution.workflowState}
             currentStage={execution.currentStage}
             progress={execution.progress}
             elapsedSeconds={execution.elapsedSeconds}

@@ -19,6 +19,6 @@ class AgentResult(BaseModel):
     observation: ObservationReport
     plan: ExecutionPlan
     status: Literal["READY", "BLOCKED"]
-    next_action: Literal["EXECUTE", "STOP"]
+    next_action: Literal["EXECUTE", "STOP", "SKIP"]
     explanation: str
     blocking_reasons: list[str] = Field(default_factory=list)

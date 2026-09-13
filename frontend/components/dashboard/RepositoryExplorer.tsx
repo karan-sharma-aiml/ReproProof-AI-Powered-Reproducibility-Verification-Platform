@@ -105,7 +105,7 @@ export function RepositoryExplorer({
             <div className="grid gap-2 border-t border-white/10 pt-4 sm:grid-cols-2">
                 <FeatureBox icon={Package} label="Package manager" value={repository.package_managers?.join(", ") || "Local Python"} />
                 <FeatureBox icon={GitBranch} label="CI/CD" value={repository.ci_cd?.join(", ") || "Add GitHub Actions"} />
-                <FeatureBox icon={FileText} label="README quality" value={`${repository.readme_quality ?? 72}/100`} />
+                <FeatureBox icon={FileText} label="README quality" value={repository.readme_quality === undefined ? "Not measured" : `${repository.readme_quality}/100`} />
                 <FeatureBox icon={Lock} label="Environment files" value={repository.environment_files?.length ? `${repository.environment_files.length} detected` : "Clean config surface"} />
             </div>
 

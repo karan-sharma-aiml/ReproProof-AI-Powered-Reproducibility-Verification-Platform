@@ -13,7 +13,7 @@ export function GlobalStatusBar({ repository, analysis, report, executionStatus 
                 <StatusChip label={executionStatus} tone={statusTone} />
             </div>
             <div className="grid gap-4 px-5 py-4 sm:grid-cols-2 lg:grid-cols-5">
-                <StatusItem icon={Code2} label="Framework" value={framework} /><StatusItem icon={Languages} label="Language" value={language} /><StatusItem icon={Activity} label="Stage" value={executionStatus === "Idle" ? "Awaiting run" : executionStatus} /><StatusItem icon={Gauge} label="Health" value={`${repository?.health_score ?? 0}/100`} /><StatusItem icon={ShieldCheck} label="AI Confidence" value={`${report?.confidence ?? 0}%`} />
+                <StatusItem icon={Code2} label="Framework" value={framework} /><StatusItem icon={Languages} label="Language" value={language} /><StatusItem icon={Activity} label="Stage" value={executionStatus === "Idle" ? "Awaiting run" : executionStatus} /><StatusItem icon={Gauge} label="Health" value={repository ? `${repository.health_score}/100` : "Not evaluated"} /><StatusItem icon={ShieldCheck} label="AI Confidence" value={report ? `${report.confidence}%` : "Not evaluated"} />
             </div>
         </section>
     );

@@ -10,6 +10,8 @@ import subprocess
 import tempfile
 import threading
 import time
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import TextIO
 
@@ -26,6 +28,8 @@ class SandboxExecutionEngine:
     """Run validated commands against a temporary copy with live events."""
 
     DEFAULT_TIMEOUT_SECONDS = 300.0
+    SERVER_STARTUP_TIMEOUT_SECONDS = 60.0
+    HEALTH_RETRY_DELAYS = (0.2, 0.4, 0.8, 1.6, 2.0)
     ALLOWED_EXECUTABLES = frozenset(
         {
             "python",
@@ -41,7 +45,9 @@ class SandboxExecutionEngine:
             "conda",
         }
     )
-    ALLOWED_PYTHON_MODULES = frozenset({"venv", "compileall", "nbconvert"})
+    ALLOWED_PYTHON_MODULES = frozenset(
+        {"venv", "compileall", "nbconvert", "pip", "uvicorn"}
+    )
     SHELL_TOKENS = frozenset({";", "&&", "||", "&", "|", ">", ">>", "<", "$"})
 
     def __init__(
@@ -153,9 +159,12 @@ class SandboxExecutionEngine:
                         log_file,
                     )
                     for arguments in parsed_commands:
-                        resolved = self._resolve_command(arguments)
+                        resolved = self._resolve_command(arguments, project_root)
                         executed_command = shlex.join(resolved)
                         dependency = self._is_dependency_command(resolved)
+                        server_command = self._is_server_command(
+                            arguments
+                        ) or self._is_server_command(resolved)
                         if dependency:
                             installed_dependencies.append(executed_command)
                             self._emit(
@@ -175,9 +184,24 @@ class SandboxExecutionEngine:
                             )
 
                         try:
-                            return_code, timed_out, command_stdout, command_stderr = (
-                                self._stream_process(resolved, project_root, log_file)
-                            )
+                            if server_command:
+                                (
+                                    return_code,
+                                    timed_out,
+                                    command_stdout,
+                                    command_stderr,
+                                ) = self._stream_server_process(
+                                    resolved, project_root, log_file
+                                )
+                            else:
+                                (
+                                    return_code,
+                                    timed_out,
+                                    command_stdout,
+                                    command_stderr,
+                                ) = self._stream_process(
+                                    resolved, project_root, log_file
+                                )
                         except (OSError, subprocess.SubprocessError) as exc:
                             message = f"Could not start command: {exc}"
                             self._emit(
@@ -254,16 +278,31 @@ class SandboxExecutionEngine:
                                 40,
                                 log_file,
                             )
+                            self._emit(
+                                "DEPENDENCIES_INSTALLED",
+                                "SUCCESS",
+                                "Dependencies installed successfully.",
+                                42,
+                                log_file,
+                            )
 
                     self._emit(
-                        "EXECUTION_FINISHED",
+                        (
+                            "EXECUTION_COMPLETE"
+                            if server_command
+                            else "EXECUTION_FINISHED"
+                        ),
                         "SUCCESS",
-                        "Execution completed.",
+                        (
+                            "Server health verified and execution evidence collected."
+                            if server_command
+                            else "Execution completed."
+                        ),
                         90,
                         log_file,
                     )
                     result = self._result(
-                        "COMPLETED",
+                        "EXECUTION_COMPLETE" if server_command else "COMPLETED",
                         True,
                         0,
                         stdout_chunks,
@@ -430,6 +469,210 @@ class SandboxExecutionEngine:
 
         return process.returncode or 0, False, "".join(stdout), "".join(stderr)
 
+    def _stream_server_process(
+        self, arguments: list[str], cwd: Path, log_file: TextIO
+    ) -> tuple[int, bool, str, str]:
+        """Start a server, verify it over HTTP, then terminate it gracefully."""
+        port = self._available_port()
+        server_arguments = list(arguments)
+        if self._is_server_command(arguments) and "--port" not in arguments:
+            server_arguments.extend(["--host", "127.0.0.1", "--port", str(port)])
+        else:
+            port = self._command_port(server_arguments) or port
+
+        logger.info(
+            "Starting server command=%s cwd=%s pid=pending port=%s health_url=http://127.0.0.1:%s/health",
+            shlex.join(server_arguments),
+            cwd,
+            port,
+            port,
+        )
+        process = subprocess.Popen(
+            server_arguments,
+            cwd=cwd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            bufsize=1,
+            shell=False,
+        )
+        logger.info("Server started pid=%s port=%s", process.pid, port)
+        self._emit(
+            "SERVER_STARTED",
+            "SUCCESS",
+            f"Server started (pid={process.pid}, port={port}).",
+            55,
+            log_file,
+        )
+        stdout_chunks: list[str] = []
+        stderr_chunks: list[str] = []
+        output_queue: queue.Queue[tuple[str, str]] = queue.Queue()
+
+        def read_stream(stream: TextIO | None, name: str) -> None:
+            if stream is None:
+                return
+            try:
+                for line in iter(stream.readline, ""):
+                    output_queue.put((name, line))
+            finally:
+                stream.close()
+
+        threads = [
+            threading.Thread(
+                target=read_stream, args=(process.stdout, "stdout"), daemon=True
+            ),
+            threading.Thread(
+                target=read_stream, args=(process.stderr, "stderr"), daemon=True
+            ),
+        ]
+        for thread in threads:
+            thread.start()
+
+        started_at = time.monotonic()
+        healthy = False
+        health_response = ""
+        retry_count = 0
+        try:
+            while time.monotonic() - started_at < self.SERVER_STARTUP_TIMEOUT_SECONDS:
+                self._drain_output(output_queue, stdout_chunks, stderr_chunks, log_file)
+                if process.poll() is not None:
+                    break
+                for endpoint in ("/health", "/"):
+                    retry_count += 1
+                    response = self._health_check(f"http://127.0.0.1:{port}{endpoint}")
+                    logger.info(
+                        "Health check url=http://127.0.0.1:%s%s response=%s retry=%s",
+                        port,
+                        endpoint,
+                        response,
+                        retry_count,
+                    )
+                    if response:
+                        healthy = True
+                        health_response = response
+                        self._emit(
+                            "HEALTH_CHECK_SUCCESS",
+                            "SUCCESS",
+                            f"Health check passed at {endpoint} (retry={retry_count}).",
+                            80,
+                            log_file,
+                        )
+                        break
+                if healthy:
+                    break
+                delay = self.HEALTH_RETRY_DELAYS[
+                    min(retry_count, len(self.HEALTH_RETRY_DELAYS) - 1)
+                ]
+                time.sleep(delay)
+
+            self._drain_output(output_queue, stdout_chunks, stderr_chunks, log_file)
+            if healthy:
+                stdout_chunks.append(f"Health check response: {health_response}\n")
+                logger.info(
+                    "Server evidence collected pid=%s termination=graceful retry_count=%s",
+                    process.pid,
+                    retry_count,
+                )
+                self._terminate_process(process, "graceful after health verification")
+                return 0, False, "".join(stdout_chunks), "".join(stderr_chunks)
+
+            timed_out = process.poll() is None
+            reason = (
+                "startup timeout"
+                if timed_out
+                else f"server exited with code {process.returncode}"
+            )
+            logger.warning(
+                "Server health verification failed pid=%s reason=%s retry_count=%s",
+                process.pid,
+                reason,
+                retry_count,
+            )
+            if timed_out:
+                self._terminate_process(process, reason)
+            return (
+                -1 if timed_out else process.returncode or 1,
+                timed_out,
+                "".join(stdout_chunks),
+                "".join(stderr_chunks),
+            )
+        finally:
+            for thread in threads:
+                thread.join(timeout=1)
+            if process.poll() is None:
+                self._terminate_process(process, "cleanup")
+
+    @staticmethod
+    def _is_server_command(arguments: list[str]) -> bool:
+        if not arguments:
+            return False
+        executable = Path(arguments[0]).stem.lower()
+        return executable in {"uvicorn", "flask", "django-admin"} or (
+            len(arguments) >= 3
+            and executable in {"py", "python", "python3"}
+            and arguments[1:3] == ["-m", "uvicorn"]
+        )
+
+    @staticmethod
+    def _available_port() -> int:
+        import socket
+
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            return int(sock.getsockname()[1])
+
+    @staticmethod
+    def _command_port(arguments: list[str]) -> int | None:
+        try:
+            return int(arguments[arguments.index("--port") + 1])
+        except (ValueError, IndexError):
+            return None
+
+    @staticmethod
+    def _health_check(url: str) -> str:
+        try:
+            with urllib.request.urlopen(url, timeout=2) as response:
+                if 200 <= response.status < 500:
+                    return response.read(512).decode("utf-8", errors="replace")
+        except (urllib.error.URLError, TimeoutError, OSError):
+            return ""
+        return ""
+
+    def _drain_output(
+        self,
+        output_queue: queue.Queue[tuple[str, str]],
+        stdout: list[str],
+        stderr: list[str],
+        log_file: TextIO,
+    ) -> None:
+        while True:
+            try:
+                stream, line = output_queue.get_nowait()
+            except queue.Empty:
+                return
+            target = stdout if stream == "stdout" else stderr
+            target.append(line)
+            self._emit(
+                "STDOUT" if stream == "stdout" else "STDERR",
+                "RUNNING",
+                line.rstrip("\r\n"),
+                60,
+                log_file,
+                stream,
+            )
+
+    @staticmethod
+    def _terminate_process(process: subprocess.Popen[str], reason: str) -> None:
+        if process.poll() is not None:
+            return
+        logger.info("Terminating server pid=%s reason=%s", process.pid, reason)
+        try:
+            process.terminate()
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=2)
+
     def _emit(
         self,
         stage: str,
@@ -452,7 +695,7 @@ class SandboxExecutionEngine:
             self._event_publisher.publish(event)
 
     def _finish(self, result: ExecutionResult, log_file: TextIO) -> ExecutionResult:
-        if result.installed_dependencies:
+        if result.success and result.installed_dependencies:
             result.logs.append("Dependencies installed successfully.")
         if result.timed_out:
             result.logs.append("Execution timed out.")
@@ -495,10 +738,23 @@ class SandboxExecutionEngine:
                 raise ValueError(f"Repository contains an unsupported symlink: {entry}")
         return source_path.resolve()
 
-    @staticmethod
-    def _resolve_command(arguments: list[str]) -> list[str]:
+    def _resolve_command(self, arguments: list[str], cwd: Path) -> list[str]:
         if os.name == "nt":
             executable = arguments[0].lower()
+            venv_python = cwd / ".venv" / "Scripts" / "python.exe"
+            if executable in {"python", "python3", "py"} and len(arguments) > 2:
+                if arguments[1:3] == ["-m", "venv"]:
+                    launcher = self._compatible_windows_launcher()
+                    return [*launcher, *arguments[1:]]
+            if venv_python.is_file():
+                if executable in {"python", "python3", "py"}:
+                    if arguments[1:3] == ["-m", "venv"]:
+                        return arguments
+                    return [str(venv_python), *arguments[1:]]
+                if executable in {"pip", "pip3"}:
+                    return [str(venv_python), "-m", "pip", *arguments[1:]]
+                if executable == "uvicorn":
+                    return [str(venv_python), "-m", "uvicorn", *arguments[1:]]
             if (
                 executable in {"python", "python3"}
                 and shutil.which(executable) is None
@@ -511,7 +767,33 @@ class SandboxExecutionEngine:
                 and shutil.which("py")
             ):
                 return ["py", "-m", "pip", *arguments[1:]]
+            if (
+                executable == "uvicorn"
+                and shutil.which(executable) is None
+                and shutil.which("py")
+            ):
+                return ["py", "-m", "uvicorn", *arguments[1:]]
         return arguments
+
+    @staticmethod
+    def _compatible_windows_launcher() -> list[str]:
+        """Prefer Python 3.12 for legacy pins when it is installed."""
+        if shutil.which("py"):
+            for version in ("3.12", "3.11", "3.10"):
+                try:
+                    result = subprocess.run(
+                        ["py", f"-{version}", "--version"],
+                        capture_output=True,
+                        text=True,
+                        timeout=5,
+                        check=False,
+                    )
+                except (OSError, subprocess.SubprocessError):
+                    continue
+                if result.returncode == 0:
+                    return ["py", f"-{version}"]
+            return ["py"]
+        return ["python"]
 
     def _validate_command(self, command: str) -> list[str]:
         if not command.strip():
@@ -662,11 +944,12 @@ class SandboxExecutionEngine:
 
     @staticmethod
     def _is_dependency_command(arguments: list[str]) -> bool:
+        executable = Path(arguments[0]).name.lower() if arguments else ""
         return bool(arguments) and (
-            arguments[0].lower() in {"pip", "pip3", "pipenv", "conda"}
+            executable in {"pip", "pip3", "pipenv", "conda"}
             or (
                 len(arguments) > 2
-                and arguments[0].lower() in {"py", "python", "python3"}
+                and executable in {"py", "python", "python3"}
                 and arguments[1:3] == ["-m", "pip"]
             )
         )

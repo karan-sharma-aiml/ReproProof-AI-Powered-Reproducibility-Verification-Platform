@@ -44,7 +44,11 @@ class ObservationOrchestrator:
 
         repository = self._repository_inspector.inspect_repository(repository_path)
         project = self._project_detector.detect_project(repository_path)
-        has_entry_point = self._has_entry_point(repository_path)
+        has_entry_point = (
+            self._has_entry_point(repository_path)
+            if project.is_python_project
+            else True
+        )
         warnings = self._build_warnings(repository, project, has_entry_point)
         recommendations = self._build_recommendations(
             repository, project, has_entry_point, warnings
@@ -103,16 +107,18 @@ class ObservationOrchestrator:
         warnings: list[str] = []
         if "README.md" not in important_names:
             warnings.append("README.md is missing")
-        if "requirements.txt" not in important_names:
+        if project.is_python_project and not self._has_dependency_manifest(
+            important_names
+        ):
             warnings.append("requirements.txt is missing")
-        if not has_entry_point:
+        if project.is_python_project and not has_entry_point:
             warnings.append("No recognizable Python entry point was found")
         if repository.total_files == 0:
             warnings.append("Repository is empty")
         if not repository.source_directories:
             warnings.append("No recognized source folder was found")
         if project.project_type == "Unknown":
-            warnings.append("Python project type could not be determined")
+            warnings.append("Project type could not be determined")
         return warnings
 
     def _build_recommendations(
@@ -127,9 +133,11 @@ class ObservationOrchestrator:
         recommendations: list[str] = []
         if "README.md" not in important_names:
             recommendations.append("Add a README.md describing setup and execution")
-        if "requirements.txt" not in important_names:
+        if project.is_python_project and not self._has_dependency_manifest(
+            important_names
+        ):
             recommendations.append("Add a pinned requirements.txt dependency manifest")
-        if not has_entry_point:
+        if project.is_python_project and not has_entry_point:
             recommendations.append("Add a clear Python entry point such as main.py")
         if not repository.source_directories and repository.total_files:
             recommendations.append("Organize application code in a source folder")
@@ -152,15 +160,17 @@ class ObservationOrchestrator:
     ) -> bool:
         """Require a valid Python project, required files, and no critical issues."""
         important_names = {Path(path).name for path in repository.important_files}
-        required_files_exist = {
-            "README.md",
-            "requirements.txt",
-        }.issubset(important_names)
+        required_files_exist = (
+            "README.md" in important_names
+            and self._has_dependency_manifest(important_names)
+        )
         project_detected = project.project_type not in {"Unknown", ""}
+        if not project.is_python_project:
+            return bool(repository.total_files > 0 and project_detected)
         critical_warnings = {
             "Repository is empty",
             "No recognizable Python entry point was found",
-            "Python project type could not be determined",
+            "Project type could not be determined",
         }
         return bool(
             repository.total_files > 0
@@ -170,11 +180,43 @@ class ObservationOrchestrator:
             and not critical_warnings.intersection(warnings)
         )
 
+    @staticmethod
+    def _has_dependency_manifest(important_names: set[str]) -> bool:
+        return bool(
+            important_names.intersection(
+                {"requirements.txt", "pyproject.toml", "setup.py", "environment.yml"}
+            )
+        )
+
     def _has_entry_point(self, repository_path: Path) -> bool:
         """Find common entry files by name without reading or executing them."""
         try:
             return any(
-                entry.is_file() and entry.name in self.ENTRY_FILE_NAMES
+                entry.is_file()
+                and entry.name in self.ENTRY_FILE_NAMES
+                and (
+                    len(entry.relative_to(repository_path).parts) == 1
+                    or any(
+                        part.lower() in {"app", "src", "backend", "server", "api"}
+                        for part in entry.relative_to(repository_path).parts[:-1]
+                    )
+                )
+                and not any(
+                    part.lower()
+                    in {
+                        "tests",
+                        "test",
+                        "docs",
+                        "docs_src",
+                        "examples",
+                        "backups",
+                        "uploads",
+                        "reports",
+                        ".venv",
+                        "node_modules",
+                    }
+                    for part in entry.relative_to(repository_path).parts
+                )
                 for entry in repository_path.rglob("*")
             )
         except OSError as exc:

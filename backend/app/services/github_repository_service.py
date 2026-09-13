@@ -115,11 +115,23 @@ def _clone_and_prepare(repository_url: str) -> UploadData:
             except GitCommandError as error:
                 raise _clone_error(error) from error
 
+            _log_repository_tree(clone_destination, "cloned repository")
+            if not any(clone_destination.iterdir()):
+                raise GitHubCloneFailure(
+                    "GitHub repository was cloned but contains no files."
+                )
+
             repository_destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copytree(
                 clone_destination,
                 repository_destination,
                 ignore=shutil.ignore_patterns(".git"),
+            )
+
+        _log_repository_tree(repository_destination, "prepared repository")
+        if not any(repository_destination.iterdir()):
+            raise GitHubCloneFailure(
+                "GitHub repository was prepared but contains no files."
             )
 
         metadata = RepositoryAnalysisService().analyze_repository(
@@ -156,6 +168,26 @@ def _clone_and_prepare(repository_url: str) -> UploadData:
         raise GitHubCloneFailure(
             "The repository was cloned but could not be prepared for verification."
         ) from error
+
+
+def _log_repository_tree(repository_path: Path, label: str) -> None:
+    """Log the absolute repository root and a bounded tree for diagnostics."""
+    try:
+        root = repository_path.resolve()
+        tree = sorted(
+            path.relative_to(root).as_posix()
+            for path in root.rglob("*")
+            if path != root
+        )
+        logger.info(
+            "%s root=%s entries=%d tree=%s",
+            label,
+            root,
+            len(tree),
+            tree[:100],
+        )
+    except OSError as error:
+        logger.warning("Could not inspect %s at %s: %s", label, repository_path, error)
 
 
 async def ingest_github_repository(repository_url: str) -> UploadData:

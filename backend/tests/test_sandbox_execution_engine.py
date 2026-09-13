@@ -159,6 +159,26 @@ class SandboxExecutionEngineSmokeTest(unittest.TestCase):
         self.assertEqual(result.status, "COMPLETED")
         self.assertIn("nested-ok", result.stdout)
 
+    def test_verifies_long_running_uvicorn_before_graceful_termination(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            repository = Path(temporary_directory) / "repository"
+            repository.mkdir()
+            (repository / "app.py").write_text(
+                "from fastapi import FastAPI\n"
+                "app = FastAPI()\n"
+                "@app.get('/health')\n"
+                "def health(): return {'status': 'ok'}\n"
+            )
+            result = SandboxExecutionEngine(timeout_seconds=2).execute(
+                repository,
+                plan_for("uvicorn app:app"),
+            )
+
+        self.assertTrue(result.success, msg=result.stderr)
+        self.assertFalse(result.timed_out)
+        self.assertEqual(result.status, "EXECUTION_COMPLETE")
+        self.assertIn("Health check response", result.stdout)
+
     def test_rejects_symbolic_links_when_supported(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             repository = Path(temporary_directory)

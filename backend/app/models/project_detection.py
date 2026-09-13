@@ -14,3 +14,8 @@ class ProjectDetection(BaseModel):
     framework: str
     detection_confidence: int = Field(ge=0, le=100)
     reason: str
+    is_python_project: bool = True
+    frontend: str = ""
+    backend: str = ""
+    execution_target: str = ""
+    confidence_factors: list[str] = Field(default_factory=list)

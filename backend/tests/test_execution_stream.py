@@ -49,6 +49,46 @@ class ExecutionStreamIntegrationTest(unittest.TestCase):
         self.assertTrue(any(event["stage"] == "STDOUT" for event in events))
         self.assertEqual(events[-1]["stage"], "VERIFICATION_READY")
 
+    def test_successful_server_stream_ends_with_successful_verification(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            uploads = root / "uploads"
+            repository = uploads / "server-demo" / "repository"
+            repository.mkdir(parents=True)
+            (repository / "README.md").write_text("# Demo\n")
+            (repository / "requirements.txt").write_text("fastapi\nuvicorn\n")
+            (repository / "app.py").write_text(
+                "from fastapi import FastAPI\n"
+                "app = FastAPI()\n"
+                "@app.get('/health')\n"
+                "def health(): return {'status': 'ok'}\n"
+            )
+            settings = Settings(
+                UPLOAD_DIR=str(uploads),
+                REPORTS_DIR=str(root / "reports"),
+            )
+
+            async def consume() -> list[dict[str, object]]:
+                with patch("app.api.routes.get_settings", return_value=settings):
+                    response = await stream_execution("server-demo")
+                    events: list[dict[str, object]] = []
+                    async for chunk in response.body_iterator:
+                        line = chunk.decode() if isinstance(chunk, bytes) else chunk
+                        if line.startswith("data: "):
+                            events.append(json.loads(line[6:].strip()))
+                    return events
+
+            events = asyncio.run(consume())
+
+        stages = [event["stage"] for event in events]
+        self.assertIn("SERVER_STARTED", stages)
+        self.assertIn("HEALTH_CHECK_SUCCESS", stages)
+        self.assertIn("EXECUTION_COMPLETE", stages)
+        self.assertIn("REPORT_GENERATED", stages)
+        self.assertEqual(events[-1]["stage"], "VERIFICATION_READY")
+        self.assertEqual(events[-1]["status"], "SUCCESS")
+        self.assertNotIn("EXECUTION_FAILED", stages)
+
 
 if __name__ == "__main__":
     unittest.main()

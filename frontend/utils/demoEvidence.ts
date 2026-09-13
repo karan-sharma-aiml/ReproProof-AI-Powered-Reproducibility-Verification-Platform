@@ -1,18 +1,19 @@
 import type { FinalVerificationReport, RepositoryAIAnalysis, RepositoryMetadata } from "@/types";
 
-export function confidenceScore(repository: RepositoryMetadata | null, analysis: RepositoryAIAnalysis | null, report: FinalVerificationReport | null): number {
-    if (report?.confidence && report.confidence >= 75) return Math.min(98, Math.max(75, Math.round(report.confidence)));
-    if (!repository) return 92;
-    const evidence = [
-        repository.important_files.some((file) => /readme/i.test(file)) ? 14 : 8,
-        repository.important_files.some((file) => /requirements|pyproject|package.json|environment/i.test(file)) ? 14 : 8,
-        repository.health_score >= 70 ? 14 : 9,
-        analysis?.execution_probability ?? 80,
-        analysis?.reproducibility_score ?? 82,
-        analysis && analysis.risk_score < 45 ? 12 : 8,
-        repository.source_directories.some((item) => /test/i.test(item)) ? 10 : 7,
-    ];
-    return Math.min(98, Math.max(75, Math.round(evidence.reduce((sum, value) => sum + value, 0) / evidence.length * 1.08)));
+export function confidenceScore(repository: RepositoryMetadata | null, analysis: RepositoryAIAnalysis | null, report: FinalVerificationReport | null): number | null {
+    if (report?.confidence !== undefined) return Math.round(report.confidence);
+    if (!repository) return null;
+    const evidence: Array<[number, number]> = [[repository.health_score, 14]];
+    if (repository.important_files.some((file) => /readme/i.test(file))) evidence.push([repository.readme_quality ?? 100, 4]);
+    if (repository.important_files.some((file) => /requirements|pyproject|package.json|environment/i.test(file))) evidence.push([100, 2]);
+    if (repository.source_directories.some((item) => /test/i.test(item)) || repository.test_frameworks?.length) evidence.push([100, 3]);
+    if (analysis?.execution_probability !== undefined) evidence.push([analysis.execution_probability, 10]);
+    if (analysis?.reproducibility_score !== undefined) evidence.push([analysis.reproducibility_score, 10]);
+    if (analysis?.risk_score !== undefined) evidence.push([100 - analysis.risk_score, 10]);
+    if (report?.execution?.success !== undefined) evidence.push([report.execution.success ? 100 : 0, 25]);
+    if (report?.verification?.confidence !== undefined) evidence.push([report.verification.confidence, 20]);
+    const totalWeight = evidence.reduce((sum, [, weight]) => sum + weight, 0);
+    return Math.round(evidence.reduce((sum, [value, weight]) => sum + value * weight, 0) / totalWeight);
 }
 
 export function confidenceReasons(repository: RepositoryMetadata | null, analysis: RepositoryAIAnalysis | null, report: FinalVerificationReport | null): string[] {
@@ -48,12 +49,6 @@ export function recommendations(repository: RepositoryMetadata | null, analysis:
     const items = ["Pin package versions", "Add a CI smoke test", "Document environment variables", "Add a reproducibility seed"];
     if (repository?.important_files.some((file) => /docker/i.test(file))) items.unshift("Improve Docker layer caching");
     return items.slice(0, 4);
-}
-
-export function patchSummary(repository: RepositoryMetadata | null, analysis: RepositoryAIAnalysis | null) {
-    const filesChanged = Math.max(1, Math.min(5, analysis?.issues.length ? Math.ceil(analysis.issues.length / 3) : 2));
-    const confidence = Math.min(98, Math.max(82, confidenceScore(repository, analysis, null)));
-    return { filesChanged, risk: analysis?.risk_score && analysis.risk_score > 60 ? "Medium" : "Low", confidence, success: Math.min(98, confidence + 2), size: filesChanged * 46 + 46, type: analysis?.issues.some((issue) => /depend/i.test(issue.issue_type + issue.title)) ? "Dependency update" : "Reproducibility hardening" };
 }
 
 export function estimatedMonitoringValues() {

@@ -62,6 +62,27 @@ class ExecutionPlannerSmokeTest(unittest.TestCase):
         self.assertIn("uvicorn app.main:app", plan.commands)
         self.assertIn("Observation report is not execution-ready", plan.risks)
 
+    def test_monorepo_plan_targets_nested_fastapi_backend(self) -> None:
+        report = fastapi_report()
+        report = report.model_copy(
+            update={
+                "project": report.project.model_copy(
+                    update={
+                        "project_type": "Monorepo",
+                        "framework": "fastapi + Next.js",
+                        "backend": "fastapi (Python)",
+                        "execution_target": "backend",
+                    }
+                )
+            }
+        )
+
+        plan = ExecutionPlanner().create_plan(report)
+
+        self.assertEqual(plan.execution_type, "FastAPI")
+        self.assertEqual(plan.entry_point, "app/main.py")
+        self.assertIn("uvicorn app.main:app", plan.commands)
+
 
 if __name__ == "__main__":
     unittest.main()

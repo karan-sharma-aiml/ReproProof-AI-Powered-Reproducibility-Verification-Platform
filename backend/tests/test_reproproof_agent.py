@@ -40,6 +40,32 @@ def make_report(execution_ready: bool) -> ObservationReport:
     )
 
 
+def make_non_python_report() -> ObservationReport:
+    return ObservationReport(
+        repository=RepositoryMetadata(
+            repository_name="next-app",
+            total_files=4,
+            total_folders=1,
+            python_files=0,
+            notebooks=0,
+            important_files=["package.json", "next.config.ts"],
+            source_directories=["app"],
+            detected_languages=["JavaScript"],
+        ),
+        project=ProjectDetection(
+            project_type="Next.js",
+            framework="next.js",
+            detection_confidence=90,
+            reason="Found Next.js signals",
+            is_python_project=False,
+        ),
+        health_score=100,
+        execution_ready=True,
+        warnings=[],
+        recommendations=[],
+    )
+
+
 class FakeObservationCoordinator:
     def __init__(self, report: ObservationReport) -> None:
         self.report = report
@@ -68,7 +94,22 @@ class FakePlanGenerator:
         )
 
 
+class FailingPlanGenerator:
+    def create_plan(self, report: ObservationReport) -> ExecutionPlan:
+        raise AssertionError("non-Python repositories must bypass the planner")
+
+
 class ReproProofAgentSmokeTest(unittest.TestCase):
+    def test_skips_planner_for_non_python_repository(self) -> None:
+        result = ReproProofAgent(
+            FakeObservationCoordinator(make_non_python_report()),
+            FailingPlanGenerator(),
+        ).run(Path("repository"))
+
+        self.assertEqual(result.next_action, "SKIP")
+        self.assertEqual(result.plan.execution_type, "Next.js")
+        self.assertEqual(result.plan.entry_point, "")
+
     def test_returns_ready_execute_result_and_injects_dependencies(self) -> None:
         coordinator = FakeObservationCoordinator(make_report(True))
         planner = FakePlanGenerator()

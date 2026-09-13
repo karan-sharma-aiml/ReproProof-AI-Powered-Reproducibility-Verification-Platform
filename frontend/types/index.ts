@@ -217,8 +217,11 @@ export interface FinalVerificationReport {
   execution: Record<string, unknown>;
   metrics: Record<string, number>;
   verification: VerificationReport;
-  verdict: "REPRODUCED" | "PARTIALLY_REPRODUCED" | "NOT_REPRODUCED" | "EXECUTION_FAILED" | "INVALID_PROJECT";
+  workflow_status?: "SUCCESS" | "FAILED";
+  verdict: "REPRODUCED" | "PARTIALLY_REPRODUCED" | "NOT_REPRODUCED" | "EXECUTION_FAILED" | "EXECUTION_SKIPPED" | "INVALID_PROJECT";
   confidence: number;
+  final_ai_confidence?: number;
+  confidence_factors?: string[];
   overall_score: number;
   explanation: string;
   repair_suggestions: string[];

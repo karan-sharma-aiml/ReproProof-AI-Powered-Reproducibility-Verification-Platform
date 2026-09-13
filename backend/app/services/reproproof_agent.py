@@ -51,6 +51,16 @@ class ReproProofAgent:
         logger.info("Agent workflow started for repository: %s", repository_path)
 
         observation = self._observation_orchestrator.observe(repository_path)
+        if not observation.project.is_python_project:
+            plan = self._skipped_plan(observation)
+            return AgentResult(
+                goal=self.GOAL,
+                observation=observation,
+                plan=plan,
+                status="READY",
+                next_action="SKIP",
+                explanation="Execution skipped (non-Python project)",
+            )
         plan = self._execution_planner.create_plan(observation)
         blocking_reasons = self._blocking_reasons(observation)
         is_ready = observation.execution_ready and not blocking_reasons
@@ -85,6 +95,20 @@ class ReproProofAgent:
             result.next_action,
         )
         return result
+
+    @staticmethod
+    def _skipped_plan(observation: ObservationReport) -> ExecutionPlan:
+        """Return a safe report-only plan without invoking Python planning."""
+        return ExecutionPlan(
+            python_version="",
+            environment_strategy="Execution skipped (non-Python project)",
+            dependency_file="",
+            entry_point="",
+            execution_type=observation.project.project_type,
+            commands=[],
+            risks=list(observation.warnings),
+            assumptions=["Repository is not a Python project"],
+        )
 
     @staticmethod
     def _blocking_reasons(observation: ObservationReport) -> list[str]:

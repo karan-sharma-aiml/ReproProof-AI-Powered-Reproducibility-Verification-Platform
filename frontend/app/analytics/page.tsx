@@ -21,7 +21,7 @@ export default function AnalyticsPage() {
         async function load() {
             try {
                 const [metrics, status] = await Promise.all([fetchAnalytics(), fetchStatus()]);
-                setAnalytics({ ...metrics, total_runs: Math.max(1, metrics.total_runs), successful_runs: Math.max(1, metrics.successful_runs), average_ai_confidence: Math.max(92, metrics.average_ai_confidence), framework_distribution: Object.keys(metrics.framework_distribution).length ? metrics.framework_distribution : { FastAPI: 1, "Python AI": 1 }, language_distribution: Object.keys(metrics.language_distribution).length ? metrics.language_distribution : { Python: 1, TypeScript: 1 }, most_common_errors: Object.keys(metrics.most_common_errors).length ? metrics.most_common_errors : { "Dependency drift": 2, "Missing environment variable": 1 }, most_common_root_causes: Object.keys(metrics.most_common_root_causes).length ? metrics.most_common_root_causes : { "Reproducibility hardening": 2 }, patch_success_rate: Math.max(94, metrics.patch_success_rate) });
+                setAnalytics(metrics);
                 const id = status.uploads[0]?.upload_id;
                 if (id) {
                     setExecutionId(id);

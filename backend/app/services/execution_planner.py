@@ -71,7 +71,11 @@ class ExecutionPlanner:
         return plan
 
     def _execution_type(self, report: ObservationReport) -> str:
+        if not report.project.is_python_project:
+            return report.project.project_type
         framework = report.project.framework.lower()
+        if report.project.project_type == "Monorepo":
+            framework = report.project.backend.lower().split(" ", 1)[0] or framework
         project_type = report.project.project_type.lower()
         if framework == "fastapi":
             return "FastAPI"
@@ -81,22 +85,47 @@ class ExecutionPlanner:
             return "Django"
         if framework == "jupyter notebook" or "notebook" in project_type:
             return "Notebook"
+        if not self._has_entry_point_file(report):
+            return "Python Package"
         if project_type == "cli application" or framework in {"typer", "click", "cli"}:
             return "CLI"
         if project_type in {"research project", "machine learning project"}:
             return "Research Pipeline"
+        if not report.repository.source_directories and not self._has_entry_point_file(
+            report
+        ):
+            return "Python Package"
         return "Python Script"
 
     def _dependency_file(self, report: ObservationReport) -> str:
-        available = {
-            Path(path).name.lower(): path for path in report.repository.important_files
-        }
+        target = report.project.execution_target.rstrip("/")
+        paths = [
+            path
+            for path in report.repository.important_files
+            if not any(
+                part in {"uploads", "backups", "reports", ".next", "node_modules"}
+                for part in Path(path).parts
+            )
+        ]
+        if target:
+            targeted = [
+                path for path in paths if Path(path).as_posix().startswith(f"{target}/")
+            ]
+            paths = targeted or paths
+        available = {Path(path).name.lower(): path for path in paths}
         for filename in self.DEPENDENCY_FILE_ORDER:
             if filename in available:
                 return available[filename]
         return ""
 
     def _environment_strategy(self, execution_type: str) -> str:
+        if execution_type in {
+            "Next.js",
+            "React/Vite Project",
+            "React Project",
+            "Node.js Project",
+        }:
+            return "Execution skipped (non-Python project)"
         if execution_type == "Notebook":
             return "Python virtual environment with a Jupyter kernel"
         return "Python virtual environment (.venv)"
@@ -108,12 +137,27 @@ class ExecutionPlanner:
         dependency_file: str,
         entry_point: str,
     ) -> list[str]:
+        if (
+            not report.project.is_python_project
+            or not entry_point
+            or entry_point == "."
+        ):
+            return []
+        if execution_type in {
+            "Next.js",
+            "React/Vite Project",
+            "React Project",
+            "Node.js Project",
+            "Python Package",
+        }:
+            return []
         commands = ["python -m venv .venv"]
-        if dependency_file == "requirements.txt":
+        dependency_name = Path(dependency_file).name
+        if dependency_name == "requirements.txt":
             commands.append("pip install -r requirements.txt")
-        elif dependency_file in {"pyproject.toml", "setup.py"}:
+        elif dependency_name in {"pyproject.toml", "setup.py"}:
             commands.append("pip install -e .")
-        elif dependency_file == "environment.yml":
+        elif dependency_name == "environment.yml":
             commands.append("conda env update -f environment.yml")
 
         module = self._module_name(entry_point)
@@ -129,6 +173,35 @@ class ExecutionPlanner:
             commands.append(f"python {entry_point}")
 
         return commands
+
+    @staticmethod
+    def _has_entry_point_file(report: ObservationReport) -> bool:
+        return any(
+            Path(path).name.lower()
+            in {"main.py", "app.py", "manage.py", "run.py", "server.py", "cli.py"}
+            and (
+                len(Path(path).parts) == 1
+                or any(
+                    part.lower() in {"app", "src", "backend", "server", "api"}
+                    for part in Path(path).parts[:-1]
+                )
+            )
+            and not any(
+                part.lower()
+                in {
+                    "tests",
+                    "test",
+                    "docs",
+                    "docs_src",
+                    "examples",
+                    "backups",
+                    "uploads",
+                    "reports",
+                }
+                for part in Path(path).parts[:-1]
+            )
+            for path in report.repository.important_files
+        )
 
     def _risks(
         self,
@@ -159,6 +232,12 @@ class ExecutionPlanner:
             "Commands are proposals only and have not been executed",
             "Uploaded source code will not be imported or executed by the planner",
         ]
+        if not report.project.is_python_project:
+            return ["Execution skipped (non-Python project)"]
+        if execution_type == "Python Package":
+            return [
+                "Repository is a Python package without a runnable application entry point"
+            ]
         if entry_point:
             assumptions.append(
                 f"{entry_point} is the conventional entry point for {execution_type}"
@@ -174,11 +253,28 @@ class ExecutionPlanner:
     def _default_entry_point_resolver(
         self, report: ObservationReport, execution_type: str
     ) -> str:
+        if not report.project.is_python_project:
+            return ""
+        if execution_type == "Python Package":
+            return ""
         source_directories = {
             Path(path).as_posix() for path in report.repository.source_directories
         }
+        target = report.project.execution_target.rstrip("/")
+        if target:
+            target_root = Path(target)
+            target_sources = {
+                Path(path).relative_to(target_root).as_posix()
+                for path in source_directories
+                if Path(path).as_posix().startswith(f"{target_root.as_posix()}/")
+            }
+            source_directories = target_sources or source_directories
         if execution_type == "FastAPI" and "app" in source_directories:
             return "app/main.py"
+        if execution_type == "FastAPI" and "app.py" in {
+            Path(path).name.lower() for path in report.repository.important_files
+        }:
+            return "app.py"
         if execution_type == "Django":
             return "manage.py"
         if execution_type == "Flask":
@@ -197,6 +293,8 @@ class ExecutionPlanner:
 
     @staticmethod
     def _module_name(entry_point: str) -> str:
+        if not entry_point or entry_point == ".":
+            return ""
         return Path(entry_point).with_suffix("").as_posix().replace("/", ".")
 
     @staticmethod

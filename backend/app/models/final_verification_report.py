@@ -24,14 +24,17 @@ class FinalVerificationReport(BaseModel):
     execution: ExecutionResult
     metrics: dict[str, float] = Field(default_factory=dict)
     verification: VerificationReport
+    workflow_status: Literal["SUCCESS", "FAILED"] = "SUCCESS"
     verdict: Literal[
         "REPRODUCED",
         "PARTIALLY_REPRODUCED",
         "NOT_REPRODUCED",
         "EXECUTION_FAILED",
+        "EXECUTION_SKIPPED",
         "INVALID_PROJECT",
     ]
     final_ai_confidence: int = Field(ge=0, le=100)
+    confidence_factors: list[str] = Field(default_factory=list)
     overall_score: float = Field(ge=0, le=100)
     explanation: str
     repair_suggestions: list[str] = Field(default_factory=list)

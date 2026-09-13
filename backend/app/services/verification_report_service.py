@@ -29,7 +29,9 @@ class VerificationReportService:
         repair_plan: RepairPlan,
         troubleshooting: TroubleshootingReport | None = None,
     ) -> FinalVerificationReport:
-        if not execution.success:
+        if execution.status == "SKIPPED":
+            verdict = "EXECUTION_SKIPPED"
+        elif not execution.success:
             verdict = "EXECUTION_FAILED"
         elif repository.health_score < 35 or static_analysis.risk_score >= 85:
             verdict = "INVALID_PROJECT"
@@ -51,10 +53,14 @@ class VerificationReportService:
                 + (100 - static_analysis.risk_score) * 0.15,
             ),
         )
-        final_ai_confidence = ConfidenceEngine.final_ai_confidence(
-            verification_confidence=verification.verification_confidence,
-            execution_probability=static_analysis.execution_probability,
-            risk_score=static_analysis.risk_score,
+        final_ai_confidence, confidence_factors = (
+            ConfidenceEngine.repository_quality_confidence(
+                repository,
+                execution_success=execution.success,
+                verification_confidence=verification.verification_confidence,
+                static_analysis=static_analysis,
+                execution=execution,
+            )
         )
         explanation = self._explanation(verdict, verification, execution)
         return FinalVerificationReport(
@@ -63,8 +69,10 @@ class VerificationReportService:
             execution=execution,
             metrics=metrics,
             verification=verification,
+            workflow_status="SUCCESS" if execution.success else "FAILED",
             verdict=verdict,
             final_ai_confidence=final_ai_confidence,
+            confidence_factors=confidence_factors,
             overall_score=overall_score,
             explanation=explanation,
             repair_suggestions=repair_plan.manual_actions
@@ -78,6 +86,7 @@ class VerificationReportService:
                 verification,
                 verdict,
                 final_ai_confidence,
+                confidence_factors,
                 repair_plan,
             ),
             troubleshooting=troubleshooting,
@@ -89,6 +98,8 @@ class VerificationReportService:
     ) -> str:
         if verdict == "EXECUTION_FAILED":
             return "Repository execution failed, so metric reproduction could not be completed."
+        if verdict == "EXECUTION_SKIPPED":
+            return "Execution skipped (non-Python project). Repository analysis and verification report were generated without running Python code."
         if verdict == "REPRODUCED":
             return f"Repository executed successfully and all {len(verification.matched_metrics)} expected metrics matched within tolerance."
         if verdict == "PARTIALLY_REPRODUCED":
@@ -103,6 +114,7 @@ class VerificationReportService:
         verification,
         verdict,
         final_ai_confidence,
+        confidence_factors,
         repair_plan,
     ) -> str:
         metric_lines = (
@@ -136,6 +148,7 @@ class VerificationReportService:
 ## AI Verdict
 - Verdict: **{verdict}**
 - Final AI Confidence: {final_ai_confidence}/100
+- Confidence factors: {"; ".join(confidence_factors)}
 - Explanation: {verification.explanation}
 
 ## Repair Suggestions

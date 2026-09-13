@@ -1,4 +1,4 @@
-"""Filesystem-only detection of Python project characteristics."""
+"""Filesystem-only detection of repository project characteristics."""
 
 from __future__ import annotations
 
@@ -24,12 +24,21 @@ class _Signal:
 
 
 class ProjectDetector:
-    """Determine a repository's likely Python project type without execution."""
+    """Determine a repository's likely project type without execution."""
 
     MAX_TEXT_BYTES = 1_048_576
     SOURCE_EXTENSIONS = frozenset({".py", ".pyi"})
     CONFIG_FILES = frozenset(
-        {"requirements.txt", "pyproject.toml", "setup.py", "environment.yml"}
+        {
+            "requirements.txt",
+            "pyproject.toml",
+            "setup.py",
+            "environment.yml",
+            "package.json",
+            "package-lock.json",
+            "yarn.lock",
+            "pnpm-lock.yaml",
+        }
     )
     ENTRY_FILES = frozenset(
         {"main.py", "app.py", "manage.py", "cli.py", "__main__.py", "run.py"}
@@ -87,6 +96,8 @@ class ProjectDetector:
         python_files = 0
         notebook_files = 0
         entry_files: list[str] = []
+        filenames: set[str] = set()
+        directory_names: set[str] = set()
         has_tests = False
         has_docs = False
 
@@ -99,6 +110,7 @@ class ProjectDetector:
         for entry in entries:
             try:
                 if entry.is_dir():
+                    directory_names.add(entry.name.lower())
                     has_tests |= entry.name.lower() == "tests"
                     has_docs |= entry.name.lower() == "docs"
                     continue
@@ -106,6 +118,7 @@ class ProjectDetector:
                     continue
 
                 filename = entry.name.lower()
+                filenames.add(filename)
                 if entry.suffix.lower() == ".ipynb":
                     notebook_files += 1
                 if entry.name in self.ENTRY_FILES:
@@ -197,12 +210,47 @@ class ProjectDetector:
                 )
             )
 
+        node_signals = self._node_signals(filenames, directory_names, dependency_text)
+        components = self._detect_components(repository_path)
+        python_component = components["backend"]
+        frontend_component = components["frontend"]
+        if python_component and frontend_component:
+            backend_framework = python_component["framework"] or "Python"
+            result = ProjectDetection(
+                project_type="Monorepo",
+                framework=f"{backend_framework} + {frontend_component}",
+                detection_confidence=ConfidenceEngine.detection_confidence(95),
+                reason=(
+                    f"Detected {frontend_component} frontend and {backend_framework} "
+                    "Python backend in separate repository directories"
+                ),
+                is_python_project=True,
+                frontend=frontend_component,
+                backend=f"{backend_framework} (Python)",
+                execution_target=python_component["path"],
+                confidence_factors=[
+                    f"Frontend detected at {frontend_component.lower()} project path",
+                    f"Python backend detected at {python_component['path']}",
+                    "Backend execution target selected instead of skipping",
+                ],
+            )
+            logger.info(
+                "Detected monorepo: frontend=%s backend=%s target=%s",
+                frontend_component,
+                backend_framework,
+                python_component["path"],
+            )
+            return result
+        if node_signals:
+            signals = node_signals
+
         if not signals:
             result = ProjectDetection(
                 project_type="Unknown",
                 framework="",
                 detection_confidence=ConfidenceEngine.detection_confidence(0),
-                reason="No recognizable Python project signals were found",
+                reason="No recognizable project signals were found",
+                is_python_project=False,
             )
         else:
             best = max(signals, key=lambda signal: (signal.weight, signal.framework))
@@ -211,6 +259,9 @@ class ProjectDetector:
                 framework=best.framework,
                 detection_confidence=ConfidenceEngine.detection_confidence(best.weight),
                 reason=best.reason,
+                is_python_project=best.framework
+                not in {"next.js", "react/vite", "react", "node.js"},
+                execution_target=python_component["path"] if python_component else "",
             )
 
         logger.info(
@@ -221,6 +272,130 @@ class ProjectDetector:
             result.detection_confidence,
         )
         return result
+
+    def _detect_components(
+        self, repository_path: Path
+    ) -> dict[str, dict[str, str] | str]:
+        """Detect independent frontend and Python backend slices in a monorepo."""
+        backend: dict[str, str] = {}
+        frontend = ""
+        candidates = [repository_path]
+        try:
+            candidates.extend(
+                path
+                for path in repository_path.rglob("*")
+                if path.is_dir()
+                and not any(
+                    part.startswith(".") or part in {"node_modules", ".venv"}
+                    for part in path.relative_to(repository_path).parts
+                )
+            )
+        except OSError:
+            return {"backend": backend, "frontend": frontend}
+
+        for candidate in sorted(
+            candidates, key=lambda path: (len(path.parts), str(path))
+        ):
+            try:
+                direct_files = {
+                    path.name.lower(): path
+                    for path in candidate.iterdir()
+                    if path.is_file()
+                }
+                python_files = [
+                    path for path in candidate.rglob("*.py") if path.is_file()
+                ]
+                dependency_file = next(
+                    (
+                        direct_files[name]
+                        for name in (
+                            "requirements.txt",
+                            "pyproject.toml",
+                            "setup.py",
+                            "environment.yml",
+                        )
+                        if name in direct_files
+                    ),
+                    None,
+                )
+                if not backend and python_files and dependency_file:
+                    text = self._read_text(dependency_file)
+                    imports = set()
+                    for source in python_files:
+                        imports.update(self._extract_imports(self._read_text(source)))
+                    framework = next(
+                        (
+                            name
+                            for name, aliases in self.DEPENDENCY_ALIASES.items()
+                            if any(
+                                self._contains_package(text, alias) or alias in imports
+                                for alias in aliases
+                            )
+                        ),
+                        "Python",
+                    )
+                    backend = {
+                        "path": (
+                            "."
+                            if candidate == repository_path
+                            else candidate.relative_to(repository_path).as_posix()
+                        ),
+                        "framework": (
+                            framework if framework in self.PROJECT_TYPES else "Python"
+                        ),
+                    }
+                package_json = direct_files.get("package.json")
+                next_config = any(
+                    name in direct_files
+                    for name in ("next.config.js", "next.config.ts", "next.config.mjs")
+                )
+                package_text = self._read_text(package_json) if package_json else ""
+                if not frontend and (
+                    next_config or self._contains_package(package_text, "next")
+                ):
+                    frontend = "Next.js"
+            except OSError:
+                continue
+        return {"backend": backend, "frontend": frontend}
+
+    @staticmethod
+    def _node_signals(
+        filenames: set[str], directory_names: set[str], dependency_text: str
+    ) -> list[_Signal]:
+        """Classify JavaScript repositories from conventional markers."""
+        has_package = "package.json" in filenames
+        has_next_config = any(
+            name in filenames for name in {"next.config.js", "next.config.ts"}
+        )
+        has_next_dependency = ProjectDetector._contains_package(dependency_text, "next")
+        has_react_dependency = ProjectDetector._contains_package(
+            dependency_text, "react"
+        )
+        has_vite = any(
+            name in filenames for name in {"vite.config.js", "vite.config.ts"}
+        )
+        has_app_or_pages = bool({"app", "pages"}.intersection(directory_names))
+
+        if (
+            has_next_config
+            or has_next_dependency
+            or (has_package and has_app_or_pages and has_react_dependency)
+        ):
+            return [_Signal("next.js", "Next.js", 90, "Found Next.js signals")]
+        if has_vite and has_react_dependency:
+            return [
+                _Signal(
+                    "react/vite",
+                    "React/Vite Project",
+                    85,
+                    "Found Vite configuration with React signals",
+                )
+            ]
+        if has_react_dependency:
+            return [_Signal("react", "React Project", 80, "Found React signals")]
+        if has_package:
+            return [_Signal("node.js", "Node.js Project", 65, "Found package.json")]
+        return []
 
     def _read_text(self, path: Path) -> str:
         """Read a bounded amount of text while tolerating non-UTF-8 files."""

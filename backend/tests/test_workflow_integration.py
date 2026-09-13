@@ -55,6 +55,27 @@ class WorkflowIntegrationTest(unittest.TestCase):
         self.assertEqual(report["repair_plan"]["repair_type"], "NO_ACTION_REQUIRED")
         self.assertTrue(report["verification"]["reproduced"])
 
+    def test_non_python_repository_skips_execution_and_generates_report(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            repository = Path(temporary_directory) / "next-app"
+            (repository / "app").mkdir(parents=True)
+            (repository / "package.json").write_text(
+                '{"dependencies":{"next":"15.0.0","react":"19.0.0"}}'
+            )
+            (repository / "next.config.js").write_text("module.exports = {};\n")
+
+            report = run_verification_workflow(
+                repository,
+                ExpectedResult(expected_value=0, metric_name="accuracy"),
+            )
+
+        self.assertEqual(report["observation"]["project"]["project_type"], "Next.js")
+        self.assertEqual(report["execution"]["status"], "SKIPPED")
+        self.assertEqual(
+            report["execution"]["stdout"], "Execution skipped (non-Python project)"
+        )
+        self.assertEqual(report["final_report"]["verdict"], "EXECUTION_SKIPPED")
+
 
 if __name__ == "__main__":
     unittest.main()

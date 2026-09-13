@@ -70,13 +70,13 @@ export function AIThinkingPanel({
                 <InsightMetric
                     icon={TrendingUp}
                     label="AI Confidence"
-                    value={`${Math.max(75, report.confidence ?? 92)}%`}
+                    value={`${report.confidence ?? 0}%`}
                     color="violet"
                     delay={0.2}
                 />
                 <InsightMetric
                     icon={Shield}
-                    label="Risk"
+                    label="Risk exposure"
                     value={`${Math.round(risk_score || 24)}/100`}
                     color="amber"
                     delay={0.3}
