@@ -8,7 +8,7 @@ interface UseStatusReturn {
   status: StatusResponse | null;
   isLoading: boolean;
   error: string | null;
-  refetch: () => void;
+  refetch: () => Promise<void>;
 }
 
 export function useStatus(): UseStatusReturn {

@@ -32,6 +32,7 @@ from app.api.performance_routes import router as performance_router
 from app.api.demo_routes import router as demo_router
 from app.api.infrastructure_routes import router as infrastructure_router
 from app.api.monitoring_routes import router as monitoring_router
+from app.api.github_routes import router as github_router
 from app.core.config import get_settings
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import get_logger, setup_logging
@@ -123,6 +124,7 @@ def create_app() -> FastAPI:
     app.include_router(demo_router)
     app.include_router(infrastructure_router)
     app.include_router(monitoring_router)
+    app.include_router(github_router)
 
     return app
 

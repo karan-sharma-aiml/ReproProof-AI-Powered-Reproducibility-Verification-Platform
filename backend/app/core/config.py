@@ -35,16 +35,19 @@ class Settings(BaseSettings):
     PORT: int = 8000
 
     # ── CORS ─────────────────────────────────────────────────────────────
-    # Development: http://localhost:3000,http://localhost:5173,http://localhost:3001
+    # Development: localhost and loopback origins used by local Next/Vite servers.
     # Production: https://your-frontend-domain.vercel.app
     CORS_ORIGINS: str = (
-        '["http://localhost:3000","http://localhost:5173","http://localhost:3001"]'
+        '["http://localhost:3000","http://127.0.0.1:3000",'
+        '"http://localhost:5173","http://127.0.0.1:5173",'
+        '"http://localhost:3001","http://127.0.0.1:3001"]'
     )
 
     # ── Uploads / Reports ────────────────────────────────────────────────
     UPLOAD_DIR: str = "uploads"
     REPORTS_DIR: str = "reports"
     MAX_UPLOAD_SIZE_MB: int = 50
+    GITHUB_CLONE_TIMEOUT_SECONDS: float = 120.0
 
     # Optional infrastructure services. Local filesystem and in-process
     # fallbacks keep developer startup independent of external services.

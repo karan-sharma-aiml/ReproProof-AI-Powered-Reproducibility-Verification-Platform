@@ -40,6 +40,10 @@ export interface UploadResponse extends BaseResponse {
   data: UploadData;
 }
 
+export interface GitHubVerificationResponse extends BaseResponse {
+  data?: UploadData;
+}
+
 /* GET /status */
 export interface UploadSummary {
   upload_id: string;

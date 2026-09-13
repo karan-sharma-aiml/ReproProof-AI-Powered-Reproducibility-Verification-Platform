@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 import { ArrowRight, FileArchive, Github, LockKeyhole, UploadCloud } from "lucide-react";
 import { GitHubRepoCard } from "@/components/cards/GitHubRepoCard";
 import { RecentProjectsCard } from "@/components/cards/RecentProjectsCard";
@@ -11,12 +12,14 @@ import { GlassCard, StatusBadge } from "@/components/ui/EnterprisePrimitives";
 import { useStatus } from "@/hooks/useStatus";
 import { useToast } from "@/hooks/useToast";
 import { useUpload } from "@/hooks/useUpload";
+import { verifyGitHubRepository } from "@/services/api";
 import type { VerificationState } from "@/types";
 
 export default function HomePage() {
     const inputRef = useRef<HTMLInputElement>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [repoUrl, setRepoUrl] = useState("");
+    const [isVerifyingRepository, setIsVerifyingRepository] = useState(false);
     const [state, setState] = useState<VerificationState>("idle");
     const { upload, isUploading, progress, data, error } = useUpload();
     const { status, isLoading: statusLoading, refetch } = useStatus();
@@ -41,9 +44,36 @@ export default function HomePage() {
         }
     }
 
-    function submitRepository(url: string) {
-        setRepoUrl(url);
-        addToast("info", "Repository queued", "GitHub verification will be available with the repository connector.");
+    async function submitRepository(url: string) {
+        const normalizedUrl = url.trim();
+        const githubUrlPattern = /^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9_.-]+$/;
+
+        if (!githubUrlPattern.test(normalizedUrl)) {
+            addToast("error", "Invalid GitHub URL", "Use https://github.com/<owner>/<repo>.");
+            return;
+        }
+
+        setRepoUrl(normalizedUrl);
+        setIsVerifyingRepository(true);
+        setState("verifying");
+
+        try {
+            await verifyGitHubRepository(normalizedUrl);
+            await refetch();
+            setState("success");
+            addToast("success", "Repository verified", "GitHub repository verification has started.");
+            router.push("/dashboard");
+        } catch (error: unknown) {
+            setState("failed");
+            const message = axios.isAxiosError<{ detail?: string; error?: string; message?: string }>(error)
+                ? error.response?.data?.detail ?? error.response?.data?.error ?? error.response?.data?.message ?? error.message
+                : error instanceof Error
+                    ? error.message
+                    : "GitHub repository verification failed.";
+            addToast("error", "Verification failed", message);
+        } finally {
+            setIsVerifyingRepository(false);
+        }
     }
 
     return (
@@ -75,7 +105,7 @@ export default function HomePage() {
                     <input ref={inputRef} className="hidden" type="file" accept=".zip,application/zip" onChange={(event) => void handleFile(event.target.files?.[0])} />
                     {error && <p className="mt-3 text-sm text-red-600 dark:text-red-400">{error}</p>}
                     <div className="my-5 flex items-center gap-3 text-xs text-slate-400"><span className="h-px flex-1 bg-white/10" /> OR <span className="h-px flex-1 bg-white/10" /></div>
-                    <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2"><Github className="h-4 w-4 text-slate-400" /><input type="url" value={repoUrl} onChange={(event) => setRepoUrl(event.target.value)} placeholder="GitHub repository URL" className="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-slate-500 focus:ring-0" /><button type="button" onClick={() => submitRepository(repoUrl)} disabled={!repoUrl} className="inline-flex items-center gap-1 text-sm font-semibold text-violet-400 disabled:opacity-40">Verify <ArrowRight className="h-4 w-4" /></button></div>
+                    <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2"><Github className="h-4 w-4 text-slate-400" /><input type="url" value={repoUrl} onChange={(event) => setRepoUrl(event.target.value)} placeholder="GitHub repository URL" className="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-slate-500 focus:ring-0" /><button type="button" onClick={() => void submitRepository(repoUrl)} disabled={!repoUrl || isVerifyingRepository} className="inline-flex items-center gap-1 text-sm font-semibold text-violet-400 disabled:opacity-40">{isVerifyingRepository ? <LoadingSpinner size="sm" /> : <><span>Verify</span><ArrowRight className="h-4 w-4" /></>}</button></div>
                 </GlassCard>
             </section>
             <section className="mt-16 grid gap-6 lg:grid-cols-[1.4fr_0.6fr]">

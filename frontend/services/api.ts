@@ -16,10 +16,11 @@ import type {
   HealthScoreResult,
   PlatformOverview,
   MonitoringSnapshot,
+  GitHubVerificationResponse,
 } from "@/types";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 30_000,
   headers: { Accept: "application/json" },
 });
@@ -47,6 +48,19 @@ export async function uploadFile(
         onProgress(Math.round((event.loaded * 100) / event.total));
       }
     },
+  });
+  return data;
+}
+
+export async function verifyGitHubRepository(
+  repositoryUrl: string,
+): Promise<GitHubVerificationResponse> {
+  if (!process.env.NEXT_PUBLIC_API_URL) {
+    throw new Error("The API URL is not configured.");
+  }
+
+  const { data } = await api.post<GitHubVerificationResponse>("/verify/github", {
+    repository_url: repositoryUrl,
   });
   return data;
 }
